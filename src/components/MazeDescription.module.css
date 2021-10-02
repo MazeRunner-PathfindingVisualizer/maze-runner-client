@@ -1,0 +1,26 @@
+.MazeDescription {
+  width: 100%;
+  height: 10rem;
+  background-color: green;
+}
+
+.NodeInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  background-color: blue;
+}
+
+.NodeImage {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.SelectedOptionInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  background-color: coral;
+}
