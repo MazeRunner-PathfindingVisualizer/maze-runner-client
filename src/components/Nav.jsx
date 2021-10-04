@@ -41,7 +41,11 @@ const Nav = () => {
       <ul className={style.NavItems}>
         {NAV_LIST.map((item) => (
           <li className={style.NavItem} key={item.title}>
-            <button onClick={handleOnClick} name={item.title}>
+            <button
+              className={style.NavButton}
+              onClick={handleOnClick}
+              name={item.title}
+            >
               {item.title}
               {item.hasDropdown && <IoMdArrowDropdown />}
             </button>

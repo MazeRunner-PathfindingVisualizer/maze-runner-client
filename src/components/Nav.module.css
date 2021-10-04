@@ -7,13 +7,18 @@
 }
 
 .NavItems {
+  display: flex;
+  /* align-items: center; */
   width: 100%;
   height: 100%;
-  display: flex;
   background-color: yellow;
 }
 
 .NavItem {
   width: 100%;
   margin: 0 10px;
+}
+
+.NavButton {
+  width: 100%;
 }

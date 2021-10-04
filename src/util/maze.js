@@ -1,6 +1,13 @@
 import { NODE_STATUS } from '../constant';
 import { MAZE } from '../constant/maze';
 
+import { headerHeight } from '../App.module.css';
+import { mazeDescriptionHeight } from '../components/MazeDescription.module.css';
+
+const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
+const MAZE_DESC_HEIGHT_REM = parseInt(mazeDescriptionHeight.slice(0, -3), 10);
+const REM_TO_PX = 16;
+
 const QUARTER = 0.25;
 const HALF = 0.5;
 const TRIPLE = 3;
@@ -9,7 +16,8 @@ export const calcMazeBlockCount = (widthPx, heightPx) => {
   const widthCount =
     (widthPx - MAZE.MARGIN_PX * MAZE.DOUBLE) / MAZE.BLOCK_SIZE_PX;
   const heightCount =
-    (heightPx - MAZE.MARGIN_PX * MAZE.DOUBLE) / MAZE.BLOCK_SIZE_PX;
+    (heightPx - REM_TO_PX * (HEADER_HEIGHT_REM + MAZE_DESC_HEIGHT_REM)) /
+    MAZE.BLOCK_SIZE_PX;
 
   return {
     widthCount: parseInt(widthCount, 10),

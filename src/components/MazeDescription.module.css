@@ -1,6 +1,8 @@
+@value mazeDescriptionHeight: 10rem;
+
 .MazeDescription {
   width: 100%;
-  height: 10rem;
+  height: mazeDescriptionHeight;
   background-color: green;
 }
 
