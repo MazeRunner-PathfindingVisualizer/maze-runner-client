@@ -1,0 +1,12 @@
+.NodeType {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 10px;
+}
+
+.NodeTypeImage {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+}

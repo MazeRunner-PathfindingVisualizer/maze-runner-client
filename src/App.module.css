@@ -1,0 +1,19 @@
+@value headerHeight: 4rem;
+
+.App {
+  text-align: center;
+}
+
+.AppHeader {
+  height: headerHeight;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: purple;
+}
+
+@media screen and (max-width: 48rem) {
+  .AppHeader {
+    display: none;
+  }
+}

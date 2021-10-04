@@ -1,0 +1,12 @@
+.Dropdown {
+  position: relative;
+  width: auto;
+  height: auto;
+  background-color: red;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.DropdownItem {
+  margin: 5px 0;
+}
