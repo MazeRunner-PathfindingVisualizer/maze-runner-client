@@ -34,4 +34,4 @@ const MazeDescription = () => {
   );
 };
 
-export default MazeDescription;
+export default React.memo(MazeDescription);

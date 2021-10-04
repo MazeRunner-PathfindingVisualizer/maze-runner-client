@@ -120,6 +120,16 @@ export const SHORTEST = {
   NONE: 'none',
 };
 
+export const NODE_STATUS = {
+  UNVISITED: 'unvisited',
+  VISITED: 'visited',
+  WALL: 'wall',
+  START: 'start',
+  END: 'end',
+  MIDDLE: 'middle',
+  PATH: 'path',
+};
+
 export default {
   ALGORITHM,
   ALGORITHMS,
