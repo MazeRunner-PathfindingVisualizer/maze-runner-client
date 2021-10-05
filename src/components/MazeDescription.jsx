@@ -5,8 +5,6 @@ import MazeOption from './MazeOption';
 import { MAZE_OPTIONS, NODE_TYPES } from '../constant';
 import { selectMazeOptions } from '../features/mazeOptions/mazeOptionsSlice';
 
-// import startNode from '/image/star tNode.png';
-
 import style from './MazeDescription.module.css';
 import NodeType from './NodeType';
 

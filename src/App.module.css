@@ -11,9 +11,3 @@
   justify-content: center;
   background-color: purple;
 }
-
-@media screen and (max-width: 48rem) {
-  .AppHeader {
-    display: none;
-  }
-}
