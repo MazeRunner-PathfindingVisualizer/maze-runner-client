@@ -61,6 +61,7 @@ export const createNodes = (widthCount, heightCount) => {
       const newNode = {
         id: newNodeId,
         status: newNodeStatus,
+        previousNode: null,
       };
 
       nodes.byId[newNodeId] = newNode;

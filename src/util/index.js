@@ -1,4 +1,10 @@
-import { ALGORITHM, SHORTEST, WEIGHTED } from '../constant';
+import {
+  ALGORITHM,
+  NODE_IMAGE_PATH,
+  NODE_STATUS,
+  SHORTEST,
+  WEIGHTED,
+} from '../constant';
 
 export function getAlgorithmInfo(algorithm) {
   switch (algorithm) {
@@ -66,5 +72,22 @@ export function getAlgorithmInfo(algorithm) {
     }
   }
 }
+
+export const getImgSrcPathByNodeStatus = (nodeStatus) => {
+  switch (nodeStatus) {
+    case NODE_STATUS.START: {
+      return NODE_IMAGE_PATH.START;
+    }
+    case NODE_STATUS.MIDDLE: {
+      return NODE_IMAGE_PATH.MIDDLE;
+    }
+    case NODE_STATUS.END: {
+      return NODE_IMAGE_PATH.END;
+    }
+    case NODE_STATUS.WALL: {
+      return NODE_IMAGE_PATH.WALL;
+    }
+  }
+};
 
 export default { getAlgorithmInfo };

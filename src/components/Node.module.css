@@ -1,21 +1,4 @@
-.Maze {
-  display: flex;
-  flex-direction: column;
-  background-color: greenyellow;
-}
-
-.MazeRow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 25px;
-  /* border-top: 1px solid black; */
-  box-sizing: border-box;
-  background-color: cadetblue;
-}
-
-.MazeNode {
+.Node {
   min-width: 25px;
   height: 100%;
   border-left: 1px solid black;
@@ -24,11 +7,11 @@
   background-color: cornflowerblue;
 }
 
-.MazeNode:last-child {
+.Node:last-child {
   border-right: 1px solid black;
 }
 
-.MazeRow:last-child .MazeNode {
+.MazeRow:last-child .Node {
   border-bottom: 1px solid black;
 }
 

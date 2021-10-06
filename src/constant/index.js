@@ -42,6 +42,7 @@ export const NAV = {
   CLEAR_MAZE: 'Clear maze',
   SAVE_AND_SHARE: 'Save & Share',
   SPEED: 'Speed',
+  STOP: 'Stop',
 };
 
 export const NAV_LIST = [
@@ -128,6 +129,14 @@ export const NODE_STATUS = {
   END: 'end',
   MIDDLE: 'middle',
   PATH: 'path',
+};
+
+export const NODE_IMAGE_PATH = {
+  WALL: '/image/wallNode.png',
+  START: '/image/startNode.png',
+  END: '/image/endNode.png',
+  MIDDLE: '/image/itemNode.png',
+  // PATH: 'path',
 };
 
 export default {

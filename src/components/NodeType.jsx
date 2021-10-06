@@ -7,7 +7,7 @@ const NodeType = ({ type }) => {
   const { title, imagePath } = type;
   return (
     <div className={style.NodeType}>
-      <img src={imagePath} alt="startNode" className={style.NodeTypeImage} />
+      <img src={imagePath} alt={title} className={style.NodeTypeImage} />
       <span>{title}</span>
     </div>
   );
