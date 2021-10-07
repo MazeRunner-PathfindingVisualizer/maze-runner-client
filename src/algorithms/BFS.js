@@ -1,28 +1,27 @@
-// import { current } from '@reduxjs/toolkit';
 import { NODE_STATUS } from '../constant';
 import { getNextNodes } from './common';
 
 export const BFS = (byId, startNodeId, targetNodeId) => {
   const stack = [byId[startNodeId]];
   const visitedNodeObject = {};
-  const animatedNodes = [];
+  const animatedNodeIds = [];
 
   while (stack.length) {
     const currentNode = stack.shift();
 
-    animatedNodes.push(currentNode.id);
-
-    visitedNodeObject[currentNode.id] = NODE_STATUS.VISITED;
     if (
       currentNode.status !== 'start' &&
       currentNode.status !== 'end' &&
       currentNode.status !== 'middle'
     ) {
-      currentNode.status = NODE_STATUS.VISITED;
+      animatedNodeIds.push(currentNode.id);
     }
 
     if (currentNode.id === targetNodeId) {
-      return { result: 'success', animatedNodes };
+      return {
+        message: 'success',
+        animatedNodeIds: animatedNodeIds,
+      };
     }
 
     const nextNodes = getNextNodes(currentNode.id, byId);
@@ -41,5 +40,5 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
     });
   }
 
-  return { result: 'failure', animatedNodes };
+  return { message: 'failure', animatedNodeIds };
 };

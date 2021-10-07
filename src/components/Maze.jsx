@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useCallback, useEffect } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import {
   mouseDown,
@@ -7,22 +7,35 @@ import {
   changeNormalNode,
   changeFeatNode,
   clickFeatNode,
+  visitNode,
   selectAllIds,
+  selectIsMouseDown,
+  selectIsFeatNodeClick,
+  selectAnimatedNodes,
+  setAnimationTimeoutId,
+  endAnimation,
+  startAnimation,
 } from '../features/maze/mazeSlice';
+import { selectSpeed } from '../features/mazeOptions/mazeOptionsSlice';
 import Node from './Node';
 
 import style from './Maze.module.css';
+import { SPEED_MS } from '../constant';
 
 const Maze = () => {
-  const allIds = useSelector(selectAllIds);
+  const allIds = useSelector(selectAllIds, shallowEqual);
+  const isMouseDown = useSelector(selectIsMouseDown);
+  const isFeatNodeClick = useSelector(selectIsFeatNodeClick);
+  const animatedNodeIds = useSelector(selectAnimatedNodes);
+  const animationSpeed = useSelector(selectSpeed);
+
   const dispatch = useDispatch();
 
   const handleMouseDown = useCallback(
-    (e, byId) => {
+    (e, targetNode) => {
       e.preventDefault();
       const nodeId = e.target.getAttribute('name');
-      console.log(nodeId, byId);
-      const nodeStatus = byId[nodeId].status;
+      const nodeStatus = targetNode.status;
 
       dispatch(mouseDown());
 
@@ -39,8 +52,6 @@ const Maze = () => {
     [dispatch],
   );
 
-  console.log('💩', handleMouseDown);
-
   const handleMouseUp = useCallback(
     (e) => {
       e.preventDefault();
@@ -50,7 +61,7 @@ const Maze = () => {
   );
 
   const handleMouseEnter = useCallback(
-    (e, byId, isMouseDown, isFeatNodeClick) => {
+    (e, targetNode) => {
       e.preventDefault();
       const nodeId = e.target.getAttribute('name');
 
@@ -58,14 +69,14 @@ const Maze = () => {
         dispatch(
           changeFeatNode({
             targetNodeId: nodeId,
-            targetNodeStatus: byId[nodeId].status,
+            targetNodeStatus: targetNode.status,
           }),
         );
       } else if (isMouseDown) {
         dispatch(changeNormalNode(nodeId));
       }
     },
-    [dispatch],
+    [dispatch, isMouseDown, isFeatNodeClick],
   );
 
   const handleMouseLeave = useCallback(
@@ -75,24 +86,48 @@ const Maze = () => {
     [dispatch],
   );
 
-  console.log('render!');
+  useEffect(() => {
+    if (!animatedNodeIds.length) {
+      return;
+    }
+
+    const animatedNodeIdsCopy = animatedNodeIds.slice();
+
+    function animateNext(animatedNodeIds) {
+      const nodeId = animatedNodeIds.shift();
+      if (!nodeId) {
+        dispatch(endAnimation());
+        return;
+      }
+
+      dispatch(visitNode(nodeId));
+
+      return setTimeout(() => {
+        const timeoutId = animateNext(animatedNodeIds);
+
+        dispatch(setAnimationTimeoutId(timeoutId));
+      }, SPEED_MS[animationSpeed]);
+    }
+
+    dispatch(startAnimation());
+    const animationTimeoutId = animateNext(animatedNodeIdsCopy);
+    dispatch(setAnimationTimeoutId(animationTimeoutId));
+  }, [animatedNodeIds]);
 
   return (
     <div className={style.Maze}>
       {allIds.map((row, index) => (
         <div className={style.MazeRow} key={index}>
-          {row.map((nodeId) => {
-            return (
-              <Node
-                nodeId={nodeId}
-                temp={handleMouseDown}
-                handleMouseUp={handleMouseUp}
-                handleMouseEnter={handleMouseEnter}
-                handleMouseLeave={handleMouseLeave}
-                key={nodeId}
-              />
-            );
-          })}
+          {row.map((nodeId) => (
+            <Node
+              nodeId={nodeId}
+              handleMouseDown={handleMouseDown}
+              handleMouseUp={handleMouseUp}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              key={nodeId}
+            />
+          ))}
         </div>
       ))}
     </div>

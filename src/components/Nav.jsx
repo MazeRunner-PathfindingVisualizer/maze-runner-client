@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
@@ -10,7 +10,13 @@ import {
   setAlgorithm,
   setSpeed,
 } from '../features/mazeOptions/mazeOptionsSlice';
-import { selectIsProgressive } from '../features/maze/mazeSlice';
+import {
+  clearVisitedNodes,
+  endAnimation,
+  selectAnimationTimeoutId,
+  selectIsProgressive,
+  setAnimationTimeoutId,
+} from '../features/maze/mazeSlice';
 
 import style from './Nav.module.css';
 import { startPathfinding } from '../features/maze/mazeSlice';
@@ -20,9 +26,7 @@ const Nav = () => {
   const menuStatus = useSelector(selectMenu);
   const isProgressive = useSelector(selectIsProgressive);
   const currentAlgorithm = useSelector(selectAlgorithm);
-
-  // eslint-disable-next-line no-unused-vars
-  const [pathfindPromise, setPathfindPromise] = useState(null);
+  const animationTimeoutId = useSelector(selectAnimationTimeoutId);
 
   function handleOnClick(e) {
     e.preventDefault();
@@ -43,25 +47,15 @@ const Nav = () => {
     }
 
     if (currentClickedMenu === NAV.START) {
-      // const promise = dispatch(
-      //   startPathfindingAsync({
-      //     byId: nodes.byId,
-      //     startNodeId,
-      //     targetNodeId: endNodeId,
-      //     animatedNodes,
-      //   }),
-      // );
-      // setPathfindPromise(promise);
-
+      dispatch(clearVisitedNodes());
       dispatch(startPathfinding(currentAlgorithm));
     }
 
     if (currentClickedMenu === NAV.STOP) {
-      if (
-        pathfindPromise &&
-        Object.prototype.hasOwnProperty.call(pathfindPromise, 'abort')
-      ) {
-        pathfindPromise.abort();
+      if (animationTimeoutId) {
+        clearTimeout(animationTimeoutId);
+        dispatch(setAnimationTimeoutId(0));
+        dispatch(endAnimation());
       }
     }
   }
@@ -84,26 +78,6 @@ const Nav = () => {
 
     dispatch(setMenu('none'));
   }
-
-  // const handleOnDropdownClick = useCallback((e) => {
-  //   e.preventDefault();
-  //   console.log('🔥', e.target.name);
-
-  //   if (isProgressive) {
-  //     alert('Wait for the pathfind algorithm to complete');
-  //     return;
-  //   }
-
-  //   if (menuStatus === NAV.ALGORITHMS) {
-  //     dispatch(setAlgorithm(e.target.name));
-  //   }
-
-  //   if (menuStatus === NAV.SPEED) {
-  //     dispatch(setSpeed(e.target.name));
-  //   }
-
-  //   dispatch(setMenu('none'));
-  // }, []);
 
   return (
     <nav className={style.Nav}>

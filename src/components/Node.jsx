@@ -2,46 +2,42 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { selectMaze } from '../features/maze/mazeSlice';
 import { getImgSrcPathByNodeStatus } from '../util';
 
 import style from './Node.module.css';
 
 const Node = ({
   nodeId,
-  temp,
+  handleMouseDown,
   handleMouseUp,
   handleMouseEnter,
   handleMouseLeave,
 }) => {
-  const { nodes, isMouseDown, isFeatNodeClick } = useSelector(selectMaze);
-  const { byId } = nodes;
-  const src = getImgSrcPathByNodeStatus(byId[nodeId].status);
-  console.log('⭕️', temp);
+  const targetNode = useSelector((state) => state.maze.nodes.byId[nodeId]);
+  const src = getImgSrcPathByNodeStatus(targetNode.status);
 
   return (
     <>
       {src ? (
         <img
           src={src}
-          className={style.Node}
+          className={`${style.Node} ${style[targetNode.status]}`}
           onMouseDown={(e) => {
-            console.log('🌟', byId, e);
-            // temp(e, byId);
+            handleMouseDown(e, targetNode);
           }}
           onMouseUp={handleMouseUp}
-          onMouseEnter={(e) =>
-            handleMouseEnter(e, byId, isMouseDown, isFeatNodeClick)
-          }
+          onMouseEnter={(e) => handleMouseEnter(e, targetNode)}
           onMouseLeave={handleMouseLeave}
           name={nodeId}
         />
       ) : (
         <div
-          className={style.Node}
-          onMouseDown={temp}
+          className={`${style.Node} ${style[targetNode.status]}`}
+          onMouseDown={(e) => {
+            handleMouseDown(e, targetNode);
+          }}
           onMouseUp={handleMouseUp}
-          onMouseEnter={handleMouseEnter}
+          onMouseEnter={(e) => handleMouseEnter(e, targetNode)}
           onMouseLeave={handleMouseLeave}
           name={nodeId}
         />
@@ -51,7 +47,7 @@ const Node = ({
 };
 
 Node.defaultProps = {
-  temp: () => {},
+  handleMouseDown: () => {},
   handleMouseUp: () => {},
   handleMouseEnter: () => {},
   handleMouseLeave: () => {},
@@ -59,7 +55,7 @@ Node.defaultProps = {
 
 Node.propTypes = {
   nodeId: PropTypes.string.isRequired,
-  temp: PropTypes.func,
+  handleMouseDown: PropTypes.func,
   handleMouseUp: PropTypes.func,
   handleMouseEnter: PropTypes.func,
   handleMouseLeave: PropTypes.func,

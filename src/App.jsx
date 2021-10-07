@@ -5,14 +5,20 @@ import Nav from './components/Nav';
 import MazeDescription from './components/MazeDescription';
 import Maze from './components/Maze';
 import useWindowSize from './components/hook/useWindowSize';
-import { selectMaze, createMaze } from './features/maze/mazeSlice';
+import {
+  createMaze,
+  selectMazeWidth,
+  selectMazeHeight,
+} from './features/maze/mazeSlice';
 
 import style from './App.module.css';
 
 function App() {
   const { width, height } = useWindowSize();
+  const maze = {};
+  maze.width = useSelector(selectMazeWidth);
+  maze.height = useSelector(selectMazeHeight);
   const dispatch = useDispatch();
-  const maze = useSelector(selectMaze);
 
   useEffect(() => {
     if (!maze.width || !maze.height) {

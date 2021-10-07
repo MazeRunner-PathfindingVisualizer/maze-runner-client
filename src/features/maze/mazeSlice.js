@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+// eslint-disable-next-line no-unused-vars
+import { current } from '@reduxjs/toolkit';
 
-// import { startPathfinding } from './mazeAPI';
 import { ALGORITHM, NODE_STATUS } from '../../constant';
 import { calcMazeBlockCount, createNodes, isFeatNode } from '../../util/maze';
 import { DFS } from '../../algorithms/DFS';
@@ -20,7 +21,9 @@ const initialState = {
     byId: {},
     allIds: [[]],
   },
-  animatedNodes: [],
+  animatedNodeIds: [],
+  animationTimeoutId: null,
+  animatedPathNodeIds: [],
 
   isMouseDown: false,
   isFeatNodeClick: false,
@@ -31,21 +34,6 @@ const initialState = {
 
   isProgressive: false,
 };
-
-export const startPathfindingAsync = createAsyncThunk(
-  'maze/startPathfinding',
-  async (byId, startNodeId, targetNodeId, animatedNodes) => {
-    console.log('pathfinding start!');
-    const response = await startPathfinding(
-      byId,
-      startNodeId,
-      targetNodeId,
-      animatedNodes,
-    );
-    console.log('pathfinding end!');
-    return response.result;
-  },
-);
 
 export const mazeOptionsSlice = createSlice({
   name: 'maze',
@@ -126,6 +114,7 @@ export const mazeOptionsSlice = createSlice({
       if (isFeatNode(targetNodeStatus)) {
         return;
       }
+
       if (state.isMouseDown) {
         state.nodes.byId[targetNodeId].status = featNodeStatus;
         state.nodes.byId[featNodeId].status = NODE_STATUS.UNVISITED;
@@ -146,50 +135,57 @@ export const mazeOptionsSlice = createSlice({
       }
     },
     startPathfinding: (state, action) => {
-      const { nodes, startNodeId, endNodeId, middleNodeId, animatedNodes } =
+      const { nodes, startNodeId, endNodeId, middleNodeId, animatedNodeIds } =
         state;
 
       const algorithmName = action.payload;
 
       if (!middleNodeId) {
         let result;
+
         switch (algorithmName) {
           case ALGORITHM.DFS: {
-            result = DFS(nodes.byId, startNodeId, endNodeId, animatedNodes);
+            result = DFS(nodes.byId, startNodeId, endNodeId, animatedNodeIds);
             break;
           }
 
           case ALGORITHM.BFS: {
-            result = BFS(nodes.byId, startNodeId, endNodeId, animatedNodes);
+            result = BFS(nodes.byId, startNodeId, endNodeId, animatedNodeIds);
             break;
           }
 
           default: {
-            result = 'check your algorithm';
+            result = { message: 'check your algorithm', animatedNodeIds: [] };
           }
         }
 
-        console.log('🔥', result);
+        state.animatedNodeIds = result.animatedNodeIds;
       }
     },
-  },
+    visitNode: (state, action) => {
+      const nodeId = action.payload;
 
-  extraReducers: (builder) => {
-    builder
-      .addCase(startPathfindingAsync.pending, (state) => {
-        console.log('async pending...');
-        state.isProgressive = true;
-      })
-      .addCase(startPathfindingAsync.fulfilled, (state, action) => {
-        console.log('async fulfilled!');
-        state.isProgressive = false;
-
-        console.log('Result: ', action.payload);
-      })
-      .addCase(startPathfindingAsync.rejected, (state) => {
-        console.log('async rejected!');
-        state.isProgressive = false;
+      state.nodes.byId[nodeId].status = NODE_STATUS.VISITED;
+    },
+    setAnimationTimeoutId: (state, action) => {
+      state.animationTimeoutId = action.payload;
+    },
+    startAnimation: (state) => {
+      state.isProgressive = true;
+    },
+    endAnimation: (state) => {
+      state.isProgressive = false;
+      state.animatedNodeIds = [];
+    },
+    clearVisitedNodes: (state) => {
+      state.nodes.allIds.forEach((row) => {
+        row.forEach((id) => {
+          if (state.nodes.byId[id].status === NODE_STATUS.VISITED) {
+            state.nodes.byId[id].status = NODE_STATUS.UNVISITED;
+          }
+        });
       });
+    },
   },
 });
 
@@ -201,10 +197,23 @@ export const {
   changeNormalNode,
   changeFeatNode,
   startPathfinding,
+  visitNode,
+  setAnimationTimeoutId,
+  startAnimation,
+  endAnimation,
+  clearVisitedNodes,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;
+export const selectMazeWidth = (state) => state.maze.width;
+export const selectMazeHeight = (state) => state.maze.height;
 export const selectAllIds = (state) => state.maze.nodes.allIds;
+export const selectById = (state) => state.maze.nodes.byId;
 export const selectIsProgressive = (state) => state.maze.isProgressive;
+export const selectIsMouseDown = (state) => state.maze.isMouseDown;
+export const selectIsFeatNodeClick = (state) => state.maze.isFeatNodeClick;
+export const selectAnimatedNodes = (state) => state.maze.animatedNodeIds;
+export const selectAnimationTimeoutId = (state) =>
+  state.maze.animationTimeoutId;
 
 export default mazeOptionsSlice.reducer;
