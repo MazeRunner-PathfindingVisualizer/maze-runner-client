@@ -3,7 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { current } from '@reduxjs/toolkit';
 
 import { ALGORITHM, NODE_STATUS } from '../../constant';
-import { calcMazeBlockCount, createNodes, isFeatNode } from '../../util/maze';
+import {
+  calcMazeBlockCount,
+  createNodes,
+  isFeatNode,
+  calcPathNodeIds,
+} from '../../util/maze';
 import { DFS } from '../../algorithms/DFS';
 import { BFS } from '../../algorithms/BFS';
 
@@ -96,7 +101,11 @@ export const mazeOptionsSlice = createSlice({
 
       const targetNodeId = action.payload;
 
-      if (state.nodes.byId[targetNodeId].status === NODE_STATUS.UNVISITED) {
+      if (
+        state.nodes.byId[targetNodeId].status === NODE_STATUS.UNVISITED ||
+        state.nodes.byId[targetNodeId].status === NODE_STATUS.VISITED ||
+        state.nodes.byId[targetNodeId].status === NODE_STATUS.PATH
+      ) {
         state.nodes.byId[targetNodeId].status = NODE_STATUS.WALL;
       } else if (state.nodes.byId[targetNodeId].status === NODE_STATUS.WALL) {
         state.nodes.byId[targetNodeId].status = NODE_STATUS.UNVISITED;
@@ -160,12 +169,32 @@ export const mazeOptionsSlice = createSlice({
         }
 
         state.animatedNodeIds = result.animatedNodeIds;
+
+        if (result.message === 'success') {
+          state.animatedPathNodeIds = calcPathNodeIds(
+            result.animatedNodeIds,
+            state.nodes.byId,
+          );
+        }
       }
     },
     visitNode: (state, action) => {
       const nodeId = action.payload;
 
+      if (isFeatNode(state.nodes.byId[nodeId].status)) {
+        return;
+      }
+
       state.nodes.byId[nodeId].status = NODE_STATUS.VISITED;
+    },
+    markPathNode: (state, action) => {
+      const pathNodeId = action.payload;
+
+      if (isFeatNode(state.nodes.byId[pathNodeId].status)) {
+        return;
+      }
+
+      state.nodes.byId[pathNodeId].status = NODE_STATUS.PATH;
     },
     setAnimationTimeoutId: (state, action) => {
       state.animationTimeoutId = action.payload;
@@ -176,11 +205,15 @@ export const mazeOptionsSlice = createSlice({
     endAnimation: (state) => {
       state.isProgressive = false;
       state.animatedNodeIds = [];
+      state.animatedPathNodeIds = [];
     },
-    clearVisitedNodes: (state) => {
+    clearVisitedAndPathNodes: (state) => {
       state.nodes.allIds.forEach((row) => {
         row.forEach((id) => {
-          if (state.nodes.byId[id].status === NODE_STATUS.VISITED) {
+          if (
+            state.nodes.byId[id].status === NODE_STATUS.VISITED ||
+            state.nodes.byId[id].status === NODE_STATUS.PATH
+          ) {
             state.nodes.byId[id].status = NODE_STATUS.UNVISITED;
           }
         });
@@ -198,10 +231,11 @@ export const {
   changeFeatNode,
   startPathfinding,
   visitNode,
+  markPathNode,
   setAnimationTimeoutId,
   startAnimation,
   endAnimation,
-  clearVisitedNodes,
+  clearVisitedAndPathNodes,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;
@@ -215,5 +249,7 @@ export const selectIsFeatNodeClick = (state) => state.maze.isFeatNodeClick;
 export const selectAnimatedNodes = (state) => state.maze.animatedNodeIds;
 export const selectAnimationTimeoutId = (state) =>
   state.maze.animationTimeoutId;
+export const selectAnimatedPathNodeIds = (state) =>
+  state.maze.animatedPathNodeIds;
 
 export default mazeOptionsSlice.reducer;

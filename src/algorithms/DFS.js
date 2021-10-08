@@ -17,13 +17,8 @@ export const DFS = (byId, startNodeId, targetNodeId, animatedNodeIds) => {
       continue;
     }
 
-    if (
-      currentNode.status !== 'start' &&
-      currentNode.status !== 'end' &&
-      currentNode.status !== 'middle'
-    ) {
-      animatedNodeIds.push(currentNode.id);
-    }
+    animatedNodeIds.push(currentNode.id);
+
     visitedNodeObject[currentNode.id] = NODE_STATUS.VISITED;
 
     if (currentNode.id === targetNodeId) {
@@ -39,7 +34,7 @@ export const DFS = (byId, startNodeId, targetNodeId, animatedNodeIds) => {
       );
 
       if (!isVisitedNode) {
-        byId[nextNode.id].previousNode = currentNode.id;
+        byId[nextNode.id].previousNodeId = currentNode.id;
         stack.push(byId[nextNode.id]);
       }
     });

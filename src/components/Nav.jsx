@@ -11,7 +11,7 @@ import {
   setSpeed,
 } from '../features/mazeOptions/mazeOptionsSlice';
 import {
-  clearVisitedNodes,
+  clearVisitedAndPathNodes,
   endAnimation,
   selectAnimationTimeoutId,
   selectIsProgressive,
@@ -22,11 +22,11 @@ import style from './Nav.module.css';
 import { startPathfinding } from '../features/maze/mazeSlice';
 
 const Nav = () => {
-  const dispatch = useDispatch();
   const menuStatus = useSelector(selectMenu);
   const isProgressive = useSelector(selectIsProgressive);
   const currentAlgorithm = useSelector(selectAlgorithm);
   const animationTimeoutId = useSelector(selectAnimationTimeoutId);
+  const dispatch = useDispatch();
 
   function handleOnClick(e) {
     e.preventDefault();
@@ -47,7 +47,7 @@ const Nav = () => {
     }
 
     if (currentClickedMenu === NAV.START) {
-      dispatch(clearVisitedNodes());
+      dispatch(clearVisitedAndPathNodes());
       dispatch(startPathfinding(currentAlgorithm));
     }
 

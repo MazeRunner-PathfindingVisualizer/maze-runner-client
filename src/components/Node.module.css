@@ -35,6 +35,12 @@
 .unvisited {
 }
 
+.path {
+  animation-name: fadeInPath;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
 @keyframes fadeInVisited {
   0% {
     display: none;
@@ -43,5 +49,16 @@
   100% {
     display: block;
     background-color: slateblue;
+  }
+}
+
+@keyframes fadeInPath {
+  0% {
+    display: none;
+    background-color: none;
+  }
+  100% {
+    display: block;
+    background-color: sienna;
   }
 }

@@ -9,13 +9,7 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
   while (stack.length) {
     const currentNode = stack.shift();
 
-    if (
-      currentNode.status !== 'start' &&
-      currentNode.status !== 'end' &&
-      currentNode.status !== 'middle'
-    ) {
-      animatedNodeIds.push(currentNode.id);
-    }
+    animatedNodeIds.push(currentNode.id);
 
     if (currentNode.id === targetNodeId) {
       return {
@@ -34,7 +28,7 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
 
       if (!isVisitedNode) {
         visitedNodeObject[nextNode.id] = NODE_STATUS.VISITED;
-        byId[nextNode.id].previousNode = currentNode.id;
+        byId[nextNode.id].previousNodeId = currentNode.id;
         stack.push(byId[nextNode.id]);
       }
     });

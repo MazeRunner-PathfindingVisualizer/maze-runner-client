@@ -15,6 +15,8 @@ import {
   setAnimationTimeoutId,
   endAnimation,
   startAnimation,
+  selectAnimatedPathNodeIds,
+  markPathNode,
 } from '../features/maze/mazeSlice';
 import { selectSpeed } from '../features/mazeOptions/mazeOptionsSlice';
 import Node from './Node';
@@ -28,6 +30,7 @@ const Maze = () => {
   const isFeatNodeClick = useSelector(selectIsFeatNodeClick);
   const animatedNodeIds = useSelector(selectAnimatedNodes);
   const animationSpeed = useSelector(selectSpeed);
+  const animatedPathNodeIds = useSelector(selectAnimatedPathNodeIds);
 
   const dispatch = useDispatch();
 
@@ -92,25 +95,47 @@ const Maze = () => {
     }
 
     const animatedNodeIdsCopy = animatedNodeIds.slice();
+    const animatedPathNodeIdsCopy = animatedPathNodeIds.slice();
 
-    function animateNext(animatedNodeIds) {
-      const nodeId = animatedNodeIds.shift();
-      if (!nodeId) {
+    function animateNext(animatedNodeIds, animatedPathNodeIds) {
+      const nodeId = animatedNodeIds[0];
+      const pathNodeId = animatedPathNodeIds[animatedPathNodeIds.length - 1];
+
+      if (!nodeId && !pathNodeId) {
         dispatch(endAnimation());
         return;
       }
 
-      dispatch(visitNode(nodeId));
+      if (nodeId) {
+        dispatch(visitNode(nodeId));
 
-      return setTimeout(() => {
-        const timeoutId = animateNext(animatedNodeIds);
+        animatedNodeIds.shift();
 
-        dispatch(setAnimationTimeoutId(timeoutId));
-      }, SPEED_MS[animationSpeed]);
+        return setTimeout(() => {
+          const timeoutId = animateNext(animatedNodeIds, animatedPathNodeIds);
+
+          dispatch(setAnimationTimeoutId(timeoutId));
+        }, SPEED_MS[animationSpeed]);
+      }
+
+      if (pathNodeId) {
+        dispatch(markPathNode(pathNodeId));
+
+        animatedPathNodeIds.pop();
+
+        return setTimeout(() => {
+          const timeoutId = animateNext(animatedNodeIds, animatedPathNodeIds);
+
+          dispatch(setAnimationTimeoutId(timeoutId));
+        }, SPEED_MS[animationSpeed]);
+      }
     }
 
     dispatch(startAnimation());
-    const animationTimeoutId = animateNext(animatedNodeIdsCopy);
+    const animationTimeoutId = animateNext(
+      animatedNodeIdsCopy,
+      animatedPathNodeIdsCopy,
+    );
     dispatch(setAnimationTimeoutId(animationTimeoutId));
   }, [animatedNodeIds]);
 

@@ -31,35 +31,3 @@
 .MazeRow:last-child .MazeNode {
   border-bottom: 1px solid black;
 }
-
-.start {
-  background-color: hotpink;
-}
-
-.end {
-  background-color: rosybrown;
-}
-
-.wall {
-  /* background-color: yellow; */
-}
-
-.visited {
-  animation-name: fadeInVisited;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
-}
-
-.unvisited {
-}
-
-@keyframes fadeInVisited {
-  0% {
-    display: none;
-    background-color: none;
-  }
-  100% {
-    display: block;
-    background-color: red;
-  }
-}
