@@ -61,6 +61,7 @@ export const createNodes = (widthCount, heightCount) => {
       const newNode = {
         id: newNodeId,
         status: newNodeStatus,
+        previousNodeId: null,
       };
 
       nodes.byId[newNodeId] = newNode;
@@ -92,4 +93,27 @@ export const isFeatNode = (nodeStatus) => {
   return false;
 };
 
-export default { calcMazeBlockCount, createNodes };
+export const calcPathNodeIds = (animatedNodeIds, byId) => {
+  const animatedPathNodeIds = [];
+
+  animatedPathNodeIds.push(animatedNodeIds[animatedNodeIds.length - 1]);
+
+  let currentNodeId = animatedPathNodeIds[0];
+  let currentNode = byId[currentNodeId];
+
+  while (
+    currentNode.previousNodeId &&
+    currentNode.status !== NODE_STATUS.START
+  ) {
+    currentNodeId = currentNode.previousNodeId;
+    currentNode = byId[currentNodeId];
+
+    if (currentNode.status !== NODE_STATUS.START) {
+      animatedPathNodeIds.push(currentNodeId);
+    }
+  }
+
+  return animatedPathNodeIds;
+};
+
+export default { calcMazeBlockCount, createNodes, isFeatNode, calcPathNodeIds };

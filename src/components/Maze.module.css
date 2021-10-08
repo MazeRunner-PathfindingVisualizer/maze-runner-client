@@ -16,7 +16,7 @@
 }
 
 .MazeNode {
-  width: 25px;
+  min-width: 25px;
   height: 100%;
   border-left: 1px solid black;
   border-top: 1px solid black;
@@ -30,16 +30,4 @@
 
 .MazeRow:last-child .MazeNode {
   border-bottom: 1px solid black;
-}
-
-.start {
-  background-color: hotpink;
-}
-
-.end {
-  background-color: rosybrown;
-}
-
-.wall {
-  background-color: yellow;
 }

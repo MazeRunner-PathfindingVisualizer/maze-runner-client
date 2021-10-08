@@ -29,9 +29,25 @@ export const MAZE_AND_PATTERNS = [
   'Simple stair pattern',
 ];
 
-export const CLEAR_MAZE = ['Clear all', 'Clear walls & weight`', 'Clear path'];
+export const CLEAR_MAZE_DROPDOWN_LIST = [
+  'Clear all',
+  'Clear walls & weight`',
+  'Clear path',
+];
 
-export const SPEED = ['fast', 'middle', 'low'];
+export const SPEED = {
+  FAST: 'fast',
+  AVERAGE: 'average',
+  SLOW: 'slow',
+};
+
+export const SPEED_MS = {
+  [SPEED.FAST]: 10,
+  [SPEED.AVERAGE]: 50,
+  [SPEED.SLOW]: 100,
+};
+
+export const SPEED_LIST = [SPEED.FAST, SPEED.AVERAGE, SPEED.SLOW];
 
 export const NAV = {
   COMPARE_MODE: 'Compare mode',
@@ -42,6 +58,7 @@ export const NAV = {
   CLEAR_MAZE: 'Clear maze',
   SAVE_AND_SHARE: 'Save & Share',
   SPEED: 'Speed',
+  STOP: 'Stop',
 };
 
 export const NAV_LIST = [
@@ -70,7 +87,7 @@ export const NAV_LIST = [
   {
     title: NAV.CLEAR_MAZE,
     hasDropdown: true,
-    child: CLEAR_MAZE,
+    child: CLEAR_MAZE_DROPDOWN_LIST,
   },
   {
     title: NAV.SAVE_AND_SHARE,
@@ -79,7 +96,7 @@ export const NAV_LIST = [
   {
     title: NAV.SPEED,
     hasDropdown: true,
-    child: SPEED,
+    child: SPEED_LIST,
   },
 ];
 
@@ -130,12 +147,22 @@ export const NODE_STATUS = {
   PATH: 'path',
 };
 
+export const NODE_IMAGE_PATH = {
+  WALL: '/image/wallNode.png',
+  START: '/image/startNode.png',
+  END: '/image/endNode.png',
+  MIDDLE: '/image/itemNode.png',
+  // PATH: 'path',
+};
+
 export default {
   ALGORITHM,
   ALGORITHMS,
   MAZE_AND_PATTERNS,
-  CLEAR_MAZE,
+  CLEAR_MAZE_DROPDOWN_LIST,
   SPEED,
+  SPEED_MS,
+  SPEED_LIST,
   NAV,
   NAV_LIST,
   MAZE_OPTIONS,
