@@ -38,6 +38,8 @@ const initialState = {
   },
 
   isProgressive: false,
+
+  currentJammingBlockType: NODE_STATUS.WALL,
 };
 
 export const mazeOptionsSlice = createSlice({
@@ -100,15 +102,18 @@ export const mazeOptionsSlice = createSlice({
       }
 
       const targetNodeId = action.payload;
+      const targetNode = state.nodes.byId[targetNodeId];
 
       if (
-        state.nodes.byId[targetNodeId].status === NODE_STATUS.UNVISITED ||
-        state.nodes.byId[targetNodeId].status === NODE_STATUS.VISITED ||
-        state.nodes.byId[targetNodeId].status === NODE_STATUS.PATH
+        targetNode.status === NODE_STATUS.UNVISITED ||
+        targetNode.status === NODE_STATUS.VISITED ||
+        targetNode.status === NODE_STATUS.PATH
       ) {
-        state.nodes.byId[targetNodeId].status = NODE_STATUS.WALL;
-      } else if (state.nodes.byId[targetNodeId].status === NODE_STATUS.WALL) {
-        state.nodes.byId[targetNodeId].status = NODE_STATUS.UNVISITED;
+        targetNode.status = state.currentJammingBlockType;
+      } else if (targetNode.status !== state.currentJammingBlockType) {
+        targetNode.status = state.currentJammingBlockType;
+      } else if (targetNode.status === state.currentJammingBlockType) {
+        targetNode.status = NODE_STATUS.UNVISITED;
       }
     },
     changeFeatNode: (state, action) => {
@@ -219,6 +224,18 @@ export const mazeOptionsSlice = createSlice({
         });
       });
     },
+    changeCurrentJammingBlockType: (state, action) => {
+      const jammingBlockType = action.payload;
+
+      if (
+        jammingBlockType !== NODE_STATUS.WALL &&
+        jammingBlockType !== NODE_STATUS.WEIGHTED
+      ) {
+        return;
+      }
+
+      state.currentJammingBlockType = jammingBlockType;
+    },
   },
 });
 
@@ -236,6 +253,7 @@ export const {
   startAnimation,
   endAnimation,
   clearVisitedAndPathNodes,
+  changeCurrentJammingBlockType,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;
@@ -251,5 +269,7 @@ export const selectAnimationTimeoutId = (state) =>
   state.maze.animationTimeoutId;
 export const selectAnimatedPathNodeIds = (state) =>
   state.maze.animatedPathNodeIds;
+export const selectCurrentJammingBlockType = (state) =>
+  state.maze.currentJammingBlockType;
 
 export default mazeOptionsSlice.reducer;

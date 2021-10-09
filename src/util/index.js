@@ -87,6 +87,12 @@ export const getImgSrcPathByNodeStatus = (nodeStatus) => {
     case NODE_STATUS.WALL: {
       return NODE_IMAGE_PATH.WALL;
     }
+    case NODE_STATUS.WEIGHTED: {
+      return NODE_IMAGE_PATH.WEIGHTED;
+    }
+    default: {
+      return '';
+    }
   }
 };
 

@@ -42,3 +42,5 @@ export const DFS = (byId, startNodeId, targetNodeId, animatedNodeIds) => {
 
   return { message: 'failure', animatedNodeIds };
 };
+
+export default DFS;

@@ -36,3 +36,5 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
 
   return { message: 'failure', animatedNodeIds };
 };
+
+export default BFS;
