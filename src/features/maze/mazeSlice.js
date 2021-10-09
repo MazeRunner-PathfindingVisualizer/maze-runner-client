@@ -40,6 +40,8 @@ const initialState = {
   isProgressive: false,
 
   currentJammingBlockType: NODE_STATUS.WALL,
+
+  weightValue: 10,
 };
 
 export const mazeOptionsSlice = createSlice({
@@ -103,6 +105,10 @@ export const mazeOptionsSlice = createSlice({
 
       const targetNodeId = action.payload;
       const targetNode = state.nodes.byId[targetNodeId];
+
+      if (isFeatNode(targetNode.status)) {
+        return;
+      }
 
       if (
         targetNode.status === NODE_STATUS.UNVISITED ||
