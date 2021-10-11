@@ -255,6 +255,21 @@ export const mazeOptionsSlice = createSlice({
       state.animatedNodeIds = [];
       state.animatedPathNodeIds = [];
     },
+    clearWallAndWeightNode: (state) => {
+      state.nodes.allIds.forEach((row) => {
+        row.forEach((id) => {
+          if (
+            state.nodes.byId[id].status === NODE_STATUS.WALL ||
+            state.nodes.byId[id].status === NODE_STATUS.WEIGHTED
+          ) {
+            state.nodes.byId[id].status = NODE_STATUS.UNVISITED;
+          }
+          state.nodes.previousNodeId = null;
+          state.nodes.byId[id].distance = Infinity;
+          state.nodes.byId[id].weight = 1;
+        });
+      });
+    },
     changeCurrentJammingBlockType: (state, action) => {
       const jammingBlockType = action.payload;
 
@@ -292,6 +307,7 @@ export const {
   startAnimation,
   endAnimation,
   clearVisitedAndPathNodes,
+  clearWallAndWeightNode,
   changeCurrentJammingBlockType,
   resetNodeDistanceAndPreviousId,
 } = mazeOptionsSlice.actions;

@@ -29,10 +29,16 @@ export const MAZE_AND_PATTERNS = [
   'Simple stair pattern',
 ];
 
+export const CLEAR_MAZE = {
+  CLEAR_ALL: 'Clear all',
+  CLEAR_WALLS_AND_WEIGHT: 'Clear walls & weight',
+  CLEAR_PATH: 'Clear path',
+};
+
 export const CLEAR_MAZE_DROPDOWN_LIST = [
-  'Clear all',
-  'Clear walls & weight`',
-  'Clear path',
+  CLEAR_MAZE.CLEAR_ALL,
+  CLEAR_MAZE.CLEAR_WALLS_AND_WEIGHT,
+  CLEAR_MAZE.CLEAR_PATH,
 ];
 
 export const SPEED = {
@@ -166,6 +172,7 @@ export default {
   ALGORITHM,
   ALGORITHMS,
   MAZE_AND_PATTERNS,
+  CLEAR_MAZE,
   CLEAR_MAZE_DROPDOWN_LIST,
   SPEED,
   SPEED_MS,

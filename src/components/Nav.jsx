@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
 import Dropdown from './Dropdown';
-import { NAV, NAV_LIST } from '../constant';
+import { CLEAR_MAZE, NAV, NAV_LIST } from '../constant';
 import { setMenu, selectMenu } from '../features/nav/navSlice';
 import {
   selectAlgorithm,
@@ -12,6 +12,7 @@ import {
 } from '../features/mazeOptions/mazeOptionsSlice';
 import {
   clearVisitedAndPathNodes,
+  clearWallAndWeightNode,
   endAnimation,
   resetNodeDistanceAndPreviousId,
   selectAnimationTimeoutId,
@@ -76,6 +77,27 @@ const Nav = () => {
 
     if (menuStatus === NAV.SPEED) {
       dispatch(setSpeed(e.target.name));
+    }
+
+    if (menuStatus === NAV.CLEAR_MAZE) {
+      switch (e.target.name) {
+        case CLEAR_MAZE.CLEAR_ALL: {
+          dispatch(clearWallAndWeightNode());
+          dispatch(clearVisitedAndPathNodes());
+          return;
+        }
+        case CLEAR_MAZE.CLEAR_WALLS_AND_WEIGHT: {
+          dispatch(clearWallAndWeightNode());
+          return;
+        }
+        case CLEAR_MAZE.CLEAR_PATH: {
+          dispatch(clearVisitedAndPathNodes());
+          return;
+        }
+        default: {
+          return;
+        }
+      }
     }
 
     dispatch(setMenu('none'));
