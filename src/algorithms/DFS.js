@@ -1,9 +1,10 @@
 import { NODE_STATUS } from '../constant';
 import { getNextNodes } from './common';
 
-export const DFS = (byId, startNodeId, targetNodeId, animatedNodeIds) => {
+export const DFS = (byId, startNodeId, targetNodeId) => {
   const stack = [byId[startNodeId]];
   const visitedNodeObject = {};
+  const animatedNodeIds = [];
 
   while (stack.length) {
     const currentNode = stack.pop();

@@ -13,6 +13,7 @@ import {
 import {
   clearVisitedAndPathNodes,
   endAnimation,
+  resetNodeDistanceAndPreviousId,
   selectAnimationTimeoutId,
   selectIsProgressive,
   setAnimationTimeoutId,
@@ -47,6 +48,7 @@ const Nav = () => {
     }
 
     if (currentClickedMenu === NAV.START) {
+      dispatch(resetNodeDistanceAndPreviousId());
       dispatch(clearVisitedAndPathNodes());
       dispatch(startPathfinding(currentAlgorithm));
     }

@@ -11,6 +11,7 @@ import {
 } from '../../util/maze';
 import { DFS } from '../../algorithms/DFS';
 import { BFS } from '../../algorithms/BFS';
+import { Dijkstra } from '../../algorithms/Dijkstra';
 
 const initialState = {
   width: 0,
@@ -115,11 +116,28 @@ export const mazeOptionsSlice = createSlice({
         targetNode.status === NODE_STATUS.VISITED ||
         targetNode.status === NODE_STATUS.PATH
       ) {
-        targetNode.status = state.currentJammingBlockType;
-      } else if (targetNode.status !== state.currentJammingBlockType) {
-        targetNode.status = state.currentJammingBlockType;
+        if (state.currentJammingBlockType === NODE_STATUS.WALL) {
+          targetNode.status = NODE_STATUS.WALL;
+          targetNode.weight = 1;
+        } else if (state.currentJammingBlockType === NODE_STATUS.WEIGHTED) {
+          targetNode.status = NODE_STATUS.WEIGHTED;
+          targetNode.weight = state.weightValue;
+        }
+      } else if (
+        targetNode.status === NODE_STATUS.WALL &&
+        state.currentJammingBlockType === NODE_STATUS.WEIGHTED
+      ) {
+        targetNode.status = NODE_STATUS.WEIGHTED;
+        targetNode.weight = state.weightValue;
+      } else if (
+        targetNode.status === NODE_STATUS.WEIGHTED &&
+        state.currentJammingBlockType === NODE_STATUS.WALL
+      ) {
+        targetNode.status = NODE_STATUS.WALL;
+        targetNode.weight = 1;
       } else if (targetNode.status === state.currentJammingBlockType) {
         targetNode.status = NODE_STATUS.UNVISITED;
+        targetNode.weight = 1;
       }
     },
     changeFeatNode: (state, action) => {
@@ -155,8 +173,7 @@ export const mazeOptionsSlice = createSlice({
       }
     },
     startPathfinding: (state, action) => {
-      const { nodes, startNodeId, endNodeId, middleNodeId, animatedNodeIds } =
-        state;
+      const { nodes, startNodeId, endNodeId, middleNodeId } = state;
 
       const algorithmName = action.payload;
 
@@ -165,12 +182,17 @@ export const mazeOptionsSlice = createSlice({
 
         switch (algorithmName) {
           case ALGORITHM.DFS: {
-            result = DFS(nodes.byId, startNodeId, endNodeId, animatedNodeIds);
+            result = DFS(nodes.byId, startNodeId, endNodeId);
             break;
           }
 
           case ALGORITHM.BFS: {
-            result = BFS(nodes.byId, startNodeId, endNodeId, animatedNodeIds);
+            result = BFS(nodes.byId, startNodeId, endNodeId);
+            break;
+          }
+
+          case ALGORITHM.DIJKSTRA: {
+            result = Dijkstra(nodes.byId, startNodeId, endNodeId);
             break;
           }
 
@@ -229,6 +251,9 @@ export const mazeOptionsSlice = createSlice({
           }
         });
       });
+
+      state.animatedNodeIds = [];
+      state.animatedPathNodeIds = [];
     },
     changeCurrentJammingBlockType: (state, action) => {
       const jammingBlockType = action.payload;
@@ -241,6 +266,14 @@ export const mazeOptionsSlice = createSlice({
       }
 
       state.currentJammingBlockType = jammingBlockType;
+    },
+    resetNodeDistanceAndPreviousId: (state) => {
+      state.nodes.allIds.forEach((row) => {
+        row.forEach((id) => {
+          state.nodes.byId[id].distance = Infinity;
+          state.nodes.byId[id].previousNodeId = null;
+        });
+      });
     },
   },
 });
@@ -260,6 +293,7 @@ export const {
   endAnimation,
   clearVisitedAndPathNodes,
   changeCurrentJammingBlockType,
+  resetNodeDistanceAndPreviousId,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;

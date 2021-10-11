@@ -46,7 +46,7 @@ const calcNewNodeStatus = (indexes, size) => {
   return 'unvisited';
 };
 
-export const createNodes = (widthCount, heightCount) => {
+export const createNodes = (widthCount, heightCount, weight = 1) => {
   const nodes = { byId: {}, allIds: [] };
 
   for (let i = 0; i < heightCount; i++) {
@@ -63,6 +63,7 @@ export const createNodes = (widthCount, heightCount) => {
         status: newNodeStatus,
         previousNodeId: null,
         distance: Infinity,
+        weight,
       };
 
       nodes.byId[newNodeId] = newNode;

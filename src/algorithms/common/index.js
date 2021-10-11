@@ -33,4 +33,25 @@ export const getNextNodes = (centerNodeId, byId) => {
   return nextNodes;
 };
 
-export default { getNextNodes };
+export const getShortestDistanceNodeId = (unvisitedNodeIdList, byId) => {
+  if (!unvisitedNodeIdList.length) {
+    return;
+  }
+
+  let index = 0;
+  let shortestDistanceNodeId = unvisitedNodeIdList[index];
+
+  for (let i = 1; i < unvisitedNodeIdList.length; i++) {
+    const nodeId = unvisitedNodeIdList[i];
+
+    if (byId[shortestDistanceNodeId].distance > byId[nodeId].distance) {
+      shortestDistanceNodeId = nodeId;
+      index = i;
+    }
+  }
+
+  unvisitedNodeIdList.splice(index, 1);
+  return shortestDistanceNodeId;
+};
+
+export default { getNextNodes, getShortestDistanceNodeId };
