@@ -15,11 +15,8 @@ const Node = ({
   handleMouseLeave,
 }) => {
   const targetNode = useSelector((state) => state.maze.nodes.byId[nodeId]);
-  const targetNodeWeight = useSelector(
-    (state) => state.maze.nodes.byId[nodeId].weight,
-  );
   const src = getImgSrcPathByNodeStatus(
-    targetNodeWeight > 1 && targetNode.status === NODE_STATUS.VISITED
+    targetNode.weight > 1 && targetNode.status === NODE_STATUS.VISITED
       ? NODE_STATUS.WEIGHTED
       : targetNode.status,
   );

@@ -103,58 +103,24 @@ export const isFeatNode = (nodeStatus) => {
   return false;
 };
 
-export const calcPathNodeIds = (animatedNodeIds, byId) => {
-  console.log(animatedNodeIds, byId);
+export const calcPathNodeIds = (animatedNodeIds, byId, beginNodeStatus) => {
+  const animatedPathNodeIds = [];
 
-  if (Array.isArray(animatedNodeIds[0])) {
-    const animatedPathNodeIds = animatedNodeIds.map((route) => {
-      const animatedPathNodeIds = [];
+  animatedPathNodeIds.push(animatedNodeIds[animatedNodeIds.length - 1]);
 
-      animatedPathNodeIds.push(route[route.length - 1]);
+  let currentNodeId = animatedPathNodeIds[0];
+  let currentNode = byId[currentNodeId];
 
-      let currentNodeId = animatedPathNodeIds[0];
-      let currentNode = byId[currentNodeId];
+  while (currentNode.previousNodeId && currentNode.status !== beginNodeStatus) {
+    currentNodeId = currentNode.previousNodeId;
+    currentNode = byId[currentNodeId];
 
-      while (
-        currentNode.previousNodeId &&
-        currentNode.status !== NODE_STATUS.START &&
-        currentNode.status !== NODE_STATUS.MIDDLE
-      ) {
-        currentNodeId = currentNode.previousNodeId;
-        currentNode = byId[currentNodeId];
-
-        if (currentNode.status !== NODE_STATUS.START) {
-          animatedPathNodeIds.push(currentNodeId);
-        }
-      }
-
-      return animatedPathNodeIds;
-    });
-
-    console.log(animatedPathNodeIds.flat());
-    return animatedPathNodeIds.flat();
-  } else {
-    const animatedPathNodeIds = [];
-
-    animatedPathNodeIds.push(animatedNodeIds[animatedNodeIds.length - 1]);
-
-    let currentNodeId = animatedPathNodeIds[0];
-    let currentNode = byId[currentNodeId];
-
-    while (
-      currentNode.previousNodeId &&
-      currentNode.status !== NODE_STATUS.START
-    ) {
-      currentNodeId = currentNode.previousNodeId;
-      currentNode = byId[currentNodeId];
-
-      if (currentNode.status !== NODE_STATUS.START) {
-        animatedPathNodeIds.push(currentNodeId);
-      }
+    if (currentNode.status !== beginNodeStatus) {
+      animatedPathNodeIds.push(currentNodeId);
     }
-
-    return animatedPathNodeIds;
   }
+
+  return animatedPathNodeIds;
 };
 
 export const resetNodeProperties = (node, options) => {
@@ -286,6 +252,17 @@ export const changeToMiddleNode = (targetNode) => {
   ]);
 };
 
+const addPathNodeIdsToResultObject = (obj, byId, beginNodeStatus) => {
+  if (obj.message === 'success') {
+    const animatedPathNodeIds = calcPathNodeIds(
+      obj.animatedNodeIds,
+      byId,
+      beginNodeStatus,
+    );
+    obj.animatedPathNodeIds = animatedPathNodeIds;
+  }
+};
+
 export const runAlgorithm = (
   algorithmName,
   startNodeId,
@@ -293,77 +270,91 @@ export const runAlgorithm = (
   endNodeId,
   nodes,
 ) => {
-  let result;
+  const result = {};
 
-  console.log('🔥', algorithmName, startNodeId, middleNodeId, endNodeId, nodes);
+  if (middleNodeId) {
+    resetAllNodeProperties(nodes);
+    const route1 = getAlgorithmFunctionByName(algorithmName)(
+      nodes.byId,
+      startNodeId,
+      middleNodeId,
+    );
+    addPathNodeIdsToResultObject(route1, nodes.byId, NODE_STATUS.START);
 
-  switch (algorithmName) {
-    case ALGORITHM.DFS: {
-      if (middleNodeId) {
-        let route1 = DFS(nodes.byId, startNodeId, middleNodeId);
-        let route2 = DFS(nodes.byId, middleNodeId, endNodeId);
+    resetAllNodeProperties(nodes);
+    const route2 = getAlgorithmFunctionByName(algorithmName)(
+      nodes.byId,
+      middleNodeId,
+      endNodeId,
+    );
+    addPathNodeIdsToResultObject(route2, nodes.byId, NODE_STATUS.MIDDLE);
 
-        result = {
-          animatedNodeIds: [route1.animatedNodeIds, route2.animatedNodeIds],
-        };
-        result.message =
-          route1.message === 'success' && route2.message === 'success'
-            ? 'success'
-            : 'failure';
-      } else {
-        result = DFS(nodes.byId, startNodeId, endNodeId);
-      }
+    result.animatedNodeIds = [
+      ...route1.animatedNodeIds,
+      ...route2.animatedNodeIds,
+    ];
+    result.animatedPathNodeIds = [
+      ...route2.animatedPathNodeIds,
+      ...route1.animatedPathNodeIds,
+    ];
 
-      break;
-    }
+    result.message =
+      route1.message === 'success' && route2.message === 'success'
+        ? 'success'
+        : 'failure';
+  } else {
+    resetAllNodeProperties(nodes);
+    const route = getAlgorithmFunctionByName(algorithmName)(
+      nodes.byId,
+      startNodeId,
+      endNodeId,
+    );
+    addPathNodeIdsToResultObject(route, nodes.byId, NODE_STATUS.START);
 
-    case ALGORITHM.BFS: {
-      if (middleNodeId) {
-        let route1 = BFS(nodes.byId, startNodeId, middleNodeId);
-        console.log('#1. route1: ', route1);
-        let route2 = BFS(nodes.byId, middleNodeId, endNodeId);
-        console.log('#2. route2: ', route2);
-        result = {
-          animatedNodeIds: [route1.animatedNodeIds, route2.animatedNodeIds],
-        };
-        result.message =
-          route1.message === 'success' && route2.message === 'success'
-            ? 'success'
-            : 'failure';
-      } else {
-        result = BFS(nodes.byId, startNodeId, endNodeId);
-      }
-
-      break;
-    }
-
-    case ALGORITHM.DIJKSTRA: {
-      if (middleNodeId) {
-        let route1 = Dijkstra(nodes.byId, startNodeId, middleNodeId);
-        let route2 = Dijkstra(nodes.byId, middleNodeId, endNodeId);
-
-        result = {
-          animatedNodeIds: [route1.animatedNodeIds, route2.animatedNodeIds],
-        };
-        result.message =
-          route1.message === 'success' && route2.message === 'success'
-            ? 'success'
-            : 'failure';
-      } else {
-        result = Dijkstra(nodes.byId, startNodeId, endNodeId);
-      }
-
-      break;
-    }
-
-    default: {
-      result = { message: 'check your algorithm', animatedNodeIds: [] };
-      break;
-    }
+    result.message = route.message;
+    result.animatedNodeIds = route.animatedNodeIds;
+    result.animatedPathNodeIds = route.animatedPathNodeIds;
   }
 
-  console.log('#3. result: ', result);
   return result;
+};
+
+export const resetAllNodeProperties = (nodes) => {
+  nodes.allIds.forEach((row) => {
+    row.forEach((id) => {
+      const currentNode = nodes.byId[id];
+
+      if (currentNode.status !== NODE_STATUS.WEIGHTED) {
+        resetNodeProperties(currentNode, [
+          NODE_PROPERTY.DISTANCE,
+          NODE_PROPERTY.PREVIOUS_NODE_ID,
+          NODE_PROPERTY.WEIGHT,
+        ]);
+      } else {
+        resetNodeProperties(currentNode, [
+          NODE_PROPERTY.DISTANCE,
+          NODE_PROPERTY.PREVIOUS_NODE_ID,
+        ]);
+      }
+    });
+  });
+};
+
+export const getAlgorithmFunctionByName = (name) => {
+  switch (name) {
+    case ALGORITHM.DFS: {
+      return DFS;
+    }
+    case ALGORITHM.BFS: {
+      return BFS;
+    }
+    case ALGORITHM.DIJKSTRA: {
+      return Dijkstra;
+    }
+    default: {
+      return () => {};
+    }
+  }
 };
 
 export default {

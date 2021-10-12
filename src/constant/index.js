@@ -7,6 +7,7 @@ export const ALGORITHM = {
   BIDIRECTIONAL_SWARM: 'Bidirectional swarm',
   CONVERGENT_SWARM: 'Convergent swarm',
   GREEDY_BEST_FIRST_SEARCH: 'Greedy best-first search',
+  NONE: 'none',
 };
 
 export const ALGORITHMS = [
@@ -59,12 +60,12 @@ export const NAV = {
   COMPARE_MODE: 'Compare mode',
   ALGORITHMS: 'Algorithms',
   MAZES_AND_PATTERNS: 'Mazes & Patterns',
-  ADD_MIDDLE_POINT: 'Add middle point',
+  ADD_MIDDLE_POINT: 'middle point',
   START: 'Start!',
+  STOP: 'Stop',
   CLEAR_MAZE: 'Clear maze',
   SAVE_AND_SHARE: 'Save & Share',
   SPEED: 'Speed',
-  STOP: 'Stop',
 };
 
 export const NAV_LIST = [

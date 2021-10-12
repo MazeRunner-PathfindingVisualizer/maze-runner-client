@@ -14,9 +14,11 @@ import {
   clearVisitedAndPathNodes,
   clearWallAndWeightNode,
   createMiddleNode,
+  deleteMiddleNode,
   endAnimation,
   selectAnimationTimeoutId,
   selectIsProgressive,
+  selectMiddleNodeId,
   setAnimationTimeoutId,
 } from '../features/maze/mazeSlice';
 
@@ -28,6 +30,7 @@ const Nav = () => {
   const isProgressive = useSelector(selectIsProgressive);
   const currentAlgorithm = useSelector(selectAlgorithm);
   const animationTimeoutId = useSelector(selectAnimationTimeoutId);
+  const middleNodeId = useSelector(selectMiddleNodeId);
   const dispatch = useDispatch();
 
   function handleOnClick(e) {
@@ -62,7 +65,11 @@ const Nav = () => {
     }
 
     if (currentClickedMenu === NAV.ADD_MIDDLE_POINT) {
-      dispatch(createMiddleNode());
+      if (!middleNodeId) {
+        dispatch(createMiddleNode());
+      } else {
+        dispatch(deleteMiddleNode());
+      }
     }
   }
 
