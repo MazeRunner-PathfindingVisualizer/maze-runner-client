@@ -14,11 +14,12 @@ import {
 import style from './App.module.css';
 
 function App() {
+  const dispatch = useDispatch();
   const { width, height } = useWindowSize();
+
   const maze = {};
   maze.width = useSelector(selectMazeWidth);
   maze.height = useSelector(selectMazeHeight);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!maze.width || !maze.height) {

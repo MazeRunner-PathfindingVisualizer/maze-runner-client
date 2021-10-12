@@ -119,6 +119,17 @@ export const NODE_STATUS = {
   PATH: 'path',
 };
 
+export const NODE_STATUS_LIST = [
+  NODE_STATUS.UNVISITED,
+  NODE_STATUS.VISITED,
+  NODE_STATUS.WALL,
+  NODE_STATUS.WEIGHTED,
+  NODE_STATUS.START,
+  NODE_STATUS.END,
+  NODE_STATUS.MIDDLE,
+  NODE_STATUS.PATH,
+];
+
 export const NODE_IMAGE_PATH = {
   WALL: '/image/wallNode.png',
   WEIGHTED: '/image/weightNode.png',
@@ -168,6 +179,13 @@ export const SHORTEST = {
   NONE: 'none',
 };
 
+export const NODE_PROPERTY = {
+  STATUS: 'status',
+  WEIGHT: 'weight',
+  PREVIOUS_NODE_ID: 'previousNodeId',
+  DISTANCE: 'distance',
+};
+
 export default {
   ALGORITHM,
   ALGORITHMS,
@@ -181,8 +199,10 @@ export default {
   NAV_LIST,
   MAZE_OPTIONS,
   NODE_STATUS,
+  NODE_STATUS_LIST,
   NODE_IMAGE_PATH,
   NODE_TYPES,
   WEIGHTED,
   SHORTEST,
+  NODE_PROPERTY,
 };

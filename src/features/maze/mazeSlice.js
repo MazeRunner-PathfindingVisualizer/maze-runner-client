@@ -2,16 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 // eslint-disable-next-line no-unused-vars
 import { current } from '@reduxjs/toolkit';
 
-import { ALGORITHM, NODE_STATUS } from '../../constant';
+import { NODE_PROPERTY, NODE_STATUS } from '../../constant';
 import {
   calcMazeBlockCount,
   createNodes,
   isFeatNode,
   calcPathNodeIds,
+  resetNodeProperties,
+  changeToWallNode,
+  changeToWeightNode,
+  changeToMiddleNode,
+  runAlgorithm,
 } from '../../util/maze';
-import { DFS } from '../../algorithms/DFS';
-import { BFS } from '../../algorithms/BFS';
-import { Dijkstra } from '../../algorithms/Dijkstra';
 
 const initialState = {
   width: 0,
@@ -95,9 +97,9 @@ export const mazeOptionsSlice = createSlice({
         return;
       }
 
-      state.isFeatNodeClick = true;
       const { nodeId: id, nodeStatus: status } = action.payload;
       state.clickedFeatNodeInfo = { id, status };
+      state.isFeatNodeClick = true;
     },
     changeNormalNode: (state, action) => {
       if (state.isProgressive) {
@@ -117,27 +119,22 @@ export const mazeOptionsSlice = createSlice({
         targetNode.status === NODE_STATUS.PATH
       ) {
         if (state.currentJammingBlockType === NODE_STATUS.WALL) {
-          targetNode.status = NODE_STATUS.WALL;
-          targetNode.weight = 1;
+          changeToWallNode(targetNode);
         } else if (state.currentJammingBlockType === NODE_STATUS.WEIGHTED) {
-          targetNode.status = NODE_STATUS.WEIGHTED;
-          targetNode.weight = state.weightValue;
+          changeToWeightNode(targetNode, state.weightValue);
         }
       } else if (
         targetNode.status === NODE_STATUS.WALL &&
         state.currentJammingBlockType === NODE_STATUS.WEIGHTED
       ) {
-        targetNode.status = NODE_STATUS.WEIGHTED;
-        targetNode.weight = state.weightValue;
+        changeToWeightNode(targetNode, state.weightValue);
       } else if (
         targetNode.status === NODE_STATUS.WEIGHTED &&
         state.currentJammingBlockType === NODE_STATUS.WALL
       ) {
-        targetNode.status = NODE_STATUS.WALL;
-        targetNode.weight = 1;
+        changeToWallNode(targetNode);
       } else if (targetNode.status === state.currentJammingBlockType) {
-        targetNode.status = NODE_STATUS.UNVISITED;
-        targetNode.weight = 1;
+        resetNodeProperties(targetNode, ['All']);
       }
     },
     changeFeatNode: (state, action) => {
@@ -148,14 +145,21 @@ export const mazeOptionsSlice = createSlice({
       const { targetNodeId, targetNodeStatus } = action.payload;
       const { id: featNodeId, status: featNodeStatus } =
         state.clickedFeatNodeInfo;
+      const targetNode = state.nodes.byId[targetNodeId];
+      const featNode = state.nodes.byId[featNodeId];
 
       if (isFeatNode(targetNodeStatus)) {
         return;
       }
 
       if (state.isMouseDown) {
-        state.nodes.byId[targetNodeId].status = featNodeStatus;
-        state.nodes.byId[featNodeId].status = NODE_STATUS.UNVISITED;
+        targetNode.status = featNodeStatus;
+        resetNodeProperties(targetNode, [
+          NODE_PROPERTY.DISTANCE,
+          NODE_PROPERTY.PREVIOUS_NODE_ID,
+          NODE_PROPERTY.WEIGHT,
+        ]);
+        resetNodeProperties(featNode, ['All']);
 
         if (featNodeStatus === NODE_STATUS.START) {
           state.startNodeId = targetNodeId;
@@ -173,46 +177,48 @@ export const mazeOptionsSlice = createSlice({
       }
     },
     startPathfinding: (state, action) => {
-      const { nodes, startNodeId, endNodeId, middleNodeId } = state;
+      state.nodes.allIds.forEach((row) => {
+        row.forEach((id) => {
+          const currentNode = state.nodes.byId[id];
 
+          if (currentNode.status !== NODE_STATUS.WEIGHTED) {
+            resetNodeProperties(currentNode, [
+              NODE_PROPERTY.DISTANCE,
+              NODE_PROPERTY.PREVIOUS_NODE_ID,
+              NODE_PROPERTY.WEIGHT,
+            ]);
+          } else {
+            resetNodeProperties(currentNode, [
+              NODE_PROPERTY.DISTANCE,
+              NODE_PROPERTY.PREVIOUS_NODE_ID,
+            ]);
+          }
+        });
+      });
+
+      const { nodes, startNodeId, endNodeId, middleNodeId } = state;
       const algorithmName = action.payload;
 
-      if (!middleNodeId) {
-        let result;
+      const result = runAlgorithm(
+        algorithmName,
+        startNodeId,
+        middleNodeId,
+        endNodeId,
+        nodes,
+      );
 
-        switch (algorithmName) {
-          case ALGORITHM.DFS: {
-            result = DFS(nodes.byId, startNodeId, endNodeId);
-            break;
-          }
+      state.animatedNodeIds = result.animatedNodeIds.flat();
 
-          case ALGORITHM.BFS: {
-            result = BFS(nodes.byId, startNodeId, endNodeId);
-            break;
-          }
+      if (result.message === 'success') {
+        const temp = calcPathNodeIds(result.animatedNodeIds, state.nodes.byId);
 
-          case ALGORITHM.DIJKSTRA: {
-            result = Dijkstra(nodes.byId, startNodeId, endNodeId);
-            break;
-          }
-
-          default: {
-            result = { message: 'check your algorithm', animatedNodeIds: [] };
-          }
-        }
-
-        state.animatedNodeIds = result.animatedNodeIds;
-
-        if (result.message === 'success') {
-          state.animatedPathNodeIds = calcPathNodeIds(
-            result.animatedNodeIds,
-            state.nodes.byId,
-          );
-        }
+        console.log('🔥', temp);
+        state.animatedPathNodeIds = temp;
       }
     },
     visitNode: (state, action) => {
       const nodeId = action.payload;
+      console.log(nodeId);
 
       if (isFeatNode(state.nodes.byId[nodeId].status)) {
         return;
@@ -258,15 +264,20 @@ export const mazeOptionsSlice = createSlice({
     clearWallAndWeightNode: (state) => {
       state.nodes.allIds.forEach((row) => {
         row.forEach((id) => {
+          const currentNode = state.nodes.byId[id];
+
           if (
             state.nodes.byId[id].status === NODE_STATUS.WALL ||
             state.nodes.byId[id].status === NODE_STATUS.WEIGHTED
           ) {
-            state.nodes.byId[id].status = NODE_STATUS.UNVISITED;
+            resetNodeProperties(currentNode, ['status']);
           }
-          state.nodes.previousNodeId = null;
-          state.nodes.byId[id].distance = Infinity;
-          state.nodes.byId[id].weight = 1;
+
+          resetNodeProperties(currentNode, [
+            'distance',
+            'previousNodeId',
+            'weight',
+          ]);
         });
       });
     },
@@ -282,13 +293,31 @@ export const mazeOptionsSlice = createSlice({
 
       state.currentJammingBlockType = jammingBlockType;
     },
-    resetNodeDistanceAndPreviousId: (state) => {
-      state.nodes.allIds.forEach((row) => {
-        row.forEach((id) => {
-          state.nodes.byId[id].distance = Infinity;
-          state.nodes.byId[id].previousNodeId = null;
-        });
-      });
+    createMiddleNode: (state) => {
+      if (state.middleNodeId) {
+        return;
+      }
+
+      const widthCount = state.widthCount;
+      const heightCount = state.heightCount;
+
+      const middleNodeIdY = parseInt(heightCount / 2, 10);
+      const middleNodeIdX = parseInt(widthCount / 2, 10);
+
+      let middleNodeId = `${middleNodeIdY}-${middleNodeIdX}`;
+      let middleNode = state.nodes.byId[middleNodeId];
+
+      let count = 1;
+
+      while (
+        middleNode.status === NODE_STATUS.START ||
+        middleNode.status === NODE_STATUS.END
+      ) {
+        middleNodeId = `${middleNodeIdY}-${middleNodeIdX + count}`;
+        middleNode = state.nodes.byId[middleNodeId];
+      }
+
+      changeToMiddleNode(middleNode);
     },
   },
 });
@@ -309,7 +338,7 @@ export const {
   clearVisitedAndPathNodes,
   clearWallAndWeightNode,
   changeCurrentJammingBlockType,
-  resetNodeDistanceAndPreviousId,
+  createMiddleNode,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;

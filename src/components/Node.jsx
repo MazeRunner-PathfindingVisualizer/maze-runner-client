@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getImgSrcPathByNodeStatus } from '../util';
 
 import style from './Node.module.css';
+import { NODE_STATUS } from '../constant';
 
 const Node = ({
   nodeId,
@@ -14,7 +15,14 @@ const Node = ({
   handleMouseLeave,
 }) => {
   const targetNode = useSelector((state) => state.maze.nodes.byId[nodeId]);
-  const src = getImgSrcPathByNodeStatus(targetNode.status);
+  const targetNodeWeight = useSelector(
+    (state) => state.maze.nodes.byId[nodeId].weight,
+  );
+  const src = getImgSrcPathByNodeStatus(
+    targetNodeWeight > 1 && targetNode.status === NODE_STATUS.VISITED
+      ? NODE_STATUS.WEIGHTED
+      : targetNode.status,
+  );
 
   return (
     <>

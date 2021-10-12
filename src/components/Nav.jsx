@@ -13,8 +13,8 @@ import {
 import {
   clearVisitedAndPathNodes,
   clearWallAndWeightNode,
+  createMiddleNode,
   endAnimation,
-  resetNodeDistanceAndPreviousId,
   selectAnimationTimeoutId,
   selectIsProgressive,
   setAnimationTimeoutId,
@@ -49,7 +49,6 @@ const Nav = () => {
     }
 
     if (currentClickedMenu === NAV.START) {
-      dispatch(resetNodeDistanceAndPreviousId());
       dispatch(clearVisitedAndPathNodes());
       dispatch(startPathfinding(currentAlgorithm));
     }
@@ -60,6 +59,10 @@ const Nav = () => {
         dispatch(setAnimationTimeoutId(0));
         dispatch(endAnimation());
       }
+    }
+
+    if (currentClickedMenu === NAV.ADD_MIDDLE_POINT) {
+      dispatch(createMiddleNode());
     }
   }
 
