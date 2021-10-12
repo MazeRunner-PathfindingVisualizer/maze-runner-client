@@ -281,6 +281,9 @@ export const runAlgorithm = (
     );
     addPathNodeIdsToResultObject(route1, nodes.byId, NODE_STATUS.START);
 
+    const route1AnimatedPathNodeIds =
+      route1.message === 'success' ? [...route1.animatedPathNodeIds] : [];
+
     resetAllNodeProperties(nodes);
     const route2 = getAlgorithmFunctionByName(algorithmName)(
       nodes.byId,
@@ -289,13 +292,18 @@ export const runAlgorithm = (
     );
     addPathNodeIdsToResultObject(route2, nodes.byId, NODE_STATUS.MIDDLE);
 
+    const route2AnimatedPathNodeIds =
+      route2.message === 'success' ? [...route2.animatedPathNodeIds] : [];
+
     result.animatedNodeIds = [
       ...route1.animatedNodeIds,
+      '/', // divide route type
       ...route2.animatedNodeIds,
     ];
     result.animatedPathNodeIds = [
-      ...route2.animatedPathNodeIds,
-      ...route1.animatedPathNodeIds,
+      ...route2AnimatedPathNodeIds,
+      '/', // divide route type
+      ...route1AnimatedPathNodeIds,
     ];
 
     result.message =
@@ -313,7 +321,8 @@ export const runAlgorithm = (
 
     result.message = route.message;
     result.animatedNodeIds = route.animatedNodeIds;
-    result.animatedPathNodeIds = route.animatedPathNodeIds;
+    result.animatedPathNodeIds =
+      route.message === 'success' ? route.animatedPathNodeIds : [];
   }
 
   return result;

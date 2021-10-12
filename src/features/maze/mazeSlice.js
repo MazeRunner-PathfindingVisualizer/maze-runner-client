@@ -33,6 +33,9 @@ const initialState = {
   animatedPathNodeIds: [],
   animationTimeoutId: null,
 
+  isVisitNodeColorChanged: false,
+  isPathNodeColorChanged: false,
+
   isMouseDown: false,
   isFeatNodeClick: false,
   clickedFeatNodeInfo: {
@@ -116,7 +119,9 @@ export const mazeOptionsSlice = createSlice({
       if (
         targetNode.status === NODE_STATUS.UNVISITED ||
         targetNode.status === NODE_STATUS.VISITED ||
-        targetNode.status === NODE_STATUS.PATH
+        targetNode.status === NODE_STATUS.VISITED2 ||
+        targetNode.status === NODE_STATUS.PATH ||
+        targetNode.status === NODE_STATUS.PATH2
       ) {
         if (state.currentJammingBlockType === NODE_STATUS.WALL) {
           changeToWallNode(targetNode);
@@ -184,6 +189,9 @@ export const mazeOptionsSlice = createSlice({
         return;
       }
 
+      state.isVisitNodeColorChanged = false;
+      state.isPathNodeColorChanged = false;
+
       resetAllNodeProperties(state.nodes);
 
       const result = runAlgorithm(
@@ -200,20 +208,34 @@ export const mazeOptionsSlice = createSlice({
     visitNode: (state, action) => {
       const nodeId = action.payload;
 
+      if (nodeId === '/') {
+        state.isVisitNodeColorChanged = true;
+        return;
+      }
+
       if (isFeatNode(state.nodes.byId[nodeId].status)) {
         return;
       }
 
-      state.nodes.byId[nodeId].status = NODE_STATUS.VISITED;
+      state.nodes.byId[nodeId].status = state.isVisitNodeColorChanged
+        ? NODE_STATUS.VISITED
+        : NODE_STATUS.VISITED2;
     },
     markPathNode: (state, action) => {
       const pathNodeId = action.payload;
+
+      if (pathNodeId === '/') {
+        state.isPathNodeColorChanged = true;
+        return;
+      }
 
       if (isFeatNode(state.nodes.byId[pathNodeId].status)) {
         return;
       }
 
-      state.nodes.byId[pathNodeId].status = NODE_STATUS.PATH;
+      state.nodes.byId[pathNodeId].status = state.isPathNodeColorChanged
+        ? NODE_STATUS.PATH
+        : NODE_STATUS.PATH2;
     },
     setAnimationTimeoutId: (state, action) => {
       state.animationTimeoutId = action.payload;
@@ -231,7 +253,9 @@ export const mazeOptionsSlice = createSlice({
         row.forEach((id) => {
           if (
             state.nodes.byId[id].status === NODE_STATUS.VISITED ||
-            state.nodes.byId[id].status === NODE_STATUS.PATH
+            state.nodes.byId[id].status === NODE_STATUS.VISITED2 ||
+            state.nodes.byId[id].status === NODE_STATUS.PATH ||
+            state.nodes.byId[id].status === NODE_STATUS.PATH2
           ) {
             state.nodes.byId[id].status = NODE_STATUS.UNVISITED;
           }

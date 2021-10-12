@@ -112,12 +112,14 @@ export const MAZE_OPTIONS = ['Algorithm', 'Speed', 'Weighted', 'Shortest'];
 export const NODE_STATUS = {
   UNVISITED: 'unvisited',
   VISITED: 'visited',
+  VISITED2: 'visited2',
   WALL: 'wall',
   WEIGHTED: 'weighted',
   START: 'start',
   END: 'end',
   MIDDLE: 'middle',
   PATH: 'path',
+  PATH2: 'path2',
 };
 
 export const NODE_STATUS_LIST = [
