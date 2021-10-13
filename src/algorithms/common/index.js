@@ -54,4 +54,43 @@ export const getShortestDistanceNodeId = (unvisitedNodeIdList, byId) => {
   return shortestDistanceNodeId;
 };
 
-export default { getNextNodes, getShortestDistanceNodeId };
+export const getShortestDistanceNodeIdAStar = (unvisitedNodeIdList, byId) => {
+  if (!unvisitedNodeIdList.length) {
+    return;
+  }
+
+  let index = 0;
+  let shortestDistanceNodeId = unvisitedNodeIdList[index];
+
+  for (let i = 1; i < unvisitedNodeIdList.length; i++) {
+    const nodeId = unvisitedNodeIdList[i];
+
+    if (byId[shortestDistanceNodeId].fDistance > byId[nodeId].fDistance) {
+      shortestDistanceNodeId = nodeId;
+      index = i;
+    } else if (
+      byId[shortestDistanceNodeId].fDistance === byId[nodeId].fDistance &&
+      byId[shortestDistanceNodeId].hDistance > byId[nodeId].hDistance
+    ) {
+      shortestDistanceNodeId = nodeId;
+      index = i;
+    }
+  }
+
+  unvisitedNodeIdList.splice(index, 1);
+  return shortestDistanceNodeId;
+};
+
+export const manhattanDistance = (nextNodeId, targetNodeId) => {
+  const [nextY, nextX] = nextNodeId.split('-').map(Number);
+  const [targetY, targetX] = targetNodeId.split('-').map(Number);
+
+  return Math.abs(targetY - nextY) + Math.abs(targetX - nextX);
+};
+
+export default {
+  getNextNodes,
+  getShortestDistanceNodeId,
+  getShortestDistanceNodeIdAStar,
+  manhattanDistance,
+};

@@ -10,7 +10,8 @@ import { headerHeight } from '../App.module.css';
 import { mazeDescriptionHeight } from '../components/MazeDescription.module.css';
 import DFS from '../algorithms/DFS';
 import BFS from '../algorithms/BFS';
-import { Dijkstra } from '../algorithms/Dijkstra';
+import Dijkstra from '../algorithms/Dijkstra';
+import AStar from '../algorithms/AStar';
 
 const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
 const MAZE_DESC_HEIGHT_REM = parseInt(mazeDescriptionHeight.slice(0, -3), 10);
@@ -71,6 +72,8 @@ export const createNodes = (widthCount, heightCount, weight = 1) => {
         status: newNodeStatus,
         previousNodeId: null,
         distance: Infinity,
+        fDistance: Infinity,
+        hDistance: null,
         weight,
       };
 
@@ -136,6 +139,8 @@ export const resetNodeProperties = (node, options) => {
       }
       case NODE_PROPERTY.DISTANCE: {
         obj.distance = Infinity;
+        obj.fDistance = Infinity;
+        obj.hDistance = null;
         return obj;
       }
       case NODE_PROPERTY.WEIGHT: {
@@ -359,6 +364,9 @@ export const getAlgorithmFunctionByName = (name) => {
     }
     case ALGORITHM.DIJKSTRA: {
       return Dijkstra;
+    }
+    case ALGORITHM.A_STAR_SEARCH: {
+      return AStar;
     }
     default: {
       return () => {};

@@ -274,13 +274,13 @@ export const mazeOptionsSlice = createSlice({
             state.nodes.byId[id].status === NODE_STATUS.WALL ||
             state.nodes.byId[id].status === NODE_STATUS.WEIGHTED
           ) {
-            resetNodeProperties(currentNode, ['status']);
+            resetNodeProperties(currentNode, [NODE_PROPERTY.STATUS]);
           }
 
           resetNodeProperties(currentNode, [
-            'distance',
-            'previousNodeId',
-            'weight',
+            NODE_PROPERTY.DISTANCE,
+            NODE_PROPERTY.PREVIOUS_NODE_ID,
+            NODE_PROPERTY.WEIGHT,
           ]);
         });
       });

@@ -50,3 +50,5 @@ export const Dijkstra = (byId, startNodeId, targetNodeId) => {
 
   return { message: 'failure', animatedNodeIds };
 };
+
+export default Dijkstra;
