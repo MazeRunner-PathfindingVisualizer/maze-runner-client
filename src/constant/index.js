@@ -7,6 +7,7 @@ export const ALGORITHM = {
   BIDIRECTIONAL_SWARM: 'Bidirectional swarm',
   CONVERGENT_SWARM: 'Convergent swarm',
   GREEDY_BEST_FIRST_SEARCH: 'Greedy best-first search',
+  NONE: 'none',
 };
 
 export const ALGORITHMS = [
@@ -29,10 +30,16 @@ export const MAZE_AND_PATTERNS = [
   'Simple stair pattern',
 ];
 
+export const CLEAR_MAZE = {
+  CLEAR_ALL: 'Clear all',
+  CLEAR_WALLS_AND_WEIGHT: 'Clear walls & weight',
+  CLEAR_PATH: 'Clear path',
+};
+
 export const CLEAR_MAZE_DROPDOWN_LIST = [
-  'Clear all',
-  'Clear walls & weight`',
-  'Clear path',
+  CLEAR_MAZE.CLEAR_ALL,
+  CLEAR_MAZE.CLEAR_WALLS_AND_WEIGHT,
+  CLEAR_MAZE.CLEAR_PATH,
 ];
 
 export const SPEED = {
@@ -53,12 +60,12 @@ export const NAV = {
   COMPARE_MODE: 'Compare mode',
   ALGORITHMS: 'Algorithms',
   MAZES_AND_PATTERNS: 'Mazes & Patterns',
-  ADD_MIDDLE_POINT: 'Add middle point',
+  ADD_MIDDLE_POINT: 'middle point',
   START: 'Start!',
+  STOP: 'Stop',
   CLEAR_MAZE: 'Clear maze',
   SAVE_AND_SHARE: 'Save & Share',
   SPEED: 'Speed',
-  STOP: 'Stop',
 };
 
 export const NAV_LIST = [
@@ -102,24 +109,62 @@ export const NAV_LIST = [
 
 export const MAZE_OPTIONS = ['Algorithm', 'Speed', 'Weighted', 'Shortest'];
 
+export const NODE_STATUS = {
+  UNVISITED: 'unvisited',
+  VISITED: 'visited',
+  VISITED2: 'visited2',
+  WALL: 'wall',
+  WEIGHTED: 'weighted',
+  START: 'start',
+  END: 'end',
+  MIDDLE: 'middle',
+  PATH: 'path',
+  PATH2: 'path2',
+};
+
+export const NODE_STATUS_LIST = [
+  NODE_STATUS.UNVISITED,
+  NODE_STATUS.VISITED,
+  NODE_STATUS.WALL,
+  NODE_STATUS.WEIGHTED,
+  NODE_STATUS.START,
+  NODE_STATUS.END,
+  NODE_STATUS.MIDDLE,
+  NODE_STATUS.PATH,
+];
+
+export const NODE_IMAGE_PATH = {
+  WALL: '/image/wallNode.png',
+  WEIGHTED: '/image/weightNode.png',
+  START: '/image/startNode.png',
+  END: '/image/endNode.png',
+  MIDDLE: '/image/itemNode.png',
+  // PATH: 'path',
+};
+
 export const NODE_TYPES = [
   {
+    id: NODE_STATUS.START,
     title: 'Start Node',
     imagePath: '/image/startNode.png',
   },
   {
+    id: NODE_STATUS.END,
     title: 'End Node',
     imagePath: '/image/endNode.png',
   },
   {
+    id: NODE_STATUS.MIDDLE,
     title: 'Item Node',
     imagePath: '/image/itemNode.png',
   },
   {
+    id: NODE_STATUS.WEIGHTED,
     title: 'Weight Node',
     imagePath: '/image/weightNode.png',
   },
   {
+    id: NODE_STATUS.WALL,
     title: 'Wall Node',
     imagePath: '/image/wallNode.png',
   },
@@ -137,28 +182,18 @@ export const SHORTEST = {
   NONE: 'none',
 };
 
-export const NODE_STATUS = {
-  UNVISITED: 'unvisited',
-  VISITED: 'visited',
-  WALL: 'wall',
-  START: 'start',
-  END: 'end',
-  MIDDLE: 'middle',
-  PATH: 'path',
-};
-
-export const NODE_IMAGE_PATH = {
-  WALL: '/image/wallNode.png',
-  START: '/image/startNode.png',
-  END: '/image/endNode.png',
-  MIDDLE: '/image/itemNode.png',
-  // PATH: 'path',
+export const NODE_PROPERTY = {
+  STATUS: 'status',
+  WEIGHT: 'weight',
+  PREVIOUS_NODE_ID: 'previousNodeId',
+  DISTANCE: 'distance',
 };
 
 export default {
   ALGORITHM,
   ALGORITHMS,
   MAZE_AND_PATTERNS,
+  CLEAR_MAZE,
   CLEAR_MAZE_DROPDOWN_LIST,
   SPEED,
   SPEED_MS,
@@ -166,7 +201,11 @@ export default {
   NAV,
   NAV_LIST,
   MAZE_OPTIONS,
+  NODE_STATUS,
+  NODE_STATUS_LIST,
+  NODE_IMAGE_PATH,
   NODE_TYPES,
   WEIGHTED,
   SHORTEST,
+  NODE_PROPERTY,
 };

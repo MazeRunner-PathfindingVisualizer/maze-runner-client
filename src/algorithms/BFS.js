@@ -12,10 +12,7 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
     animatedNodeIds.push(currentNode.id);
 
     if (currentNode.id === targetNodeId) {
-      return {
-        message: 'success',
-        animatedNodeIds: animatedNodeIds,
-      };
+      return { message: 'success', animatedNodeIds };
     }
 
     const nextNodes = getNextNodes(currentNode.id, byId);
@@ -36,3 +33,5 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
 
   return { message: 'failure', animatedNodeIds };
 };
+
+export default BFS;

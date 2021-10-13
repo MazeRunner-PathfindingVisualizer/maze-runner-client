@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
 import Dropdown from './Dropdown';
-import { NAV, NAV_LIST } from '../constant';
+import { CLEAR_MAZE, NAV, NAV_LIST } from '../constant';
 import { setMenu, selectMenu } from '../features/nav/navSlice';
 import {
   selectAlgorithm,
@@ -12,9 +12,13 @@ import {
 } from '../features/mazeOptions/mazeOptionsSlice';
 import {
   clearVisitedAndPathNodes,
+  clearWallAndWeightNode,
+  createMiddleNode,
+  deleteMiddleNode,
   endAnimation,
   selectAnimationTimeoutId,
   selectIsProgressive,
+  selectMiddleNodeId,
   setAnimationTimeoutId,
 } from '../features/maze/mazeSlice';
 
@@ -26,6 +30,7 @@ const Nav = () => {
   const isProgressive = useSelector(selectIsProgressive);
   const currentAlgorithm = useSelector(selectAlgorithm);
   const animationTimeoutId = useSelector(selectAnimationTimeoutId);
+  const middleNodeId = useSelector(selectMiddleNodeId);
   const dispatch = useDispatch();
 
   function handleOnClick(e) {
@@ -58,6 +63,14 @@ const Nav = () => {
         dispatch(endAnimation());
       }
     }
+
+    if (currentClickedMenu === NAV.ADD_MIDDLE_POINT) {
+      if (!middleNodeId) {
+        dispatch(createMiddleNode());
+      } else {
+        dispatch(deleteMiddleNode());
+      }
+    }
   }
 
   function handleOnDropdownClick(e) {
@@ -74,6 +87,27 @@ const Nav = () => {
 
     if (menuStatus === NAV.SPEED) {
       dispatch(setSpeed(e.target.name));
+    }
+
+    if (menuStatus === NAV.CLEAR_MAZE) {
+      switch (e.target.name) {
+        case CLEAR_MAZE.CLEAR_ALL: {
+          dispatch(clearWallAndWeightNode());
+          dispatch(clearVisitedAndPathNodes());
+          return;
+        }
+        case CLEAR_MAZE.CLEAR_WALLS_AND_WEIGHT: {
+          dispatch(clearWallAndWeightNode());
+          return;
+        }
+        case CLEAR_MAZE.CLEAR_PATH: {
+          dispatch(clearVisitedAndPathNodes());
+          return;
+        }
+        default: {
+          return;
+        }
+      }
     }
 
     dispatch(setMenu('none'));

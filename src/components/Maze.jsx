@@ -11,7 +11,7 @@ import {
   selectAllIds,
   selectIsMouseDown,
   selectIsFeatNodeClick,
-  selectAnimatedNodes,
+  selectAnimatedNodeIds,
   setAnimationTimeoutId,
   endAnimation,
   startAnimation,
@@ -28,7 +28,7 @@ const Maze = () => {
   const allIds = useSelector(selectAllIds, shallowEqual);
   const isMouseDown = useSelector(selectIsMouseDown);
   const isFeatNodeClick = useSelector(selectIsFeatNodeClick);
-  const animatedNodeIds = useSelector(selectAnimatedNodes);
+  const animatedNodeIds = useSelector(selectAnimatedNodeIds);
   const animationSpeed = useSelector(selectSpeed);
   const animatedPathNodeIds = useSelector(selectAnimatedPathNodeIds);
 
