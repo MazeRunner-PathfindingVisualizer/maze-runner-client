@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { current } from '@reduxjs/toolkit';
 
 import { ALGORITHM, NODE_PROPERTY, NODE_STATUS } from '../../constant';
+import { recursiveDivisionWrapper } from '../../mazePattern/recursiveDivision';
 import {
   calcMazeBlockCount,
   createNodes,
@@ -31,6 +32,7 @@ const initialState = {
   },
   animatedNodeIds: [],
   animatedPathNodeIds: [],
+  animatedMazeNodeIds: [],
   animationTimeoutId: null,
 
   isVisitNodeColorChanged: false,
@@ -221,6 +223,11 @@ export const mazeOptionsSlice = createSlice({
         ? NODE_STATUS.VISITED
         : NODE_STATUS.VISITED2;
     },
+    drawMazeNode: (state, action) => {
+      const nodeId = action.payload;
+
+      state.nodes.byId[nodeId].status = NODE_STATUS.WALL;
+    },
     markPathNode: (state, action) => {
       const pathNodeId = action.payload;
 
@@ -339,6 +346,22 @@ export const mazeOptionsSlice = createSlice({
       resetNodeProperties(targetNode, ['All']);
       state.middleNodeId = null;
     },
+    drawRecursiveDivisionMaze: (state, action) => {
+      const skew = action.payload;
+
+      // recursiveDivision(
+      //   skew,
+      //   state.widthCount,
+      //   state.heightCount,
+      //   state.nodes.byId,
+      // );
+      state.animatedMazeNodeIds = recursiveDivisionWrapper(
+        skew,
+        state.widthCount,
+        state.heightCount,
+        state.nodes,
+      );
+    },
   },
 });
 
@@ -351,6 +374,7 @@ export const {
   changeFeatNode,
   startPathfinding,
   visitNode,
+  drawMazeNode,
   markPathNode,
   setAnimationTimeoutId,
   startAnimation,
@@ -360,6 +384,7 @@ export const {
   changeCurrentJammingBlockType,
   createMiddleNode,
   deleteMiddleNode,
+  drawRecursiveDivisionMaze,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;
@@ -378,5 +403,7 @@ export const selectAnimatedPathNodeIds = (state) =>
 export const selectCurrentJammingBlockType = (state) =>
   state.maze.currentJammingBlockType;
 export const selectMiddleNodeId = (state) => state.maze.middleNodeId;
+export const selectAnimatedMazeNodeIds = (state) =>
+  state.maze.animatedMazeNodeIds;
 
 export default mazeOptionsSlice.reducer;

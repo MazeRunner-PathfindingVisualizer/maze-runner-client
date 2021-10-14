@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
 import Dropdown from './Dropdown';
-import { CLEAR_MAZE, NAV, NAV_LIST } from '../constant';
+import { CLEAR_MAZE, MAZE_AND_PATTERNS, NAV, NAV_LIST } from '../constant';
 import { setMenu, selectMenu } from '../features/nav/navSlice';
 import {
   selectAlgorithm,
@@ -15,6 +15,7 @@ import {
   clearWallAndWeightNode,
   createMiddleNode,
   deleteMiddleNode,
+  drawRecursiveDivisionMaze,
   endAnimation,
   selectAnimationTimeoutId,
   selectIsProgressive,
@@ -96,15 +97,26 @@ const Nav = () => {
           dispatch(clearVisitedAndPathNodes());
           return;
         }
+
         case CLEAR_MAZE.CLEAR_WALLS_AND_WEIGHT: {
           dispatch(clearWallAndWeightNode());
           return;
         }
+
         case CLEAR_MAZE.CLEAR_PATH: {
           dispatch(clearVisitedAndPathNodes());
           return;
         }
         default: {
+          return;
+        }
+      }
+    }
+
+    if (menuStatus === NAV.MAZES_AND_PATTERNS) {
+      switch (e.target.name) {
+        case MAZE_AND_PATTERNS.RECURSIVE_DIVISION: {
+          dispatch(drawRecursiveDivisionMaze());
           return;
         }
       }

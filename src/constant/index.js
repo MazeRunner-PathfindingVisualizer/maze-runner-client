@@ -21,13 +21,22 @@ export const ALGORITHMS = [
   ALGORITHM.GREEDY_BEST_FIRST_SEARCH,
 ];
 
-export const MAZE_AND_PATTERNS = [
-  'Recursive division',
-  'Recursive division (vertical skew)',
-  'Recursive division (horizontal skew)',
-  'Basic random maze',
-  'Basic weight maze',
-  'Simple stair pattern',
+export const MAZE_AND_PATTERNS = {
+  RECURSIVE_DIVISION: 'Recursive division',
+  RECURSIVE_DIVISION_VERTICAL: 'Recursive division (vertical skew)',
+  RECURSIVE_DIVISION_HORIZONTAL: 'Recursive division (horizontal skew)',
+  BASIC_RANDOM_WALL: 'Basic random maze',
+  BASIC_RANDOM_WEIGHT: 'Basic weight maze',
+  SIMPLE_STAIR: 'Simple stair pattern',
+};
+
+export const MAZE_AND_PATTERNS_DROPDOWN_LIST = [
+  MAZE_AND_PATTERNS.RECURSIVE_DIVISION,
+  MAZE_AND_PATTERNS.RECURSIVE_DIVISION_VERTICAL,
+  MAZE_AND_PATTERNS.RECURSIVE_DIVISION_HORIZONTAL,
+  MAZE_AND_PATTERNS.BASIC_RANDOM_WALL,
+  MAZE_AND_PATTERNS.BASIC_RANDOM_WEIGHT,
+  MAZE_AND_PATTERNS.SIMPLE_STAIR,
 ];
 
 export const CLEAR_MAZE = {
@@ -81,7 +90,7 @@ export const NAV_LIST = [
   {
     title: NAV.MAZES_AND_PATTERNS,
     hasDropdown: true,
-    child: MAZE_AND_PATTERNS,
+    child: MAZE_AND_PATTERNS_DROPDOWN_LIST,
   },
   {
     title: NAV.ADD_MIDDLE_POINT,
@@ -193,6 +202,7 @@ export default {
   ALGORITHM,
   ALGORITHMS,
   MAZE_AND_PATTERNS,
+  MAZE_AND_PATTERNS_DROPDOWN_LIST,
   CLEAR_MAZE,
   CLEAR_MAZE_DROPDOWN_LIST,
   SPEED,
