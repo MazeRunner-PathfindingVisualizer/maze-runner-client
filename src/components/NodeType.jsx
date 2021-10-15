@@ -20,13 +20,15 @@ const NodeType = ({ type }) => {
 
   return (
     <div
-      className={`${style.NodeType} ${isSelected && style.SelectedJammingNode}`}
+      className={`${style.NodeType} ${isJammingBlock && style.HurdleNodeType} ${
+        isSelected && style.SelectedJammingNode
+      }`}
       onClick={() =>
         isJammingBlock ? dispatch(changeCurrentJammingBlockType(id)) : null
       }
     >
-      <img src={imagePath} alt={title} className={style.NodeTypeImage} />
-      <span>{title}</span>
+      <img className={style.NodeTypeImage} src={imagePath} alt={title} />
+      <span className={style.NodeTypeTitle}>{title}</span>
     </div>
   );
 };

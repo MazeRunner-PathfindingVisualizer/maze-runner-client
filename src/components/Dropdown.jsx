@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import style from './Dropdown.module.css';
 
-const Dropdown = ({ items, handleOnClick }) => {
+const Dropdown = ({ isMobile, items, handleOnClick }) => {
   return (
-    <ul className={style.Dropdown}>
+    <ul className={isMobile ? style.DropdownMobile : style.Dropdown}>
       {items.map((item, idx) => (
         <li className={style.DropdownItem} key={idx}>
           <button onClick={handleOnClick} name={item}>
@@ -18,10 +18,12 @@ const Dropdown = ({ items, handleOnClick }) => {
 };
 
 Dropdown.defaultProps = {
+  isMobile: false,
   handleOnClick: () => {},
 };
 
 Dropdown.propTypes = {
+  isMobile: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleOnClick: PropTypes.func,
 };

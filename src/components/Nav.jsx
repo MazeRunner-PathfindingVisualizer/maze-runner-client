@@ -4,7 +4,13 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 
 import Dropdown from './Dropdown';
 import { CLEAR_MAZE, MAZE_AND_PATTERNS, NAV, NAV_LIST } from '../constant';
-import { setMenu, selectMenu } from '../features/nav/navSlice';
+import {
+  setMenu,
+  selectMenu,
+  selectSideMenuButtonStatus,
+  setSideMenuButtonStatus,
+  closeSideMenuButtonStatus,
+} from '../features/nav/navSlice';
 import {
   selectAlgorithm,
   setAlgorithm,
@@ -26,6 +32,7 @@ import {
 } from '../features/maze/mazeSlice';
 
 import style from './Nav.module.css';
+import { isNotStartButton } from '../util';
 
 const Nav = () => {
   const menuStatus = useSelector(selectMenu);
@@ -33,6 +40,7 @@ const Nav = () => {
   const currentAlgorithm = useSelector(selectAlgorithm);
   const animationTimeoutId = useSelector(selectAnimationTimeoutId);
   const middleNodeId = useSelector(selectMiddleNodeId);
+  const isSideMenuButtonOpen = useSelector(selectSideMenuButtonStatus);
   const dispatch = useDispatch();
 
   function handleOnClick(e) {
@@ -73,6 +81,7 @@ const Nav = () => {
         dispatch(deleteMiddleNode());
       }
     }
+    dispatch(closeSideMenuButtonStatus());
   }
 
   function handleOnDropdownClick(e) {
@@ -136,13 +145,64 @@ const Nav = () => {
     }
 
     dispatch(setMenu('none'));
+    dispatch(closeSideMenuButtonStatus());
+  }
+
+  function handleSideMenuButtonClick() {
+    dispatch(setSideMenuButtonStatus());
   }
 
   return (
     <nav className={style.Nav}>
+      <ul
+        className={`${style.SideMenu} ${
+          isSideMenuButtonOpen ? style.SideMenuOn : style.SideMenuOff
+        }`}
+      >
+        {NAV_LIST.filter(isNotStartButton).map((item) => (
+          <li
+            className={`${style.SideBarItem} ${
+              item.title === NAV.START && style.start
+            }`}
+            key={item.title}
+          >
+            <button
+              className={style.SideBarButton}
+              onClick={handleOnClick}
+              name={
+                item.title === NAV.START && isProgressive
+                  ? NAV.STOP
+                  : item.title
+              }
+            >
+              {item.title === NAV.START && isProgressive
+                ? NAV.STOP
+                : item.title}
+              {item.hasDropdown && <IoMdArrowDropdown />}
+            </button>
+            {item.hasDropdown && item.title === menuStatus && (
+              <Dropdown
+                isMobile
+                items={item.child}
+                handleOnClick={handleOnDropdownClick}
+              />
+            )}
+          </li>
+        ))}
+      </ul>
       <ul className={style.NavItems}>
         <li className={style.Logo}>
           <img className={style.LogoImage} src="/logo.png" alt="Logo" />
+        </li>
+        <li className={style.SideButton}>
+          <img
+            className={`${style.SideButtonImage} ${
+              isSideMenuButtonOpen ? style.SideButtonOn : style.SideButtonOff
+            }`}
+            src="/image/sideButton.png"
+            alt="side menu button"
+            onClick={handleSideMenuButtonClick}
+          />
         </li>
         {NAV_LIST.map((item) => (
           <li
