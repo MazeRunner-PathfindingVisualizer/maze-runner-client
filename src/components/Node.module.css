@@ -4,7 +4,7 @@
   border-left: 1px solid black;
   border-top: 1px solid black;
   box-sizing: border-box;
-  background-color: cornflowerblue;
+  background-color: #777777;
 }
 
 .Node:last-child {
@@ -15,15 +15,13 @@
   border-bottom: 1px solid black;
 }
 
-.start {
-  background-color: hotpink;
-}
-
+.start,
+.middle,
 .end {
-  background-color: rosybrown;
-}
-
-.wall {
+  background-color: white;
+  animation-name: fadeInFeatNode;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
 }
 
 .visited {
@@ -51,6 +49,16 @@
   animation-name: fadeInPath2;
   animation-duration: 1s;
   animation-fill-mode: forwards;
+}
+
+@keyframes fadeInFeatNode {
+  0% {
+    background-color: none;
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeInVisited {
@@ -83,7 +91,7 @@
   }
   100% {
     display: block;
-    background-color: sienna;
+    background-color: yellow;
     transform: scale(1);
   }
 }
@@ -96,7 +104,7 @@
   }
   100% {
     display: block;
-    background-color: sandybrown;
+    background-color: gold;
     transform: scale(1);
   }
 }

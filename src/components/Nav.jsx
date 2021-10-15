@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
 import Dropdown from './Dropdown';
-import { CLEAR_MAZE, NAV, NAV_LIST } from '../constant';
+import { CLEAR_MAZE, MAZE_AND_PATTERNS, NAV, NAV_LIST } from '../constant';
 import { setMenu, selectMenu } from '../features/nav/navSlice';
 import {
   selectAlgorithm,
@@ -15,15 +15,17 @@ import {
   clearWallAndWeightNode,
   createMiddleNode,
   deleteMiddleNode,
+  drawRecursiveDivisionMaze,
   endAnimation,
+  startPathfinding,
   selectAnimationTimeoutId,
   selectIsProgressive,
   selectMiddleNodeId,
   setAnimationTimeoutId,
+  drawBasicRandomWall,
 } from '../features/maze/mazeSlice';
 
 import style from './Nav.module.css';
-import { startPathfinding } from '../features/maze/mazeSlice';
 
 const Nav = () => {
   const menuStatus = useSelector(selectMenu);
@@ -94,18 +96,41 @@ const Nav = () => {
         case CLEAR_MAZE.CLEAR_ALL: {
           dispatch(clearWallAndWeightNode());
           dispatch(clearVisitedAndPathNodes());
-          return;
+          break;
         }
+
         case CLEAR_MAZE.CLEAR_WALLS_AND_WEIGHT: {
           dispatch(clearWallAndWeightNode());
-          return;
+          break;
         }
+
         case CLEAR_MAZE.CLEAR_PATH: {
           dispatch(clearVisitedAndPathNodes());
-          return;
+          break;
         }
         default: {
-          return;
+          break;
+        }
+      }
+    }
+
+    if (menuStatus === NAV.MAZES_AND_PATTERNS) {
+      dispatch(clearVisitedAndPathNodes());
+      dispatch(clearWallAndWeightNode());
+
+      switch (e.target.name) {
+        case MAZE_AND_PATTERNS.RECURSIVE_DIVISION: {
+          dispatch(drawRecursiveDivisionMaze());
+          break;
+        }
+
+        case MAZE_AND_PATTERNS.BASIC_RANDOM_WALL: {
+          dispatch(drawBasicRandomWall());
+          break;
+        }
+
+        default: {
+          break;
         }
       }
     }
@@ -116,6 +141,9 @@ const Nav = () => {
   return (
     <nav className={style.Nav}>
       <ul className={style.NavItems}>
+        <li className={style.Logo}>
+          <img className={style.LogoImage} src="/logo.png" alt="Logo" />
+        </li>
         {NAV_LIST.map((item) => (
           <li
             className={`${style.NavItem} ${

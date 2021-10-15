@@ -17,12 +17,15 @@ import {
   startAnimation,
   selectAnimatedPathNodeIds,
   markPathNode,
+  selectAnimatedMazeNodeIds,
+  drawMazeNode,
+  selectCurrentJammingBlockType,
 } from '../features/maze/mazeSlice';
 import { selectSpeed } from '../features/mazeOptions/mazeOptionsSlice';
 import Node from './Node';
+import { SPEED_MS } from '../constant';
 
 import style from './Maze.module.css';
-import { SPEED_MS } from '../constant';
 
 const Maze = () => {
   const allIds = useSelector(selectAllIds, shallowEqual);
@@ -31,6 +34,8 @@ const Maze = () => {
   const animatedNodeIds = useSelector(selectAnimatedNodeIds);
   const animationSpeed = useSelector(selectSpeed);
   const animatedPathNodeIds = useSelector(selectAnimatedPathNodeIds);
+  const animatedMazeNodeIds = useSelector(selectAnimatedMazeNodeIds);
+  const currentJammingBlockType = useSelector(selectCurrentJammingBlockType);
 
   const dispatch = useDispatch();
 
@@ -138,6 +143,37 @@ const Maze = () => {
     );
     dispatch(setAnimationTimeoutId(animationTimeoutId));
   }, [animatedNodeIds]);
+
+  useEffect(() => {
+    if (!animatedMazeNodeIds.length) {
+      return;
+    }
+
+    const animatedMazeNodeIdsCopy = animatedMazeNodeIds.slice();
+
+    function animateNext(animatedMazeNodeIds) {
+      const nodeId = animatedMazeNodeIds[0];
+
+      if (!nodeId) {
+        dispatch(endAnimation());
+        return;
+      }
+
+      dispatch(drawMazeNode({ nodeId, nodeStatus: currentJammingBlockType }));
+
+      animatedMazeNodeIds.shift();
+
+      return setTimeout(() => {
+        const timeoutId = animateNext(animatedMazeNodeIds);
+
+        dispatch(setAnimationTimeoutId(timeoutId));
+      }, SPEED_MS[animationSpeed]);
+    }
+
+    dispatch(startAnimation());
+    const animationTimeoutId = animateNext(animatedMazeNodeIdsCopy);
+    dispatch(setAnimationTimeoutId(animationTimeoutId));
+  }, [animatedMazeNodeIds]);
 
   return (
     <div className={style.Maze}>

@@ -18,7 +18,9 @@ const Node = ({
   const src = getImgSrcPathByNodeStatus(
     targetNode.weight > 1 &&
       (targetNode.status === NODE_STATUS.VISITED ||
-        targetNode.status === NODE_STATUS.VISITED2)
+        targetNode.status === NODE_STATUS.VISITED2 ||
+        targetNode.status === NODE_STATUS.PATH ||
+        targetNode.status === NODE_STATUS.PATH2)
       ? NODE_STATUS.WEIGHTED
       : targetNode.status,
   );

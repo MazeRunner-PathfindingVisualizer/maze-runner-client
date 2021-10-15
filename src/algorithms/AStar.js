@@ -1,4 +1,4 @@
-import { NODE_STATUS } from '../constant';
+import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import {
   getNextNodes,
   getShortestDistanceNodeIdAStar,
@@ -35,7 +35,7 @@ export const AStar = (byId, startNodeId, targetNodeId) => {
     animatedNodeIds.push(currentNodeId);
 
     if (currentNodeId === targetNodeId) {
-      return { message: 'success', animatedNodeIds };
+      return { message: PROGRESS_RESULT.SUCCESS, animatedNodeIds };
     }
 
     const nextNodes = getNextNodes(currentNode.id, byId);
@@ -49,7 +49,7 @@ export const AStar = (byId, startNodeId, targetNodeId) => {
       // A* 알고리즘 평가 함수: fn = gn + hn
       // fDistance = gDistance + hDistance
       // gn: 출발에서 지금(n) 까지의 경로 가중치
-      // hn: 지금(n) 부터 목표까지의 경로 가중치 - manhattan 거리로 n ~ 목표 거리 계산
+      // hn: 지금(n) 부터 목표까지의 경로 가중치 - (n ~ 목표 거리(manhattan 거리) 계산)
       // https://ko.wikipedia.org/wiki/A*_%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98
 
       const gDistance = currentNode.distance + nextNode.weight;
@@ -68,7 +68,7 @@ export const AStar = (byId, startNodeId, targetNodeId) => {
     });
   }
 
-  return { message: 'failure', animatedNodeIds };
+  return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
 export default AStar;

@@ -1,4 +1,4 @@
-import { NODE_STATUS } from '../constant';
+import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import { getNextNodes } from './common';
 
 export const DFS = (byId, startNodeId, targetNodeId) => {
@@ -23,7 +23,7 @@ export const DFS = (byId, startNodeId, targetNodeId) => {
     visitedNodeObject[currentNode.id] = NODE_STATUS.VISITED;
 
     if (currentNode.id === targetNodeId) {
-      return { message: 'success', animatedNodeIds };
+      return { message: PROGRESS_RESULT.SUCCESS, animatedNodeIds };
     }
 
     const nextNodes = getNextNodes(currentNode.id, byId);
@@ -41,7 +41,7 @@ export const DFS = (byId, startNodeId, targetNodeId) => {
     });
   }
 
-  return { message: 'failure', animatedNodeIds };
+  return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
 export default DFS;

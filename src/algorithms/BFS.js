@@ -1,4 +1,4 @@
-import { NODE_STATUS } from '../constant';
+import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import { getNextNodes } from './common';
 
 export const BFS = (byId, startNodeId, targetNodeId) => {
@@ -12,7 +12,7 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
     animatedNodeIds.push(currentNode.id);
 
     if (currentNode.id === targetNodeId) {
-      return { message: 'success', animatedNodeIds };
+      return { message: PROGRESS_RESULT.SUCCESS, animatedNodeIds };
     }
 
     const nextNodes = getNextNodes(currentNode.id, byId);
@@ -31,7 +31,7 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
     });
   }
 
-  return { message: 'failure', animatedNodeIds };
+  return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
 export default BFS;
