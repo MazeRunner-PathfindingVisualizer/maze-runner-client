@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-// eslint-disable-next-line no-unused-vars
-import { current } from '@reduxjs/toolkit';
 
 import { ALGORITHM, NODE_PROPERTY, NODE_STATUS } from '../../constant';
+import { createBasicRandomWall } from '../../mazePattern/basicRandomWall';
 import { recursiveDivisionWrapper } from '../../mazePattern/recursiveDivision';
 import {
   calcMazeBlockCount,
@@ -224,9 +223,28 @@ export const mazeOptionsSlice = createSlice({
         : NODE_STATUS.VISITED2;
     },
     drawMazeNode: (state, action) => {
-      const nodeId = action.payload;
+      const { nodeId, nodeStatus = NODE_STATUS.WALL } = action.payload;
+      const targetNode = state.nodes.byId[nodeId];
 
-      state.nodes.byId[nodeId].status = NODE_STATUS.WALL;
+      if (
+        nodeStatus !== NODE_STATUS.WALL &&
+        nodeStatus !== NODE_STATUS.WEIGHTED
+      ) {
+        return;
+      }
+
+      if (isFeatNode(state.nodes.byId[nodeId].status)) {
+        return;
+      }
+
+      if (nodeStatus === NODE_STATUS.WALL) {
+        changeToWallNode(targetNode);
+        return;
+      }
+
+      if (nodeStatus === NODE_STATUS.WEIGHTED) {
+        changeToWeightNode(targetNode, state.weightValue);
+      }
     },
     markPathNode: (state, action) => {
       const pathNodeId = action.payload;
@@ -346,21 +364,15 @@ export const mazeOptionsSlice = createSlice({
       resetNodeProperties(targetNode, ['All']);
       state.middleNodeId = null;
     },
-    drawRecursiveDivisionMaze: (state, action) => {
-      const skew = action.payload;
-
-      // recursiveDivision(
-      //   skew,
-      //   state.widthCount,
-      //   state.heightCount,
-      //   state.nodes.byId,
-      // );
+    drawRecursiveDivisionMaze: (state) => {
       state.animatedMazeNodeIds = recursiveDivisionWrapper(
-        skew,
         state.widthCount,
         state.heightCount,
         state.nodes,
       );
+    },
+    drawBasicRandomWall: (state) => {
+      state.animatedMazeNodeIds = createBasicRandomWall(state.nodes);
     },
   },
 });
@@ -385,6 +397,7 @@ export const {
   createMiddleNode,
   deleteMiddleNode,
   drawRecursiveDivisionMaze,
+  drawBasicRandomWall,
 } = mazeOptionsSlice.actions;
 
 export const selectMaze = (state) => state.maze;

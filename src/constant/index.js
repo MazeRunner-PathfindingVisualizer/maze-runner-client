@@ -198,6 +198,23 @@ export const NODE_PROPERTY = {
   DISTANCE: 'distance',
 };
 
+export const CALC_NUMBERS = {
+  HALF: 0.5,
+  QUARTER: 0.25,
+  TRIPLE: 3,
+};
+
+export const PROGRESS_RESULT = {
+  SUCCESS: 'success',
+  FAILURE: 'failure',
+  NONE: 'none',
+};
+
+export const PLAIN_DIRECTION = {
+  VERTICAL: 'vertical',
+  HORIZONTAL: 'horizontal',
+};
+
 export default {
   ALGORITHM,
   ALGORITHMS,
@@ -218,4 +235,7 @@ export default {
   WEIGHTED,
   SHORTEST,
   NODE_PROPERTY,
+  CALC_NUMBERS,
+  PROGRESS_RESULT,
+  PLAIN_DIRECTION,
 };

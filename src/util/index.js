@@ -96,4 +96,8 @@ export const getImgSrcPathByNodeStatus = (nodeStatus) => {
   }
 };
 
-export default { getAlgorithmInfo };
+export const rand = (min, max) => {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+export default { getAlgorithmInfo, rand };

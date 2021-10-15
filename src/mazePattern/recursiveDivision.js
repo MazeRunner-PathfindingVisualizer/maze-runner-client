@@ -1,37 +1,16 @@
-// import { NODE_STATUS } from '../constant';
-
-const rand = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
+import { PLAIN_DIRECTION } from '../constant';
+import { rand } from '../util';
 
 const isHeightLongThanWidth = (rowBegin, rowEnd, colBegin, colEnd) => {
   return rowEnd - (rowBegin + 2) > colEnd - colBegin;
 };
 
-const isMazeBorder = (row, col, widthCount, heightCount) => {
-  if (row === 0 || row === heightCount - 1) {
-    return true;
-  }
-  if (col === 0 || col === widthCount - 1) {
-    return true;
-  }
-  return false;
-};
-
-export const recursiveDivisionWrapper = (
-  skew = 'horizontal',
-  widthCount,
-  heightCount,
-  nodes,
-) => {
+export const recursiveDivisionWrapper = (widthCount, heightCount, nodes) => {
   const animatedMazeNodeIds = [];
-  nodes.allIds.flat().forEach((nodeId) => {
-    const [row, col] = nodeId.split('-').map(Number);
 
-    if (isMazeBorder(row, col, widthCount, heightCount)) {
-      animatedMazeNodeIds.push(nodeId);
-    }
-  });
+  const skew = isHeightLongThanWidth(0, heightCount - 1, 0, widthCount - 1)
+    ? PLAIN_DIRECTION.HORIZONTAL
+    : PLAIN_DIRECTION.VERTICAL;
 
   recursiveDivision(
     skew,
@@ -54,52 +33,54 @@ export const recursiveDivision = (
   nodes,
   animatedMazeNodeIds,
 ) => {
-  console.log(skew, rowBeginIndex, rowEndIndex, colBeginIndex, colEndIndex);
   if (rowEndIndex <= rowBeginIndex || colEndIndex <= colBeginIndex) {
     return;
   }
 
   const randomRowsBox = [];
   const randomColsBox = [];
-  if (skew === 'horizontal') {
-    for (let row = rowBeginIndex; row <= rowEndIndex - 1; row += 2) {
+
+  if (skew === PLAIN_DIRECTION.HORIZONTAL) {
+    for (let row = rowBeginIndex + 2; row <= rowEndIndex - 2; row += 2) {
       randomRowsBox.push(row);
     }
 
-    for (let col = colBeginIndex; col <= colEndIndex - 1; col += 2) {
+    for (let col = colBeginIndex - 1; col <= colEndIndex - 1; col += 2) {
       randomColsBox.push(col);
     }
-  } else if (skew === 'vertical') {
-    for (let row = rowBeginIndex; row <= rowEndIndex - 1; row += 2) {
+  } else if (skew === PLAIN_DIRECTION.VERTICAL) {
+    for (let row = rowBeginIndex - 1; row <= rowEndIndex - 1; row += 2) {
       randomRowsBox.push(row);
     }
 
-    for (let col = colBeginIndex; col <= colEndIndex - 1; col += 2) {
+    for (let col = colBeginIndex + 2; col <= colEndIndex - 2; col += 2) {
       randomColsBox.push(col);
     }
   }
 
+  if (!randomRowsBox.length || !randomColsBox.length) {
+    return;
+  }
+
   const rowIndex = rand(0, randomRowsBox.length);
   const row = randomRowsBox[rowIndex];
-  console.log(randomRowsBox, rowIndex, row);
 
   const colIndex = rand(0, randomColsBox.length);
   const col = randomColsBox[colIndex];
-  console.log(randomColsBox, colIndex, col);
 
   nodes.allIds.flat().forEach((nodeId) => {
     const [idRow, idCol] = nodeId.split('-').map(Number);
 
-    if (skew === 'horizontal') {
-      if (colBeginIndex - 1 >= idCol || colEndIndex + 1 <= idCol) {
+    if (skew === PLAIN_DIRECTION.HORIZONTAL) {
+      if (colBeginIndex - 1 > idCol || colEndIndex + 1 < idCol) {
         return;
       }
 
       if (idRow === row && idCol !== col) {
         animatedMazeNodeIds.push(nodeId);
       }
-    } else if (skew === 'vertical') {
-      if (rowBeginIndex - 1 >= idRow || rowEndIndex + 1 <= idRow) {
+    } else if (skew === PLAIN_DIRECTION.VERTICAL) {
+      if (rowBeginIndex - 1 > idRow || rowEndIndex + 1 < idRow) {
         return;
       }
 
@@ -109,23 +90,23 @@ export const recursiveDivision = (
     }
   });
 
-  if (skew === 'horizontal') {
+  if (skew === PLAIN_DIRECTION.HORIZONTAL) {
     const nextSkewA = isHeightLongThanWidth(
       rowBeginIndex,
       row,
       colBeginIndex,
       colEndIndex,
     )
-      ? 'horizontal'
-      : 'vertical';
+      ? PLAIN_DIRECTION.HORIZONTAL
+      : PLAIN_DIRECTION.VERTICAL;
     const nextSkewB = isHeightLongThanWidth(
       row,
       rowEndIndex,
       colBeginIndex,
       colEndIndex,
     )
-      ? 'horizontal'
-      : 'vertical';
+      ? PLAIN_DIRECTION.HORIZONTAL
+      : PLAIN_DIRECTION.VERTICAL;
 
     recursiveDivision(
       nextSkewA,
@@ -145,23 +126,23 @@ export const recursiveDivision = (
       nodes,
       animatedMazeNodeIds,
     );
-  } else if (skew === 'vertical') {
+  } else if (skew === PLAIN_DIRECTION.VERTICAL) {
     const nextSkewA = isHeightLongThanWidth(
       rowBeginIndex,
       rowEndIndex,
       colBeginIndex,
       col,
     )
-      ? 'horizontal'
-      : 'vertical';
+      ? PLAIN_DIRECTION.HORIZONTAL
+      : PLAIN_DIRECTION.VERTICAL;
     const nextSkewB = isHeightLongThanWidth(
       rowBeginIndex,
       rowEndIndex,
       col,
       colEndIndex,
     )
-      ? 'horizontal'
-      : 'vertical';
+      ? PLAIN_DIRECTION.HORIZONTAL
+      : PLAIN_DIRECTION.VERTICAL;
 
     recursiveDivision(
       nextSkewA,

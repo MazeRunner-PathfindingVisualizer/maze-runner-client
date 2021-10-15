@@ -1,8 +1,10 @@
 import {
   ALGORITHM,
+  CALC_NUMBERS,
   NODE_PROPERTY,
   NODE_STATUS,
   NODE_STATUS_LIST,
+  PROGRESS_RESULT,
 } from '../constant';
 import { MAZE } from '../constant/maze';
 
@@ -16,10 +18,6 @@ import AStar from '../algorithms/AStar';
 const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
 const MAZE_DESC_HEIGHT_REM = parseInt(mazeDescriptionHeight.slice(0, -3), 10);
 const REM_TO_PX = 16;
-
-const QUARTER = 0.25;
-const HALF = 0.5;
-const TRIPLE = 3;
 
 export const calcMazeBlockCount = (widthPx, heightPx) => {
   const widthCount =
@@ -39,15 +37,16 @@ const calcNewNodeStatus = (indexes, size) => {
   const { widthCount, heightCount } = size;
 
   if (
-    rowIndex === parseInt(heightCount * HALF, 10) &&
-    colIndex === parseInt(widthCount * QUARTER, 10)
+    rowIndex === parseInt(heightCount * CALC_NUMBERS.HALF, 10) &&
+    colIndex === parseInt(widthCount * CALC_NUMBERS.QUARTER, 10)
   ) {
     return 'start';
   }
 
   if (
-    rowIndex === parseInt(heightCount * HALF, 10) &&
-    colIndex === parseInt(widthCount * TRIPLE * QUARTER, 10)
+    rowIndex === parseInt(heightCount * CALC_NUMBERS.HALF, 10) &&
+    colIndex ===
+      parseInt(widthCount * CALC_NUMBERS.TRIPLE * CALC_NUMBERS.QUARTER, 10)
   ) {
     return 'end';
   }
@@ -258,7 +257,7 @@ export const changeToMiddleNode = (targetNode) => {
 };
 
 const addPathNodeIdsToResultObject = (obj, byId, beginNodeStatus) => {
-  if (obj.message === 'success') {
+  if (obj.message === PROGRESS_RESULT.SUCCESS) {
     const animatedPathNodeIds = calcPathNodeIds(
       obj.animatedNodeIds,
       byId,
@@ -287,7 +286,9 @@ export const runAlgorithm = (
     addPathNodeIdsToResultObject(route1, nodes.byId, NODE_STATUS.START);
 
     const route1AnimatedPathNodeIds =
-      route1.message === 'success' ? [...route1.animatedPathNodeIds] : [];
+      route1.message === PROGRESS_RESULT.SUCCESS
+        ? [...route1.animatedPathNodeIds]
+        : [];
 
     resetAllNodeProperties(nodes);
     const route2 = getAlgorithmFunctionByName(algorithmName)(
@@ -298,7 +299,9 @@ export const runAlgorithm = (
     addPathNodeIdsToResultObject(route2, nodes.byId, NODE_STATUS.MIDDLE);
 
     const route2AnimatedPathNodeIds =
-      route2.message === 'success' ? [...route2.animatedPathNodeIds] : [];
+      route2.message === PROGRESS_RESULT.SUCCESS
+        ? [...route2.animatedPathNodeIds]
+        : [];
 
     result.animatedNodeIds = [
       ...route1.animatedNodeIds,
@@ -312,9 +315,10 @@ export const runAlgorithm = (
     ];
 
     result.message =
-      route1.message === 'success' && route2.message === 'success'
-        ? 'success'
-        : 'failure';
+      route1.message === PROGRESS_RESULT.SUCCESS &&
+      route2.message === PROGRESS_RESULT.SUCCESS
+        ? PROGRESS_RESULT.SUCCESS
+        : PROGRESS_RESULT.FAILURE;
   } else {
     resetAllNodeProperties(nodes);
     const route = getAlgorithmFunctionByName(algorithmName)(
@@ -327,7 +331,9 @@ export const runAlgorithm = (
     result.message = route.message;
     result.animatedNodeIds = route.animatedNodeIds;
     result.animatedPathNodeIds =
-      route.message === 'success' ? route.animatedPathNodeIds : [];
+      route.message === PROGRESS_RESULT.SUCCESS
+        ? route.animatedPathNodeIds
+        : [];
   }
 
   return result;

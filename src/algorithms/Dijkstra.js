@@ -1,4 +1,4 @@
-import { NODE_STATUS } from '../constant';
+import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import { getNextNodes, getShortestDistanceNodeId } from './common';
 
 export const Dijkstra = (byId, startNodeId, targetNodeId) => {
@@ -27,7 +27,7 @@ export const Dijkstra = (byId, startNodeId, targetNodeId) => {
     animatedNodeIds.push(currentNodeId);
 
     if (currentNodeId === targetNodeId) {
-      return { message: 'success', animatedNodeIds };
+      return { message: PROGRESS_RESULT.SUCCESS, animatedNodeIds };
     }
 
     const nextNodes = getNextNodes(currentNode.id, byId);
@@ -48,7 +48,7 @@ export const Dijkstra = (byId, startNodeId, targetNodeId) => {
     });
   }
 
-  return { message: 'failure', animatedNodeIds };
+  return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
 export default Dijkstra;
