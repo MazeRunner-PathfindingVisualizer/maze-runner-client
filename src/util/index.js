@@ -1,5 +1,6 @@
 import {
   ALGORITHM,
+  NAV,
   NODE_IMAGE_PATH,
   NODE_STATUS,
   SHORTEST,
@@ -100,4 +101,12 @@ export const rand = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-export default { getAlgorithmInfo, rand };
+export const isNotStartButton = (navListItem) => {
+  if (navListItem.title === NAV.START) {
+    return false;
+  }
+
+  return true;
+};
+
+export default { getAlgorithmInfo, rand, isNotStartButton };

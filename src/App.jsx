@@ -12,6 +12,10 @@ import {
 } from './features/maze/mazeSlice';
 
 import style from './App.module.css';
+import {
+  closeSideMenuButtonStatus,
+  selectSideMenuButtonStatus,
+} from './features/nav/navSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -21,9 +25,15 @@ function App() {
   maze.width = useSelector(selectMazeWidth);
   maze.height = useSelector(selectMazeHeight);
 
+  const isSideMenuButtonOpen = useSelector(selectSideMenuButtonStatus);
+
   useEffect(() => {
     if (!maze.width || !maze.height) {
       dispatch(createMaze({ width, height }));
+    }
+
+    if (isSideMenuButtonOpen) {
+      dispatch(closeSideMenuButtonStatus());
     }
   }, [width, height]);
 
