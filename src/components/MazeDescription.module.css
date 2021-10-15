@@ -1,0 +1,48 @@
+@value mazeDescriptionHeight: 8rem;
+
+.MazeDescription {
+  width: 100%;
+  height: mazeDescriptionHeight;
+}
+
+.NodeInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+}
+
+.NodeInfoMemo {
+  position: relative;
+  width: 0;
+  right: -1.5rem;
+  font-family: 'Gochi Hand', cursive;
+  white-space: nowrap;
+}
+
+.NodeInfoMemoArrow {
+  position: absolute;
+  top: -30px;
+  left: -10px;
+  width: 30px;
+  height: 30px;
+}
+
+.NodeImage {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.SelectedOptionInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+}
+
+.HurdleNodeWrapper {
+  display: flex;
+  flex-direction: row;
+  border: 2px solid black;
+  padding: 10px;
+}

@@ -1,0 +1,13 @@
+@value headerHeight: 5rem;
+
+.App {
+  text-align: center;
+  width: 100%;
+}
+
+.AppHeader {
+  height: headerHeight;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

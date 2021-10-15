@@ -1,0 +1,90 @@
+.Node {
+  min-width: 25px;
+  height: 100%;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  box-sizing: border-box;
+  background-color: #6c6c6c;
+}
+
+.Node:last-child {
+  border-right: 1px solid black;
+}
+
+.MazeRow:last-child .Node {
+  border-bottom: 1px solid black;
+}
+
+.start,
+.middle,
+.end {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  background-color: white;
+}
+
+.visited {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  background-color: #02343f;
+}
+
+.visited2 {
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  background-color: #f0edcc;
+}
+
+.unvisited {
+}
+
+.path {
+  animation-name: fadeInPath;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.path2 {
+  animation-name: fadeInPath2;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    background-color: #acc7b4;
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInPath {
+  0% {
+    display: none;
+    background-color: none;
+    transform: scale(1.3);
+  }
+  100% {
+    display: block;
+    background-color: yellow;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInPath2 {
+  0% {
+    display: none;
+    background-color: none;
+    transform: scale(1.3);
+  }
+  100% {
+    display: block;
+    background-color: gold;
+    transform: scale(1);
+  }
+}
