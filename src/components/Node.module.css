@@ -1,10 +1,10 @@
 .Node {
   min-width: 25px;
   height: 100%;
-  border-left: 1px solid black;
-  border-top: 1px solid black;
+  border-left: 1px solid #424b54;
+  border-top: 1px solid #424b54;
   box-sizing: border-box;
-  background-color: #6c6c6c;
+  background-color: #028090;
 }
 
 .Node:last-child {
@@ -21,7 +21,7 @@
   animation-name: fadeIn;
   animation-duration: 1s;
   animation-fill-mode: forwards;
-  background-color: white;
+  background-color: #000000;
 }
 
 .visited {
@@ -38,9 +38,6 @@
   background-color: #f0edcc;
 }
 
-.unvisited {
-}
-
 .path {
   animation-name: fadeInPath;
   animation-duration: 1s;
@@ -55,7 +52,7 @@
 
 @keyframes fadeIn {
   0% {
-    background-color: #acc7b4;
+    background-color: #38302e;
     transform: scale(1.3);
   }
   100% {
@@ -66,12 +63,12 @@
 @keyframes fadeInPath {
   0% {
     display: none;
-    background-color: none;
+    background-color: black;
     transform: scale(1.3);
   }
   100% {
     display: block;
-    background-color: yellow;
+    background-color: #f45b69;
     transform: scale(1);
   }
 }
@@ -79,12 +76,12 @@
 @keyframes fadeInPath2 {
   0% {
     display: none;
-    background-color: none;
+    background-color: black;
     transform: scale(1.3);
   }
   100% {
     display: block;
-    background-color: gold;
+    background-color: #f45b69;
     transform: scale(1);
   }
 }

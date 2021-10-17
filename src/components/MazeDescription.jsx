@@ -2,14 +2,23 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import MazeOption from './MazeOption';
-import { MAZE_OPTIONS, NODE_STATUS, NODE_TYPES } from '../constant';
-import { selectMazeOptions } from '../features/mazeOptions/mazeOptionsSlice';
+import {
+  MAZE_OPTIONS,
+  NODE_STATUS,
+  NODE_TYPES,
+  USER_GUIDE_TEXT,
+} from '../constant';
+import {
+  selectAlgorithm,
+  selectMazeOptions,
+} from '../features/mazeOptions/mazeOptionsSlice';
 
 import style from './MazeDescription.module.css';
 import NodeType from './NodeType';
 
 const MazeDescription = () => {
-  const currentMazeOptions = useSelector(selectMazeOptions);
+  const mazeOptions = useSelector(selectMazeOptions);
+  const mazeAlgorithm = useSelector(selectAlgorithm);
 
   function isHurdleNode(nodeType) {
     return (
@@ -39,20 +48,28 @@ const MazeDescription = () => {
               src={'/image/arrowPigTail.png'}
               alt="arrow pig tail shape"
             />
-            Click me
+            {USER_GUIDE_TEXT.CLICK_ME}
           </div>
         </div>
       </div>
-      <div className={style.SelectedOptionInfo}>
-        {MAZE_OPTIONS.map((mazeOption) => (
-          <MazeOption
-            item={{
-              [mazeOption]: currentMazeOptions[mazeOption.toLowerCase()],
-            }}
-            key={mazeOption}
-          />
-        ))}
-      </div>
+      {mazeAlgorithm === 'none' ? (
+        <div className={style.SelectedOptionInfo}>
+          <span className={style.AlgorithmSelectMessage}>
+            {USER_GUIDE_TEXT.SELECT_YOUR_ALGO}
+          </span>
+        </div>
+      ) : (
+        <div className={style.SelectedOptionInfo}>
+          {MAZE_OPTIONS.map((mazeOption) => (
+            <MazeOption
+              item={{
+                [mazeOption]: mazeOptions[mazeOption.toLowerCase()],
+              }}
+              key={mazeOption}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };

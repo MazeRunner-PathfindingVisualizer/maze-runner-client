@@ -26,9 +26,21 @@
   white-space: nowrap;
 }
 
+.StartButton {
+  background-color: transparent;
+  color: #393939;
+  text-decoration-line: line-through;
+}
+
+.StartButtonReady {
+  background-color: #ad2e24;
+  color: #e0fbfc;
+  text-decoration-line: none;
+}
+
 button {
   border: 1px solid black;
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   background-color: transparent;
   cursor: pointer;
 }
@@ -76,6 +88,8 @@ button {
   width: 50vw;
   height: 100vh;
   left: -50vw;
+  border: 1px dashed black;
+  box-sizing: border-box;
   background-color: white;
 }
 

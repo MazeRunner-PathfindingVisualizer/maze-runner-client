@@ -18,15 +18,14 @@ import AStar from '../algorithms/AStar';
 const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
 const MAZE_DESC_HEIGHT_REM = parseInt(mazeDescriptionHeight.slice(0, -3), 10);
 const REM_TO_PX = 16;
-const MARGIN_BOTTOM_PX = 10;
 
 export const calcMazeBlockCount = (widthPx, heightPx) => {
   const widthCount =
-    (widthPx - MAZE.MARGIN_PX * MAZE.DOUBLE) / MAZE.BLOCK_SIZE_PX;
+    (widthPx - MAZE.MAZE_SIDE_MARGIN_PX * MAZE.DOUBLE) / MAZE.BLOCK_SIZE_PX;
   const heightCount =
     (heightPx -
       REM_TO_PX * (HEADER_HEIGHT_REM + MAZE_DESC_HEIGHT_REM) -
-      MARGIN_BOTTOM_PX) /
+      MAZE.MARGIN_BOTTOM_PX) /
     MAZE.BLOCK_SIZE_PX;
 
   return {

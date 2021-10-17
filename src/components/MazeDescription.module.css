@@ -40,6 +40,11 @@
   height: 4rem;
 }
 
+.AlgorithmSelectMessage {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 2rem;
+}
+
 .HurdleNodeWrapper {
   display: flex;
   flex-direction: row;

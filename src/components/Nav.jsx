@@ -167,17 +167,11 @@ const Nav = () => {
             key={item.title}
           >
             <button
-              className={style.SideBarButton}
+              className={`${style.SideBarButton}`}
               onClick={handleOnClick}
-              name={
-                item.title === NAV.START && isProgressive
-                  ? NAV.STOP
-                  : item.title
-              }
+              name={item.title}
             >
-              {item.title === NAV.START && isProgressive
-                ? NAV.STOP
-                : item.title}
+              {item.title}
               {item.hasDropdown && <IoMdArrowDropdown />}
             </button>
             {item.hasDropdown && item.title === menuStatus && (
@@ -211,25 +205,35 @@ const Nav = () => {
             }`}
             key={item.title}
           >
-            <button
-              className={style.NavButton}
-              onClick={handleOnClick}
-              name={
-                item.title === NAV.START && isProgressive
-                  ? NAV.STOP
-                  : item.title
-              }
-            >
-              {item.title === NAV.START && isProgressive
-                ? NAV.STOP
-                : item.title}
-              {item.hasDropdown && <IoMdArrowDropdown />}
-            </button>
-            {item.hasDropdown && item.title === menuStatus && (
-              <Dropdown
-                items={item.child}
-                handleOnClick={handleOnDropdownClick}
-              />
+            {item.title === NAV.START ? (
+              <>
+                <button
+                  className={`${style.NavButton} ${style.StartButton} ${
+                    currentAlgorithm !== 'none' && style.StartButtonReady
+                  }`}
+                  onClick={handleOnClick}
+                  name={isProgressive ? NAV.STOP : item.title}
+                >
+                  {isProgressive ? NAV.STOP : item.title}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className={style.NavButton}
+                  onClick={handleOnClick}
+                  name={item.title}
+                >
+                  {item.title}
+                  {item.hasDropdown && <IoMdArrowDropdown />}
+                </button>
+                {item.hasDropdown && item.title === menuStatus && (
+                  <Dropdown
+                    items={item.child}
+                    handleOnClick={handleOnDropdownClick}
+                  />
+                )}
+              </>
             )}
           </li>
         ))}
