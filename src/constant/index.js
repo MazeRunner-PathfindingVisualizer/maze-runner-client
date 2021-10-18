@@ -92,10 +92,10 @@ export const NAV_LIST = [
     hasDropdown: true,
     child: MAZE_AND_PATTERNS_DROPDOWN_LIST,
   },
-  {
-    title: NAV.ADD_MIDDLE_POINT,
-    hasDropdown: false,
-  },
+  // {
+  //   title: NAV.ADD_MIDDLE_POINT,
+  //   hasDropdown: false,
+  // },
   {
     title: NAV.START,
     hasDropdown: false,
@@ -186,8 +186,8 @@ export const WEIGHTED = {
 };
 
 export const SHORTEST = {
-  GUARANTEE: 'guarantee',
-  NO_GUARANTEE: 'no-guarantee',
+  GUARANTEE: 'guaranteed',
+  NO_GUARANTEE: 'no-guaranteed',
   NONE: 'none',
 };
 

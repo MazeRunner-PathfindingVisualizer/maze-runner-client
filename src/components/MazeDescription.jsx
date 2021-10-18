@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import MazeOption from './MazeOption';
 import {
@@ -15,15 +15,44 @@ import {
 
 import style from './MazeDescription.module.css';
 import NodeType from './NodeType';
+import {
+  changeCurrentJamBlockType,
+  createMiddleNode,
+  deleteMiddleNode,
+  selectMiddleNodeId,
+} from '../features/maze/mazeSlice';
 
 const MazeDescription = () => {
   const mazeOptions = useSelector(selectMazeOptions);
   const mazeAlgorithm = useSelector(selectAlgorithm);
+  const middleNodeId = useSelector(selectMiddleNodeId);
+  const dispatch = useDispatch();
 
-  function isHurdleNode(nodeType) {
+  function isHurdleOrStopoverNode(nodeType) {
     return (
-      nodeType.id === NODE_STATUS.WEIGHTED || nodeType.id === NODE_STATUS.WALL
+      nodeType.id === NODE_STATUS.WEIGHTED ||
+      nodeType.id === NODE_STATUS.WALL ||
+      nodeType.id === NODE_STATUS.MIDDLE
     );
+  }
+
+  function handleOnClick(id) {
+    console.log(id);
+    const isJamBlock = id === NODE_STATUS.WEIGHTED || id === NODE_STATUS.WALL;
+
+    if (isJamBlock) {
+      dispatch(changeCurrentJamBlockType(id));
+    }
+
+    const isAppleBlock = id === NODE_STATUS.MIDDLE;
+
+    if (isAppleBlock) {
+      if (!middleNodeId) {
+        dispatch(createMiddleNode());
+      } else {
+        dispatch(deleteMiddleNode());
+      }
+    }
   }
 
   return (
@@ -31,15 +60,19 @@ const MazeDescription = () => {
       <div className={style.NodeInfo}>
         {NODE_TYPES.map(
           (nodeType) =>
-            isHurdleNode(nodeType) || (
+            isHurdleOrStopoverNode(nodeType) || (
               <NodeType type={nodeType} key={nodeType.title} />
             ),
         )}
         <div className={style.HurdleNodeWrapper}>
           {NODE_TYPES.map(
             (nodeType) =>
-              isHurdleNode(nodeType) && (
-                <NodeType type={nodeType} key={nodeType.title} />
+              isHurdleOrStopoverNode(nodeType) && (
+                <NodeType
+                  type={nodeType}
+                  key={nodeType.title}
+                  onClick={handleOnClick}
+                />
               ),
           )}
           <div className={style.NodeInfoMemo}>

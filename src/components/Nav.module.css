@@ -1,9 +1,17 @@
+@value makerMercury, makerSonicSilver, makerFauxBrightGray, makerOrangePeel, makerFauxDarkCerulean, makerBlack, makerWhite from '../common/colors.css';
+
 .Nav {
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100%;
   font-size: 1rem;
+}
+
+button {
+  border: none;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .NavItems {
@@ -19,30 +27,45 @@
   margin: 0 10px;
 }
 
-.NavButton {
-  width: 100%;
+.NavButton,
+.SideBarButton {
+  padding: 5px 0px;
+  width: 80%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border-radius: 5px;
+  color: makerSonicSilver;
+  background-color: makerMercury;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+.NavButton:hover {
+  opacity: 0.8;
 }
 
 .StartButton {
-  background-color: transparent;
-  color: #393939;
+  border-radius: 5px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+  width: 70%;
+  padding: 10px 0px;
   text-decoration-line: line-through;
+  color: makerSonicSilver;
+  background-color: makerFauxBrightGray;
+}
+
+.StartButtonReady:hover {
+  opacity: 0.8;
 }
 
 .StartButtonReady {
-  background-color: #ad2e24;
-  color: #e0fbfc;
+  background-color: makerOrangePeel;
+  color: makerFauxDarkCerulean;
+  font-weight: bold;
+  font-size: 1.2rem;
   text-decoration-line: none;
-}
-
-button {
-  border: 1px solid black;
-  border-radius: 0.4rem;
-  background-color: transparent;
-  cursor: pointer;
 }
 
 .Logo {
@@ -88,9 +111,9 @@ button {
   width: 50vw;
   height: 100vh;
   left: -50vw;
-  border: 1px dashed black;
+  border: 1px dashed makerBlack;
   box-sizing: border-box;
-  background-color: white;
+  background-color: makerWhite;
 }
 
 .SideBarItem {
