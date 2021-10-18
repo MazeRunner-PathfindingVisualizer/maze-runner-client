@@ -25,9 +25,9 @@ const NodeType = ({ type, onClick }) => {
 
   return (
     <div
-      className={`${style.NodeType} ${isClickableBlock && style.jamNodeType} ${
-        isSelected && style.SelectedJamNodeType
-      }`}
+      className={`${style.NodeType} ${
+        isClickableBlock && style.ClickableNode
+      } ${isSelected && style.SelectedJamNodeType}`}
       onClick={() => onClick(id)}
     >
       <img className={style.NodeTypeImage} src={imagePath} alt={title} />

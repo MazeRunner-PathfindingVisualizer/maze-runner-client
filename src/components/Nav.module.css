@@ -54,10 +54,16 @@ button {
   text-decoration-line: line-through;
   color: makerSonicSilver;
   background-color: makerFauxBrightGray;
+  cursor: not-allowed;
+}
+
+.StartButton:hover {
+  opacity: 1;
 }
 
 .StartButtonReady:hover {
   opacity: 0.8;
+  cursor: pointer;
 }
 
 .StartButtonReady {
