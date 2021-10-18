@@ -1,4 +1,5 @@
 @value mazeDescriptionHeight: 8rem;
+@value makerMercury from '../common/colors.css';
 
 .MazeDescription {
   width: 100%;
@@ -45,9 +46,16 @@
   font-size: 2rem;
 }
 
-.HurdleNodeWrapper {
+.ClickableNodeWrapper {
   display: flex;
   flex-direction: row;
   border: 2px solid black;
   padding: 10px;
+}
+
+.NodeTypeDivider {
+  margin: 0px 10px;
+  width: 0px;
+  height: 50%;
+  border-right: 5px solid makerMercury;
 }

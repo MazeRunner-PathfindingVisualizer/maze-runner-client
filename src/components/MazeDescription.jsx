@@ -64,7 +64,8 @@ const MazeDescription = () => {
               <NodeType type={nodeType} key={nodeType.title} />
             ),
         )}
-        <div className={style.HurdleNodeWrapper}>
+        <div className={style.NodeTypeDivider} />
+        <div className={style.ClickableNodeWrapper}>
           {NODE_TYPES.map(
             (nodeType) =>
               isHurdleOrStopoverNode(nodeType) && (
