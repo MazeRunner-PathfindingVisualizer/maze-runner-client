@@ -15,7 +15,7 @@
   width: 100%;
   height: auto;
   padding: 10px 0;
-  z-index: 10;
+  z-index: 1;
   box-sizing: border-box;
   border: 1px dotted makerSilver;
   background-color: makerWhite;

@@ -15,12 +15,17 @@
 @value makerFauxMetallicSeaweedOpacity: #02809088;
 @value makerFauxPrussianBlue: #02343f;
 @value makerJellyBean: #2c7da0;
+@value makerPictonBlue: #4cc9f0;
 
 /* orange */
 
 @value makerOrangePeel: #ff9705d2;
-@value makerTomato: #FF6347;
+@value makerTomato: #ff6347;
 
 /* purple */
 
-@value makerMagenta: #FF00FF;
+@value makerMagenta: #ff00ff;
+
+/* etc */
+
+@value makerGreenYellow: #9acd32;

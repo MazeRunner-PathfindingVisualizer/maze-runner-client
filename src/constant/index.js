@@ -105,10 +105,10 @@ export const NAV_LIST = [
     hasDropdown: true,
     child: CLEAR_MAZE_DROPDOWN_LIST,
   },
-  // {
-  //   title: NAV.SAVE_AND_SHARE,
-  //   hasDropdown: false,
-  // },
+  {
+    title: NAV.SAVE_AND_SHARE,
+    hasDropdown: false,
+  },
   {
     title: NAV.SPEED,
     hasDropdown: true,
@@ -218,6 +218,11 @@ export const PLAIN_DIRECTION = {
 export const USER_GUIDE_TEXT = {
   SELECT_YOUR_ALGO: 'Select your algorithm!',
   CLICK_ME: 'Click me',
+};
+
+export const RESPONSE_RESULT = {
+  OK: 'ok',
+  ERROR: 'error',
 };
 
 export default {

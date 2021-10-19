@@ -1,7 +1,8 @@
-@value makerFauxMetallicSeaweedOpacity, makerMercury, makerWhite, makerTomato, makerFauxPrussianBlue, makerJellyBean, makerGhostWhite, makerVeryLightGray from '../common/colors.css';
+@value makerFauxMetallicSeaweedOpacity, makerMercury, makerWhite, makerTomato, makerFauxPrussianBlue, makerJellyBean, makerGhostWhite, makerVeryLightGray, makerOrangePeel from '../common/colors.css';
+@value nodeWidth from '../common/sizes.css';
 
 .Node {
-  min-width: 25px;
+  min-width: nodeWidth;
   height: 100%;
   border-left: 1px solid makerWhite;
   border-top: 1px solid makerWhite;
@@ -83,7 +84,7 @@
   }
   100% {
     display: block;
-    background-color: makerVeryLightGray;
+    background-color: makerOrangePeel;
     transform: scale(1);
   }
 }
@@ -96,7 +97,7 @@
   }
   100% {
     display: block;
-    background-color: makerVeryLightGray;
+    background-color: makerOrangePeel;
     transform: scale(1);
   }
 }

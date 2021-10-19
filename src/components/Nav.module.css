@@ -1,4 +1,4 @@
-@value makerMercury, makerSonicSilver, makerFauxBrightGray, makerOrangePeel, makerFauxDarkCerulean, makerBlack, makerWhite from '../common/colors.css';
+@value makerMercury, makerSonicSilver, makerFauxBrightGray, makerOrangePeel, makerFauxDarkCerulean, makerBlack, makerWhite, makerPictonBlue, makerGreenYellow from '../common/colors.css';
 
 .Nav {
   display: flex;
@@ -84,6 +84,12 @@ button {
   height: 100%;
 }
 
+.LogoImage:hover {
+  animation-name: randomDegRotate;
+  animation-duration: 100s;
+  animation-fill-mode: forwards;
+}
+
 .SideButton {
   display: none;
   min-width: 1rem;
@@ -136,6 +142,49 @@ button {
   transition: transform 0.3s linear;
 }
 
+.ModalChildren {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 10px;
+  background-color: makerPictonBlue;
+}
+
+.ModalTitle {
+  margin: 5px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.ModalLink {
+  border-radius: 3px;
+  padding: 5px;
+  background-color: makerWhite;
+  margin: 5px;
+}
+
+.ModalCopyButton {
+  background-color: makerMercury;
+  border-radius: 3px;
+  padding: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+.ModalCopyButton:hover {
+  opacity: 0.8;
+}
+
+.ModalCopyCompleteMessage {
+  position: absolute;
+  top: -30px;
+  border-radius: 2px;
+  padding: 3px;
+  background-color: makerGreenYellow;
+}
+
 @media screen and (max-width: 48rem) {
   .NavItem {
     display: none;
@@ -151,5 +200,14 @@ button {
 
   .SideButton {
     display: block;
+  }
+}
+
+@keyframes randomDegRotate {
+  0% {
+  }
+
+  100% {
+    transform: rotate(99999deg);
   }
 }

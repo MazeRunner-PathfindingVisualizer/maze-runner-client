@@ -1,53 +1,22 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Nav from './components/Nav';
-import MazeDescription from './components/MazeDescription';
-import Maze from './components/Maze';
-import useWindowSize from './components/hook/useWindowSize';
-import {
-  createMaze,
-  selectMazeWidth,
-  selectMazeHeight,
-} from './features/maze/mazeSlice';
+import MazeRunner from './components/MazeRunner';
 
-import style from './App.module.css';
-import {
-  closeSideMenuButtonStatus,
-  selectSideMenuButtonStatus,
-} from './features/nav/navSlice';
-
-function App() {
-  const dispatch = useDispatch();
-  const { width, height } = useWindowSize();
-
-  const maze = {};
-  maze.width = useSelector(selectMazeWidth);
-  maze.height = useSelector(selectMazeHeight);
-
-  const isSideMenuButtonOpen = useSelector(selectSideMenuButtonStatus);
-
-  useEffect(() => {
-    if (!maze.width || !maze.height) {
-      dispatch(createMaze({ width, height }));
-    }
-
-    if (isSideMenuButtonOpen) {
-      dispatch(closeSideMenuButtonStatus());
-    }
-  }, [width, height]);
-
+const App = () => {
   return (
-    <div className={style.App}>
-      <header className={style.AppHeader}>
-        <Nav />
-      </header>
-      <main className={style.AppMain}>
-        <MazeDescription />
-        <Maze />
-      </main>
-    </div>
+    <Switch>
+      <Route exact path="/">
+        <Redirect to="/maze" />
+      </Route>
+      <Route exact path="/maze">
+        <MazeRunner />
+      </Route>
+      <Route path="/maze/:mazeId">
+        <MazeRunner />
+      </Route>
+    </Switch>
   );
-}
+};
 
 export default App;

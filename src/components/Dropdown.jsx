@@ -10,6 +10,7 @@ const Dropdown = ({ isMobile, items, handleOnClick }) => {
         <li className={style.DropdownItem} key={idx}>
           <button
             className={style.DropdownButton}
+            type="button"
             onClick={handleOnClick}
             name={item}
           >

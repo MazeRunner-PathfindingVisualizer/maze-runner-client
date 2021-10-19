@@ -1,6 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { ALGORITHM, NODE_PROPERTY, NODE_STATUS } from '../../constant';
+import {
+  ALGORITHM,
+  NODE_PROPERTY,
+  NODE_STATUS,
+  RESPONSE_RESULT,
+} from '../../constant';
+import { ERROR } from '../../constant/error';
+import { MAZE } from '../../constant/maze';
 import { createBasicRandomWall } from '../../mazePattern/basicRandomWall';
 import { recursiveDivisionWrapper } from '../../mazePattern/recursiveDivision';
 import {
@@ -13,7 +20,9 @@ import {
   changeToMiddleNode,
   runAlgorithm,
   resetAllNodeProperties,
+  mazeInfoToData,
 } from '../../util/maze';
+import { getMaze, saveMaze } from './mazeAPI';
 
 const initialState = {
   width: 0,
@@ -49,7 +58,42 @@ const initialState = {
   currentJammingBlockType: NODE_STATUS.WALL,
 
   weightValue: 10,
+
+  isErrorOccurred: false,
+  error: null,
+
+  mazeId: null,
 };
+
+export const saveMazeAsync = createAsyncThunk(
+  'maze/saveMaze',
+  async (mazeInfo) => {
+    const data = mazeInfoToData(mazeInfo);
+    const textResponse = await saveMaze(data);
+    const response = JSON.parse(textResponse);
+
+    if (response.result === RESPONSE_RESULT.ERROR) {
+      throw new Error(ERROR.SERVER_ERROR);
+    }
+
+    return response;
+  },
+);
+
+export const getMazeAsync = createAsyncThunk('maze/getMaze', async (mazeId) => {
+  try {
+    const textResponse = await getMaze(mazeId);
+    const response = JSON.parse(textResponse);
+
+    if (response.result === RESPONSE_RESULT.ERROR) {
+      throw new Error(ERROR.SERVER_ERROR);
+    }
+
+    return response;
+  } catch (err) {
+    return err;
+  }
+});
 
 export const mazeOptionsSlice = createSlice({
   name: 'maze',
@@ -375,6 +419,97 @@ export const mazeOptionsSlice = createSlice({
       state.animatedMazeNodeIds = createBasicRandomWall(state.nodes);
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(saveMazeAsync.rejected, (state, action) => {
+        console.error('save maze rejected: ', action.error);
+      })
+      .addCase(saveMazeAsync.fulfilled, (state, action) => {
+        const result = action.payload;
+
+        if (result instanceof Error) {
+          state.isErrorOccurred = true;
+          state.error = action.payload.message;
+
+          return;
+        }
+
+        const { mazeId } = result;
+
+        state.mazeId = mazeId;
+      });
+
+    builder
+      .addCase(getMazeAsync.rejected, (state, action) => {
+        console.error('get maze rejected: ', action.error);
+      })
+      .addCase(getMazeAsync.fulfilled, (state, action) => {
+        if (action.payload instanceof Error) {
+          state.isErrorOccurred = true;
+          state.error = action.payload.message;
+
+          return;
+        }
+
+        const data = action.payload;
+        const { maze } = data;
+        const { block } = maze;
+
+        const [widthCount, heightCount] = [block[0].length, block.length];
+
+        state.width =
+          widthCount * MAZE.BLOCK_SIZE_PX + MAZE.MAZE_SIDE_MARGIN_PX;
+        state.height = heightCount * MAZE.BLOCK_SIZE_PX + MAZE.MARGIN_BOTTOM_PX;
+        state.widthCount = widthCount;
+        state.heightCount = heightCount;
+
+        const nodes = createNodes(widthCount, heightCount);
+        const { byId, allIds } = nodes;
+
+        block.forEach((row, rowIndex) =>
+          row.forEach((number, colIndex) => {
+            const nodeId = `${rowIndex}-${colIndex}`;
+
+            switch (number) {
+              case 0: {
+                byId[nodeId].status = NODE_STATUS.UNVISITED;
+                return;
+              }
+              case 1: {
+                byId[nodeId].status = NODE_STATUS.WALL;
+                return;
+              }
+              case 2: {
+                byId[nodeId].status = NODE_STATUS.WEIGHTED;
+                byId[nodeId].weight = state.weightValue;
+                return;
+              }
+              case 3: {
+                byId[nodeId].status = NODE_STATUS.START;
+                state.startNodeId = nodeId;
+                return;
+              }
+              case 4: {
+                byId[nodeId].status = NODE_STATUS.END;
+                state.endNodeId = nodeId;
+                return;
+              }
+              case 5: {
+                byId[nodeId].status = NODE_STATUS.MIDDLE;
+                state.middleNodeId = nodeId;
+                return;
+              }
+              default: {
+                return;
+              }
+            }
+          }),
+        );
+
+        state.nodes.byId = byId;
+        state.nodes.allIds = allIds;
+      });
+  },
 });
 
 export const {
@@ -418,5 +553,6 @@ export const selectCurrentJammingBlockType = (state) =>
 export const selectMiddleNodeId = (state) => state.maze.middleNodeId;
 export const selectAnimatedMazeNodeIds = (state) =>
   state.maze.animatedMazeNodeIds;
+export const selectMazeId = (state) => state.maze.mazeId;
 
 export default mazeOptionsSlice.reducer;
