@@ -6,6 +6,7 @@ import {
   SHORTEST,
   WEIGHTED,
 } from '../constant';
+import { ERROR } from '../constant/error';
 
 export function getAlgorithmInfo(algorithm) {
   switch (algorithm) {
@@ -107,6 +108,20 @@ export const isNotStartButton = (navListItem) => {
   }
 
   return true;
+};
+
+export const makeCopyLink = (mazeId) => {
+  if (!window) {
+    throw new Error(ERROR.GLOBAL_VARIABLE_WINDOW_NOT_FOUND);
+  }
+
+  const urlList = window.location.href.split('/');
+
+  if (urlList.length === 4 || urlList.length === 5) {
+    urlList[4] = mazeId;
+  }
+
+  return urlList.join('/');
 };
 
 export default { getAlgorithmInfo, rand, isNotStartButton };

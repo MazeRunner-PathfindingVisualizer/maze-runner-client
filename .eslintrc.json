@@ -9,7 +9,10 @@
       "jsx": true
     },
     "ecmaVersion": 12,
-    "sourceType": "module"
+    "sourceType": "module",
+    "globals": {
+      "process": true
+    }
   },
   "plugins": ["react"],
   "rules": {}

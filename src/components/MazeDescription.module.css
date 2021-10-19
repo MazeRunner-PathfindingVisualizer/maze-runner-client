@@ -1,15 +1,16 @@
-@value mazeDescriptionHeight: 8rem;
+@value nodeInfoHeight, selectedOptionInfoHeight from '../common/sizes.css';
+@value makerMercury from '../common/colors.css';
 
 .MazeDescription {
   width: 100%;
-  height: mazeDescriptionHeight;
+  height: calc(nodeInfoHeight + selectedOptionInfoHeight);
 }
 
 .NodeInfo {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 4rem;
+  height: nodeInfoHeight;
 }
 
 .NodeInfoMemo {
@@ -37,12 +38,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 4rem;
+  height: selectedOptionInfoHeight;
 }
 
-.HurdleNodeWrapper {
+.AlgorithmSelectMessage {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 2rem;
+}
+
+.ClickableNodeWrapper {
   display: flex;
   flex-direction: row;
   border: 2px solid black;
   padding: 10px;
+}
+
+.NodeTypeDivider {
+  margin: 0px 10px;
+  width: 0px;
+  height: 50%;
+  border-right: 5px solid makerMercury;
 }
