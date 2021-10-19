@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
@@ -29,10 +29,14 @@ import {
   selectMiddleNodeId,
   setAnimationTimeoutId,
   drawBasicRandomWall,
+  saveMazeAsync,
+  selectMaze,
+  selectMazeId,
 } from '../features/maze/mazeSlice';
 
 import style from './Nav.module.css';
-import { isNotStartButton } from '../util';
+import { isNotStartButton, makeCopyLink } from '../util';
+import Modal from './Modal';
 
 const Nav = () => {
   const menuStatus = useSelector(selectMenu);
@@ -41,7 +45,25 @@ const Nav = () => {
   const animationTimeoutId = useSelector(selectAnimationTimeoutId);
   const middleNodeId = useSelector(selectMiddleNodeId);
   const isSideMenuButtonOpen = useSelector(selectSideMenuButtonStatus);
+  const maze = useSelector(selectMaze);
+  const mazeId = useSelector(selectMazeId);
   const dispatch = useDispatch();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCopyCompleted, setIsCopyCompleted] = useState(false);
+
+  useEffect(() => {
+    if (!isCopyCompleted) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setIsCopyCompleted(false);
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isCopyCompleted]);
 
   function handleOnClick(e) {
     e.preventDefault();
@@ -81,6 +103,12 @@ const Nav = () => {
         dispatch(deleteMiddleNode());
       }
     }
+
+    if (currentClickedMenu === NAV.SAVE_AND_SHARE) {
+      dispatch(saveMazeAsync({ maze, algorithm: currentAlgorithm }));
+      setIsModalOpen(true);
+    }
+
     dispatch(closeSideMenuButtonStatus());
   }
 
@@ -152,6 +180,10 @@ const Nav = () => {
     dispatch(setSideMenuButtonStatus());
   }
 
+  function handleOnClose() {
+    setIsModalOpen(false);
+  }
+
   return (
     <nav className={style.Nav}>
       <ul
@@ -168,6 +200,7 @@ const Nav = () => {
           >
             <button
               className={`${style.SideBarButton}`}
+              type="button"
               onClick={handleOnClick}
               name={item.title}
             >
@@ -186,7 +219,7 @@ const Nav = () => {
       </ul>
       <ul className={style.NavItems}>
         <li className={style.Logo}>
-          <img className={style.LogoImage} src="/logo.png" alt="Logo" />
+          <img className={style.LogoImage} src="/logo.png" alt="logo" />
         </li>
         <li className={style.SideButton}>
           <img
@@ -211,6 +244,7 @@ const Nav = () => {
                   className={`${style.NavButton} ${style.StartButton} ${
                     currentAlgorithm !== 'none' && style.StartButtonReady
                   }`}
+                  type="button"
                   onClick={handleOnClick}
                   name={isProgressive ? NAV.STOP : item.title}
                 >
@@ -221,6 +255,7 @@ const Nav = () => {
               <>
                 <button
                   className={style.NavButton}
+                  type="button"
                   onClick={handleOnClick}
                   name={item.title}
                 >
@@ -238,6 +273,27 @@ const Nav = () => {
           </li>
         ))}
       </ul>
+      {isModalOpen && (
+        <Modal onClose={handleOnClose}>
+          <div className={style.ModalChildren}>
+            <span className={style.ModalTitle}>Link: </span>
+            <div className={style.ModalLink}>{makeCopyLink(mazeId)}</div>
+            <button
+              type="button"
+              className={style.ModalCopyButton}
+              onClick={() => {
+                navigator.clipboard.writeText(makeCopyLink(mazeId));
+                setIsCopyCompleted(true);
+              }}
+            >
+              Copy
+            </button>
+            {isCopyCompleted && (
+              <div className={style.ModalCopyCompleteMessage}>Copied!</div>
+            )}
+          </div>
+        </Modal>
+      )}
     </nav>
   );
 };

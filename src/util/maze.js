@@ -1,3 +1,7 @@
+import DFS from '../algorithms/DFS';
+import BFS from '../algorithms/BFS';
+import Dijkstra from '../algorithms/Dijkstra';
+import AStar from '../algorithms/AStar';
 import {
   ALGORITHM,
   CALC_NUMBERS,
@@ -7,16 +11,16 @@ import {
   PROGRESS_RESULT,
 } from '../constant';
 import { MAZE } from '../constant/maze';
-
-import { headerHeight } from '../App.module.css';
-import { mazeDescriptionHeight } from '../components/MazeDescription.module.css';
-import DFS from '../algorithms/DFS';
-import BFS from '../algorithms/BFS';
-import Dijkstra from '../algorithms/Dijkstra';
-import AStar from '../algorithms/AStar';
+import {
+  headerHeight,
+  nodeInfoHeight,
+  selectedOptionInfoHeight,
+} from '../common/sizes.css';
 
 const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
-const MAZE_DESC_HEIGHT_REM = parseInt(mazeDescriptionHeight.slice(0, -3), 10);
+const MAZE_DESC_HEIGHT_REM =
+  parseInt(nodeInfoHeight.slice(0, -3), 10) +
+  parseInt(selectedOptionInfoHeight.slice(0, -3), 10);
 const REM_TO_PX = 16;
 
 export const calcMazeBlockCount = (widthPx, heightPx) => {
@@ -61,6 +65,7 @@ export const createNodes = (widthCount, heightCount, weight = 1) => {
 
   for (let i = 0; i < heightCount; i++) {
     const newRowIds = [];
+
     for (let j = 0; j < widthCount; j++) {
       const newNodeId = `${i}-${j}`;
       const newNodeStatus = calcNewNodeStatus(
@@ -85,6 +90,52 @@ export const createNodes = (widthCount, heightCount, weight = 1) => {
   }
 
   return nodes;
+};
+
+export const updateNodes = (node, block, weightValue) => {
+  block.forEach((row) => {
+    row.forEach((number) => {
+      switch (number) {
+        case 0: {
+          Object.assign(node, {
+            status: NODE_STATUS.UNVISITED,
+          });
+          break;
+        }
+        case 1: {
+          Object.assign(node, {
+            status: NODE_STATUS.WALL,
+          });
+          break;
+        }
+        case 2: {
+          Object.assign(node, {
+            status: NODE_STATUS.WEIGHTED,
+            weight: weightValue,
+          });
+          break;
+        }
+        case 3: {
+          Object.assign(node, {
+            status: NODE_STATUS.START,
+          });
+          break;
+        }
+        case 4: {
+          Object.assign(node, {
+            status: NODE_STATUS.END,
+          });
+          break;
+        }
+        case 5: {
+          Object.assign(node, {
+            status: NODE_STATUS.MIDDLE,
+          });
+          break;
+        }
+      }
+    });
+  });
 };
 
 export const isFeatNode = (nodeStatus) => {
@@ -382,6 +433,60 @@ export const getAlgorithmFunctionByName = (name) => {
   }
 };
 
+export const mazeInfoToData = (mazeInfo) => {
+  const { maze, algorithm } = mazeInfo;
+  const dataFormat = {
+    maze: {
+      algorithms: [algorithm],
+      block: [],
+    },
+  };
+
+  maze.nodes.allIds.forEach((row) => {
+    const rowArray = [];
+
+    row.forEach((id) => {
+      const node = maze.nodes.byId[id];
+      switch (node.status) {
+        case NODE_STATUS.UNVISITED:
+        case NODE_STATUS.VISITED:
+        case NODE_STATUS.VISITED2:
+        case NODE_STATUS.PATH:
+        case NODE_STATUS.PATH2: {
+          rowArray.push(0);
+          break;
+        }
+        case NODE_STATUS.WALL: {
+          rowArray.push(1);
+          break;
+        }
+        case NODE_STATUS.WEIGHTED: {
+          rowArray.push(2);
+          break;
+        }
+        case NODE_STATUS.START: {
+          rowArray.push(3);
+          break;
+        }
+        case NODE_STATUS.END: {
+          rowArray.push(4);
+          break;
+        }
+        case NODE_STATUS.MIDDLE: {
+          rowArray.push(5);
+          break;
+        }
+        default:
+          throw new Error('Invalid node');
+      }
+    });
+    dataFormat.maze.block.push(rowArray);
+  });
+
+  console.log(dataFormat);
+  return dataFormat;
+};
+
 export default {
   calcMazeBlockCount,
   createNodes,
@@ -393,4 +498,5 @@ export default {
   changeToWeightNode,
   changeToMiddleNode,
   runAlgorithm,
+  mazeInfoToData,
 };

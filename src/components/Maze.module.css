@@ -1,4 +1,5 @@
 @value makerBlack from '../common/colors.css';
+@value nodeHeight from '../common/sizes.css';
 
 .Maze {
   display: flex;
@@ -10,22 +11,6 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 25px;
+  height: nodeHeight;
   box-sizing: border-box;
-}
-
-.MazeNode {
-  min-width: 25px;
-  height: 100%;
-  border-left: 1px solid makerBlack;
-  border-top: 1px solid makerBlack;
-  box-sizing: border-box;
-}
-
-.MazeNode:last-child {
-  border-right: 1px solid makerBlack;
-}
-
-.MazeRow:last-child .MazeNode {
-  border-bottom: 1px solid makerBlack;
 }
