@@ -1,4 +1,4 @@
-@value nodeInfoHeight, selectedOptionInfoHeight from '../common/sizes.css';
+@value nodeInfoHeight, selectedOptionInfoHeight from '../common/sizes.module.css';
 @value makerMercury from '../common/colors.css';
 
 .MazeDescription {

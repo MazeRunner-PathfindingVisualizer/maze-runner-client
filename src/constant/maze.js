@@ -1,4 +1,4 @@
-import nodeWidth from '../common/sizes.css';
+import { nodeWidth } from '../common/sizes.module.css';
 
 export const MAZE = {
   BLOCK_SIZE_PX: parseInt(nodeWidth.slice(0, -2), 10),

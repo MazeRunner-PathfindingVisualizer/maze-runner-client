@@ -37,7 +37,6 @@ const MazeDescription = () => {
   }
 
   function handleOnClick(id) {
-    console.log(id);
     const isJamBlock = id === NODE_STATUS.WEIGHTED || id === NODE_STATUS.WALL;
 
     if (isJamBlock) {
