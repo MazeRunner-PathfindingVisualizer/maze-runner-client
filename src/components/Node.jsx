@@ -31,22 +31,21 @@ const Node = ({
         <img
           src={src}
           className={`${style.Node} ${style[targetNode.status]}`}
-          onMouseDown={(e) => {
+          onPointerDown={(e) => {
             handleMouseDown(e, targetNode);
           }}
-          onMouseUp={handleMouseUp}
-          onMouseEnter={(e) => handleMouseEnter(e, targetNode)}
-          onMouseLeave={handleMouseLeave}
+          onPointerUp={handleMouseUp}
+          onPointerEnter={(e) => handleMouseEnter(e, targetNode)}
           name={nodeId}
         />
       ) : (
         <div
           className={`${style.Node} ${style[targetNode.status]}`}
-          onMouseDown={(e) => {
+          onPointerDown={(e) => {
             handleMouseDown(e, targetNode);
           }}
-          onMouseUp={handleMouseUp}
-          onMouseEnter={(e) => handleMouseEnter(e, targetNode)}
+          onPointerUp={handleMouseUp}
+          onPointerEnter={(e) => handleMouseEnter(e, targetNode)}
           onMouseLeave={handleMouseLeave}
           name={nodeId}
         />

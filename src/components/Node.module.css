@@ -1,18 +1,21 @@
+@value makerFauxMetallicSeaweedOpacity, makerMercury, makerWhite, makerTomato, makerFauxPrussianBlue, makerJellyBean, makerGhostWhite, makerVeryLightGray from '../common/colors.css';
+
 .Node {
   min-width: 25px;
   height: 100%;
-  border-left: 1px solid black;
-  border-top: 1px solid black;
+  border-left: 1px solid makerWhite;
+  border-top: 1px solid makerWhite;
+  border-radius: 3px;
   box-sizing: border-box;
-  background-color: #6c6c6c;
+  background-color: makerFauxMetallicSeaweedOpacity;
 }
 
 .Node:last-child {
-  border-right: 1px solid black;
+  border-right: 1px solid makerWhite;
 }
 
 .MazeRow:last-child .Node {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid makerWhite;
 }
 
 .start,
@@ -21,24 +24,23 @@
   animation-name: fadeIn;
   animation-duration: 1s;
   animation-fill-mode: forwards;
-  background-color: white;
+  background-color: makerMercury;
+  border: 2px solid makerTomato;
+  box-sizing: border-box;
 }
 
 .visited {
-  animation-name: fadeIn;
+  animation-name: fadeInVisit;
   animation-duration: 1s;
   animation-fill-mode: forwards;
-  background-color: #02343f;
+  background-color: makerFauxPrussianBlue;
 }
 
 .visited2 {
-  animation-name: fadeIn;
+  animation-name: fadeInVisit2;
   animation-duration: 1s;
   animation-fill-mode: forwards;
-  background-color: #f0edcc;
-}
-
-.unvisited {
+  background-color: makerJellyBean;
 }
 
 .path {
@@ -53,10 +55,20 @@
   animation-fill-mode: forwards;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInVisit {
   0% {
-    background-color: #acc7b4;
-    transform: scale(1.3);
+    background-color: makerGhostWhite;
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInVisit2 {
+  0% {
+    background-color: makerGhostWhite;
+    transform: scale(1.5);
   }
   100% {
     transform: scale(1);
@@ -66,12 +78,12 @@
 @keyframes fadeInPath {
   0% {
     display: none;
-    background-color: none;
+    background-color: makerGhostWhite;
     transform: scale(1.3);
   }
   100% {
     display: block;
-    background-color: yellow;
+    background-color: makerVeryLightGray;
     transform: scale(1);
   }
 }
@@ -79,12 +91,12 @@
 @keyframes fadeInPath2 {
   0% {
     display: none;
-    background-color: none;
+    background-color: makerGhostWhite;
     transform: scale(1.3);
   }
   100% {
     display: block;
-    background-color: gold;
+    background-color: makerVeryLightGray;
     transform: scale(1);
   }
 }

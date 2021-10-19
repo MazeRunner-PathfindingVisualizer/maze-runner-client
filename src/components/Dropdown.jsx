@@ -8,7 +8,11 @@ const Dropdown = ({ isMobile, items, handleOnClick }) => {
     <ul className={isMobile ? style.DropdownMobile : style.Dropdown}>
       {items.map((item, idx) => (
         <li className={style.DropdownItem} key={idx}>
-          <button onClick={handleOnClick} name={item}>
+          <button
+            className={style.DropdownButton}
+            onClick={handleOnClick}
+            name={item}
+          >
             {item}
           </button>
         </li>

@@ -11,10 +11,10 @@ export const ALGORITHM = {
 };
 
 export const ALGORITHMS = [
-  ALGORITHM.DFS,
-  ALGORITHM.BFS,
-  ALGORITHM.DIJKSTRA,
   ALGORITHM.A_STAR_SEARCH,
+  ALGORITHM.DIJKSTRA,
+  ALGORITHM.BFS,
+  ALGORITHM.DFS,
   // ALGORITHM.SWARM,
   // ALGORITHM.BIDIRECTIONAL_SWARM,
   // ALGORITHM.CONVERGENT_SWARM,
@@ -68,8 +68,8 @@ export const SPEED_LIST = [SPEED.FAST, SPEED.AVERAGE, SPEED.SLOW];
 export const NAV = {
   COMPARE_MODE: 'Compare mode',
   ALGORITHMS: 'Algorithms',
-  MAZES_AND_PATTERNS: 'Mazes & Patterns',
-  ADD_MIDDLE_POINT: 'middle point',
+  MAZES_AND_PATTERNS: 'Create Maze',
+  ADD_MIDDLE_POINT: 'apple',
   START: 'Start!',
   STOP: 'Stop',
   CLEAR_MAZE: 'Clear maze',
@@ -92,10 +92,10 @@ export const NAV_LIST = [
     hasDropdown: true,
     child: MAZE_AND_PATTERNS_DROPDOWN_LIST,
   },
-  {
-    title: NAV.ADD_MIDDLE_POINT,
-    hasDropdown: false,
-  },
+  // {
+  //   title: NAV.ADD_MIDDLE_POINT,
+  //   hasDropdown: false,
+  // },
   {
     title: NAV.START,
     hasDropdown: false,
@@ -154,27 +154,27 @@ export const NODE_IMAGE_PATH = {
 export const NODE_TYPES = [
   {
     id: NODE_STATUS.START,
-    title: 'Start Node',
+    title: 'Start',
     imagePath: '/image/startNode.png',
   },
   {
     id: NODE_STATUS.END,
-    title: 'End Node',
+    title: 'End',
     imagePath: '/image/endNode.png',
   },
   {
     id: NODE_STATUS.MIDDLE,
-    title: 'Item Node',
+    title: 'Stopover',
     imagePath: '/image/itemNode.png',
   },
   {
     id: NODE_STATUS.WEIGHTED,
-    title: 'Weight Node',
+    title: 'Weight Block',
     imagePath: '/image/weightNode.png',
   },
   {
     id: NODE_STATUS.WALL,
-    title: 'Wall Node',
+    title: 'Wall Block',
     imagePath: '/image/wallNode.png',
   },
 ];
@@ -186,8 +186,8 @@ export const WEIGHTED = {
 };
 
 export const SHORTEST = {
-  GUARANTEE: 'guarantee',
-  NO_GUARANTEE: 'no-guarantee',
+  GUARANTEE: 'guaranteed',
+  NO_GUARANTEE: 'no-guaranteed',
   NONE: 'none',
 };
 
@@ -215,6 +215,11 @@ export const PLAIN_DIRECTION = {
   HORIZONTAL: 'horizontal',
 };
 
+export const USER_GUIDE_TEXT = {
+  SELECT_YOUR_ALGO: 'Select your algorithm!',
+  CLICK_ME: 'Click me',
+};
+
 export default {
   ALGORITHM,
   ALGORITHMS,
@@ -238,4 +243,5 @@ export default {
   CALC_NUMBERS,
   PROGRESS_RESULT,
   PLAIN_DIRECTION,
+  USER_GUIDE_TEXT,
 };

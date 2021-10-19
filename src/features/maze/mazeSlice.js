@@ -310,17 +310,17 @@ export const mazeOptionsSlice = createSlice({
         });
       });
     },
-    changeCurrentJammingBlockType: (state, action) => {
-      const jammingBlockType = action.payload;
+    changeCurrentJamBlockType: (state, action) => {
+      const jamBlockType = action.payload;
 
       if (
-        jammingBlockType !== NODE_STATUS.WALL &&
-        jammingBlockType !== NODE_STATUS.WEIGHTED
+        jamBlockType !== NODE_STATUS.WALL &&
+        jamBlockType !== NODE_STATUS.WEIGHTED
       ) {
         return;
       }
 
-      state.currentJammingBlockType = jammingBlockType;
+      state.currentJammingBlockType = jamBlockType;
     },
     createMiddleNode: (state) => {
       if (state.isProgressive) {
@@ -393,7 +393,7 @@ export const {
   endAnimation,
   clearVisitedAndPathNodes,
   clearWallAndWeightNode,
-  changeCurrentJammingBlockType,
+  changeCurrentJamBlockType,
   createMiddleNode,
   deleteMiddleNode,
   drawRecursiveDivisionMaze,
