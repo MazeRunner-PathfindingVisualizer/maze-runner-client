@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 
 import { NODE_STATUS } from '../constant';
 import {
-  selectCurrentJammingBlockType,
+  selectCurrentJamBlockType,
   selectMiddleNodeId,
 } from '../features/maze/mazeSlice';
 
 import style from './NodeType.module.css';
 
 const NodeType = ({ type, onClick }) => {
-  const currentJammingBlockType = useSelector(selectCurrentJammingBlockType);
+  const currentJamBlockType = useSelector(selectCurrentJamBlockType);
   const middleNodeId = useSelector(selectMiddleNodeId);
   const { id, title, imagePath } = type;
 
@@ -20,8 +20,7 @@ const NodeType = ({ type, onClick }) => {
     id === NODE_STATUS.WALL ||
     id === NODE_STATUS.MIDDLE;
   const isSelected =
-    currentJammingBlockType === id ||
-    (id === NODE_STATUS.MIDDLE && middleNodeId);
+    currentJamBlockType === id || (id === NODE_STATUS.MIDDLE && middleNodeId);
 
   return (
     <div

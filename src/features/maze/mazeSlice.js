@@ -55,7 +55,7 @@ const initialState = {
 
   isProgressive: false,
 
-  currentJammingBlockType: NODE_STATUS.WALL,
+  currentJamBlockType: NODE_STATUS.WALL,
 
   weightValue: 10,
 
@@ -168,22 +168,22 @@ export const mazeOptionsSlice = createSlice({
         targetNode.status === NODE_STATUS.PATH ||
         targetNode.status === NODE_STATUS.PATH2
       ) {
-        if (state.currentJammingBlockType === NODE_STATUS.WALL) {
+        if (state.currentJamBlockType === NODE_STATUS.WALL) {
           changeToWallNode(targetNode);
-        } else if (state.currentJammingBlockType === NODE_STATUS.WEIGHTED) {
+        } else if (state.currentJamBlockType === NODE_STATUS.WEIGHTED) {
           changeToWeightNode(targetNode, state.weightValue);
         }
       } else if (
         targetNode.status === NODE_STATUS.WALL &&
-        state.currentJammingBlockType === NODE_STATUS.WEIGHTED
+        state.currentJamBlockType === NODE_STATUS.WEIGHTED
       ) {
         changeToWeightNode(targetNode, state.weightValue);
       } else if (
         targetNode.status === NODE_STATUS.WEIGHTED &&
-        state.currentJammingBlockType === NODE_STATUS.WALL
+        state.currentJamBlockType === NODE_STATUS.WALL
       ) {
         changeToWallNode(targetNode);
-      } else if (targetNode.status === state.currentJammingBlockType) {
+      } else if (targetNode.status === state.currentJamBlockType) {
         resetNodeProperties(targetNode, ['All']);
       }
     },
@@ -364,7 +364,7 @@ export const mazeOptionsSlice = createSlice({
         return;
       }
 
-      state.currentJammingBlockType = jamBlockType;
+      state.currentJamBlockType = jamBlockType;
     },
     createMiddleNode: (state) => {
       if (state.isProgressive) {
@@ -548,8 +548,8 @@ export const selectAnimationTimeoutId = (state) =>
   state.maze.animationTimeoutId;
 export const selectAnimatedPathNodeIds = (state) =>
   state.maze.animatedPathNodeIds;
-export const selectCurrentJammingBlockType = (state) =>
-  state.maze.currentJammingBlockType;
+export const selectCurrentJamBlockType = (state) =>
+  state.maze.currentJamBlockType;
 export const selectMiddleNodeId = (state) => state.maze.middleNodeId;
 export const selectAnimatedMazeNodeIds = (state) =>
   state.maze.animatedMazeNodeIds;

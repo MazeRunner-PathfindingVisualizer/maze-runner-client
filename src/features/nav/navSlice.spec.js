@@ -1,33 +1,42 @@
-import counterReducer, {
-  increment,
-  decrement,
-  incrementByAmount,
-} from "./counterSlice";
+/* eslint-disable no-undef */
+import { NAV } from '../../constant';
+import navReducer, {
+  setMenu,
+  setSideMenuButtonStatus,
+  closeSideMenuButtonStatus,
+  openSideMenuButtonStatus,
+} from './navSlice';
 
-describe("counter reducer", () => {
+describe('nav reducer', () => {
   const initialState = {
-    value: 3,
-    status: "idle",
+    status: 'none',
+    isSideMenuOpen: false,
   };
-  it("should handle initial state", () => {
-    expect(counterReducer(undefined, { type: "unknown" })).toEqual({
-      value: 0,
-      status: "idle",
+
+  it('should handle initial state', () => {
+    expect(navReducer(undefined, { type: 'unknown' })).toEqual({
+      status: 'none',
+      isSideMenuOpen: false,
     });
   });
 
-  it("should handle increment", () => {
-    const actual = counterReducer(initialState, increment());
-    expect(actual.value).toEqual(4);
+  it('should handle set menu', () => {
+    const actual = navReducer(initialState, setMenu(NAV.ALGORITHMS));
+    expect(actual.status).toEqual(NAV.ALGORITHMS);
   });
 
-  it("should handle decrement", () => {
-    const actual = counterReducer(initialState, decrement());
-    expect(actual.value).toEqual(2);
+  it('should handle set side menu button status', () => {
+    const actual = navReducer(initialState, setSideMenuButtonStatus());
+    expect(actual.isSideMenuOpen).toEqual(true);
   });
 
-  it("should handle incrementByAmount", () => {
-    const actual = counterReducer(initialState, incrementByAmount(2));
-    expect(actual.value).toEqual(5);
+  it('should handle close side menu button status', () => {
+    const actual = navReducer(initialState, closeSideMenuButtonStatus());
+    expect(actual.isSideMenuOpen).toEqual(false);
+  });
+
+  it('should handle open side menu button status', () => {
+    const actual = navReducer(initialState, openSideMenuButtonStatus());
+    expect(actual.isSideMenuOpen).toEqual(true);
   });
 });
