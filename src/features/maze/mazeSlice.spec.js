@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
-import { NODE_STATUS } from '../../constant';
+import { ALGORITHM, NODE_STATUS } from '../../constant';
+import { isFeatNode } from '../../util/maze';
 import mazeReducer, {
   createMaze,
   mouseDown,
@@ -14,16 +15,51 @@ import mazeReducer, {
   setAnimationTimeoutId,
   startAnimation,
   endAnimation,
-  clearVisitedAndPathNodes,
-  clearWallAndWeightNode,
   changeCurrentJamBlockType,
   createMiddleNode,
   deleteMiddleNode,
-  drawRecursiveDivisionMaze,
-  drawBasicRandomWall,
 } from './mazeSlice';
 
-describe('maze reducer basic', () => {
+function getNodeColIndex(nodeId) {
+  if (typeof nodeId !== 'string' && !(nodeId instanceof String)) {
+    throw new Error('Node id should be a string');
+  }
+
+  if (nodeId.split('-').length !== 2) {
+    throw new Error('Invalid node id');
+  }
+
+  return nodeId.split('-')[1];
+}
+
+function getNodeRowIndex(nodeId) {
+  if (typeof nodeId !== 'string' && !(nodeId instanceof String)) {
+    throw new Error('Node id should be a string');
+  }
+
+  if (nodeId.split('-').length !== 2) {
+    throw new Error('Invalid node id');
+  }
+
+  return nodeId.split('-')[0];
+}
+
+function getPrevNodeId(nodeId) {
+  if (typeof nodeId !== 'string' && !(nodeId instanceof String)) {
+    throw new Error('Node id should be a string');
+  }
+
+  if (nodeId.split('-').length < 2) {
+    throw new Error('Invalid node id');
+  }
+
+  const row = getNodeRowIndex(nodeId);
+  const col = getNodeColIndex(nodeId);
+
+  return `${Number(row)}-${Number(col) - 1}`;
+}
+
+describe('maze reducer create maze', () => {
   const initialState = {
     width: 0,
     height: 0,
@@ -120,7 +156,7 @@ describe('maze reducer basic', () => {
   });
 });
 
-describe('maze reducer', () => {
+describe('maze reducer run basic path finding', () => {
   let testMazeState;
 
   beforeEach(() => {
@@ -128,16 +164,17 @@ describe('maze reducer', () => {
       undefined,
       createMaze({ width: 800, height: 600 }),
     );
-    console.log(testMazeState.widthCount);
   });
 
   it('should handle mouseDown', () => {
     const actual = mazeReducer(testMazeState, mouseDown());
+
     expect(actual.isMouseDown).toEqual(true);
   });
 
   it('should handle mouseUp', () => {
     const actual = mazeReducer(testMazeState, mouseUp());
+
     expect(actual.isMouseDown).toEqual(false);
   });
 
@@ -149,6 +186,7 @@ describe('maze reducer', () => {
         nodeStatus: NODE_STATUS.START,
       }),
     );
+
     expect(actual.clickedFeatNodeInfo).toEqual({
       id: '3-5',
       status: NODE_STATUS.START,
@@ -195,23 +233,132 @@ describe('maze reducer', () => {
     expect(actual.nodes.byId[TARGET_NODE_ID].status).toEqual(NODE_STATUS.START);
   });
 
-  // it("should handle incrementByAmount", () => {
-  //   const actual = mazeReducer(initialState, incrementByAmount(2));
-  //   expect(actual.value).toEqual(5);
-  // });
+  it('should handle startPathFinding', () => {
+    const START_NODE_ID = '3-5';
+    const END_NODE_ID = '3-15';
+    const pathfindingState = mazeReducer(
+      testMazeState,
+      startPathfinding(ALGORITHM.A_STAR_SEARCH),
+    );
 
-  // it("should handle incrementByAmount", () => {
-  //   const actual = mazeReducer(initialState, incrementByAmount(2));
-  //   expect(actual.value).toEqual(5);
-  // });
+    const startColIndex = parseInt(getNodeColIndex(START_NODE_ID), 10);
+    const endColIndex = parseInt(getNodeColIndex(END_NODE_ID), 10);
 
-  // it("should handle incrementByAmount", () => {
-  //   const actual = mazeReducer(initialState, incrementByAmount(2));
-  //   expect(actual.value).toEqual(5);
-  // });
+    for (let i = endColIndex; i > startColIndex; i--) {
+      const currentNodeId = `3-${i}`;
+      const previousNodeId =
+        pathfindingState.nodes.byId[currentNodeId].previousNodeId;
 
-  afterEach(() => {
-    testMazeState = mazeReducer(testMazeState, clearVisitedAndPathNodes());
-    testMazeState = mazeReducer(testMazeState, clearWallAndWeightNode());
+      expect(previousNodeId).toEqual(getPrevNodeId(currentNodeId));
+
+      const currentNodeStatus =
+        pathfindingState.nodes.byId[currentNodeId].status;
+
+      if (!isFeatNode(currentNodeStatus)) {
+        const visitedNodeState = mazeReducer(
+          pathfindingState,
+          visitNode(currentNodeId),
+        );
+
+        expect(visitedNodeState.nodes.byId[currentNodeId].status).toEqual(
+          NODE_STATUS.VISITED2,
+        );
+      }
+    }
+  });
+
+  it('should handle drawMazeNode and changeCurrentJamBlock', () => {
+    const TARGET_NODE_ID = '1-5';
+    const targetNodeBeforeStatus =
+      testMazeState.nodes.byId[TARGET_NODE_ID].status;
+    let currentJamBlockType;
+
+    currentJamBlockType = testMazeState.currentJamBlockType;
+
+    const drawWallBlockState = mazeReducer(
+      testMazeState,
+      drawMazeNode({
+        nodeId: TARGET_NODE_ID,
+        nodeStatus: targetNodeBeforeStatus,
+      }),
+    );
+
+    const targetNodeDrawWallStatus =
+      drawWallBlockState.nodes.byId[TARGET_NODE_ID].status;
+
+    expect(targetNodeDrawWallStatus).toEqual(currentJamBlockType);
+
+    const changeJamBlockState = mazeReducer(
+      testMazeState,
+      changeCurrentJamBlockType(NODE_STATUS.WEIGHTED),
+    );
+
+    currentJamBlockType = changeJamBlockState.currentJamBlockType;
+
+    const drawWeightBlockState = mazeReducer(
+      changeJamBlockState,
+      drawMazeNode({
+        nodeId: TARGET_NODE_ID,
+        nodeStatus: targetNodeBeforeStatus,
+      }),
+    );
+
+    const targetNodeDrawWeightStatus =
+      drawWeightBlockState.nodes.byId[TARGET_NODE_ID].status;
+
+    expect(targetNodeDrawWeightStatus).toEqual(currentJamBlockType);
+  });
+
+  it('should handle markPathNode', () => {
+    const PATH_NODE_ID = '3-6';
+    const actual = mazeReducer(testMazeState, markPathNode(PATH_NODE_ID));
+
+    expect(actual.nodes.byId[PATH_NODE_ID].status).toEqual(NODE_STATUS.PATH2);
+  });
+
+  it('should handle setAnimationTimeoutId', () => {
+    const TIMEOUT_ID = 6;
+    const actual = mazeReducer(
+      testMazeState,
+      setAnimationTimeoutId(TIMEOUT_ID),
+    );
+
+    expect(actual.animationTimeoutId).toEqual(TIMEOUT_ID);
+  });
+
+  it('should handle startAnimation and endAnimation', () => {
+    const startAnimationState = mazeReducer(testMazeState, startAnimation());
+
+    expect(startAnimationState.isProgressive).toEqual(true);
+
+    const endAnimationState = mazeReducer(startAnimationState, endAnimation());
+
+    expect(endAnimationState.isProgressive).toEqual(false);
+    expect(endAnimationState.animatedNodeIds.length).toEqual(0);
+    expect(endAnimationState.animatedPathNodeIds.length).toEqual(0);
+  });
+
+  it('should handle createMiddleNode and deleteMiddleNode', () => {
+    const createdMiddleNodeState = mazeReducer(
+      testMazeState,
+      createMiddleNode(),
+    );
+
+    const widthCount = testMazeState.widthCount;
+    const heightCount = testMazeState.heightCount;
+
+    const middleNodeIdY = parseInt(heightCount / 2, 10);
+    const middleNodeIdX = parseInt(widthCount / 2, 10);
+
+    let middleNodeId = `${middleNodeIdY}-${middleNodeIdX}`;
+
+    expect(createdMiddleNodeState.middleNodeId).toEqual(middleNodeId);
+
+    const deleteMiddleNodeState = mazeReducer(
+      createdMiddleNodeState,
+      deleteMiddleNode(),
+    );
+
+    expect(deleteMiddleNodeState.middleNodeId).toEqual(null);
   });
 });

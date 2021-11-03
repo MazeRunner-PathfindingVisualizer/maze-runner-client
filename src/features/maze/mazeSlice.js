@@ -267,26 +267,20 @@ export const mazeOptionsSlice = createSlice({
         : NODE_STATUS.VISITED2;
     },
     drawMazeNode: (state, action) => {
-      const { nodeId, nodeStatus = NODE_STATUS.WALL } = action.payload;
+      const { nodeId } = action.payload;
       const targetNode = state.nodes.byId[nodeId];
+      const nodeStatus = state.nodes.byId[nodeId].status;
 
-      if (
-        nodeStatus !== NODE_STATUS.WALL &&
-        nodeStatus !== NODE_STATUS.WEIGHTED
-      ) {
+      if (isFeatNode(nodeStatus)) {
         return;
       }
 
-      if (isFeatNode(state.nodes.byId[nodeId].status)) {
-        return;
-      }
-
-      if (nodeStatus === NODE_STATUS.WALL) {
+      if (state.currentJamBlockType === NODE_STATUS.WALL) {
         changeToWallNode(targetNode);
         return;
       }
 
-      if (nodeStatus === NODE_STATUS.WEIGHTED) {
+      if (state.currentJamBlockType === NODE_STATUS.WEIGHTED) {
         changeToWeightNode(targetNode, state.weightValue);
       }
     },
