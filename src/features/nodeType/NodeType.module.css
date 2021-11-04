@@ -1,4 +1,4 @@
-@value makerMagenta from '../common/colors.css';
+@value makerMagenta from '../../common/colors.css';
 
 .NodeType {
   display: flex;

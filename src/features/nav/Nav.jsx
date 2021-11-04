@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
-import Dropdown from './Dropdown';
-import { CLEAR_MAZE, MAZE_AND_PATTERNS, NAV, NAV_LIST } from '../constant';
+import Dropdown from '../dropDown/Dropdown';
+import { CLEAR_MAZE, MAZE_AND_PATTERNS, NAV, NAV_LIST } from '../../constant';
 import {
   setMenu,
   selectMenu,
   selectSideMenuButtonStatus,
   setSideMenuButtonStatus,
   closeSideMenuButtonStatus,
-} from '../features/nav/navSlice';
+} from './navSlice';
 import {
   selectAlgorithm,
   setAlgorithm,
   setSpeed,
-} from '../features/mazeOptions/mazeOptionsSlice';
+} from '../mazeOptions/mazeOptionsSlice';
 import {
   clearVisitedAndPathNodes,
   clearWallAndWeightNode,
@@ -32,11 +32,11 @@ import {
   saveMazeAsync,
   selectMaze,
   selectMazeId,
-} from '../features/maze/mazeSlice';
+} from '../maze/mazeSlice';
 
 import style from './Nav.module.css';
-import { isNotStartButton, makeCopyLink } from '../util';
-import Modal from './Modal';
+import { isNotStartButton, makeCopyLink } from '../../util';
+import Modal from '../../components/Modal';
 
 const Nav = () => {
   const menuStatus = useSelector(selectMenu);

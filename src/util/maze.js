@@ -9,6 +9,7 @@ import {
   NODE_STATUS,
   NODE_STATUS_LIST,
   PROGRESS_RESULT,
+  SPEED_MS,
 } from '../constant';
 import { MAZE } from '../constant/maze';
 import {
@@ -16,6 +17,13 @@ import {
   nodeInfoHeight,
   selectedOptionInfoHeight,
 } from '../common/sizes.module.css';
+import {
+  drawMazeNode,
+  endAnimation,
+  markPathNode,
+  startAnimation,
+  visitNode,
+} from '../features/maze/mazeSlice';
 
 const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10) || 10;
 const MAZE_DESC_HEIGHT_REM =
@@ -484,6 +492,95 @@ export const mazeInfoToData = (mazeInfo) => {
   });
 
   return dataFormat;
+};
+
+export const animateVisitNodes = (
+  dispatch,
+  setAnimationTimeoutId,
+  animatedNodeIds,
+  animatedPathNodeIds,
+  animationSpeed,
+) => {
+  if (!animatedNodeIds.length) {
+    return;
+  }
+
+  function animateNext(animatedNodeIds, animatedPathNodeIds) {
+    const nodeId = animatedNodeIds[0];
+    const pathNodeId = animatedPathNodeIds[animatedPathNodeIds.length - 1];
+
+    if (!nodeId && !pathNodeId) {
+      dispatch(endAnimation());
+      return;
+    }
+
+    if (nodeId) {
+      dispatch(visitNode(nodeId));
+
+      animatedNodeIds.shift();
+
+      return setTimeout(() => {
+        const timeoutId = animateNext(animatedNodeIds, animatedPathNodeIds);
+
+        dispatch(setAnimationTimeoutId(timeoutId));
+      }, SPEED_MS[animationSpeed]);
+    }
+
+    if (pathNodeId) {
+      dispatch(markPathNode(pathNodeId));
+
+      animatedPathNodeIds.pop();
+
+      return setTimeout(() => {
+        const timeoutId = animateNext(animatedNodeIds, animatedPathNodeIds);
+
+        dispatch(setAnimationTimeoutId(timeoutId));
+      }, SPEED_MS[animationSpeed]);
+    }
+  }
+
+  dispatch(startAnimation());
+  const animationTimeoutId = animateNext(
+    [...animatedNodeIds],
+    [...animatedPathNodeIds],
+  );
+  dispatch(setAnimationTimeoutId(animationTimeoutId));
+};
+
+export const animatePathNodes = (
+  dispatch,
+  setAnimationTimeoutId,
+  animatedMazeNodeIds,
+  animationSpeed,
+) => {
+  if (!animatedMazeNodeIds.length) {
+    return;
+  }
+
+  const animatedMazeNodeIdsCopy = animatedMazeNodeIds.slice();
+
+  function animateNext(animatedMazeNodeIds) {
+    const nodeId = animatedMazeNodeIds[0];
+
+    if (!nodeId) {
+      dispatch(endAnimation());
+      return;
+    }
+
+    dispatch(drawMazeNode({ nodeId }));
+
+    animatedMazeNodeIds.shift();
+
+    return setTimeout(() => {
+      const timeoutId = animateNext(animatedMazeNodeIds);
+
+      dispatch(setAnimationTimeoutId(timeoutId));
+    }, SPEED_MS[animationSpeed]);
+  }
+
+  dispatch(startAnimation());
+  const animationTimeoutId = animateNext(animatedMazeNodeIdsCopy);
+  dispatch(setAnimationTimeoutId(animationTimeoutId));
 };
 
 export default {

@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Nav from './Nav';
-import MazeDescription from './MazeDescription';
-import Maze from './Maze';
-import useWindowSize from './hook/useWindowSize';
+import Nav from '../nav/Nav';
+import MazeDescription from '../mazeDescription/MazeDescription';
+import Maze from '../maze/Maze';
+import useWindowSize from '../../hook/useWindowSize';
 import {
   createMaze,
   selectMazeWidth,
   selectMazeHeight,
   getMazeAsync,
-} from '../features/maze/mazeSlice';
+} from '../maze/mazeSlice';
 
 import style from './MazeRunner.module.css';
 import {
   closeSideMenuButtonStatus,
   selectSideMenuButtonStatus,
-} from '../features/nav/navSlice';
+} from '../nav/navSlice';
 import { useParams } from 'react-router';
 
 function MazeRunner() {

@@ -2,11 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { NODE_STATUS } from '../constant';
+import { NODE_STATUS } from '../../constant';
 import {
   selectCurrentJamBlockType,
   selectMiddleNodeId,
-} from '../features/maze/mazeSlice';
+} from '../maze/mazeSlice';
 
 import style from './NodeType.module.css';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import MazeRunner from './components/MazeRunner';
+import MazeRunner from './features/mazeRunner/MazeRunner';
 
 const App = () => {
   return (

@@ -14,10 +14,11 @@
 4. [Schedule](#schedule)
 5. [Convention](#convention)
 6. [Features](#features)
-7. [UI example](#ui-example)
-8. [Demo](#demo)
-9. [Installation](#installation)
-10. [Motivation](#usage)
+7. [Algorithms](#algorithms)
+8. [UI example](#ui-example)
+9. [Demo](#demo)
+10. [Installation](#installation)
+11. [Motivation](#usage)
 
 ## Motivation
 
@@ -89,7 +90,7 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 - Branch 전략: Git-flow
 - Merge 전략: Merge (create merge commit)
 
-## features
+## Features
 
 - 미로 에디터
 - 미로 길 찾기 - A star search / Dijkstra / DFS / BFS
@@ -97,5 +98,12 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 - 경유 기능
 - 미로 자동 생성
 - 저장 및 공유
+
+## Algorithms
+
+- DFS
+- BFS
+- Dijkstra
+- A star search
 
 ## UI example
