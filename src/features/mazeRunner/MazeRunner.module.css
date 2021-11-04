@@ -1,4 +1,4 @@
-@value headerHeight from '../common/sizes.module.css';
+@value headerHeight from '../../common/sizes.module.css';
 
 .MazeRunner {
   text-align: center;

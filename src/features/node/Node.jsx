@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getImgSrcPathByNodeStatus } from '../util';
+import { getImgSrcPathByNodeStatus } from '../../util';
 
 import style from './Node.module.css';
-import { NODE_STATUS } from '../constant';
+import { NODE_STATUS } from '../../constant';
 
 const Node = ({
   nodeId,

@@ -1,26 +1,26 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import MazeOption from './MazeOption';
+import MazeOption from '../mazeOptions/MazeOption';
 import {
   MAZE_OPTIONS,
   NODE_STATUS,
   NODE_TYPES,
   USER_GUIDE_TEXT,
-} from '../constant';
+} from '../../constant';
 import {
   selectAlgorithm,
   selectMazeOptions,
-} from '../features/mazeOptions/mazeOptionsSlice';
+} from '../mazeOptions/mazeOptionsSlice';
 
 import style from './MazeDescription.module.css';
-import NodeType from './NodeType';
+import NodeType from '../nodeType/NodeType';
 import {
   changeCurrentJamBlockType,
   createMiddleNode,
   deleteMiddleNode,
   selectMiddleNodeId,
-} from '../features/maze/mazeSlice';
+} from '../maze/mazeSlice';
 
 const MazeDescription = () => {
   const mazeOptions = useSelector(selectMazeOptions);

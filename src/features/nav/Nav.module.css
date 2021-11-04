@@ -1,4 +1,4 @@
-@value makerMercury, makerSonicSilver, makerFauxBrightGray, makerOrangePeel, makerFauxDarkCerulean, makerBlack, makerWhite, makerPictonBlue, makerGreenYellow from '../common/colors.css';
+@value makerMercury, makerSonicSilver, makerFauxBrightGray, makerOrangePeel, makerFauxDarkCerulean, makerBlack, makerWhite, makerPictonBlue, makerGreenYellow from '../../common/colors.css';
 
 .Nav {
   display: flex;

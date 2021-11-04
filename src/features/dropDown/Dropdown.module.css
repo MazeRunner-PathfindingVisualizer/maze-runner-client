@@ -1,4 +1,4 @@
-@value makerMercury, makerSilver, makerSonicSilver, makerWhite from '../common/colors.css';
+@value makerMercury, makerSilver, makerSonicSilver, makerWhite from '../../common/colors.css';
 
 .Dropdown {
   position: absolute;
