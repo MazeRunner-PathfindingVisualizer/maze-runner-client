@@ -19,7 +19,6 @@ import {
   markPathNode,
   selectAnimatedMazeNodeIds,
   drawMazeNode,
-  selectCurrentJammingBlockType,
 } from '../features/maze/mazeSlice';
 import { selectSpeed } from '../features/mazeOptions/mazeOptionsSlice';
 import Node from './Node';
@@ -35,7 +34,6 @@ const Maze = () => {
   const animationSpeed = useSelector(selectSpeed);
   const animatedPathNodeIds = useSelector(selectAnimatedPathNodeIds);
   const animatedMazeNodeIds = useSelector(selectAnimatedMazeNodeIds);
-  const currentJammingBlockType = useSelector(selectCurrentJammingBlockType);
 
   const dispatch = useDispatch();
 
@@ -159,7 +157,7 @@ const Maze = () => {
         return;
       }
 
-      dispatch(drawMazeNode({ nodeId, nodeStatus: currentJammingBlockType }));
+      dispatch(drawMazeNode({ nodeId }));
 
       animatedMazeNodeIds.shift();
 

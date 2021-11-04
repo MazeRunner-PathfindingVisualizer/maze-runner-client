@@ -17,10 +17,10 @@ import {
   selectedOptionInfoHeight,
 } from '../common/sizes.module.css';
 
-const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
+const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10) || 10;
 const MAZE_DESC_HEIGHT_REM =
   parseInt(nodeInfoHeight.slice(0, -3), 10) +
-  parseInt(selectedOptionInfoHeight.slice(0, -3), 10);
+    parseInt(selectedOptionInfoHeight.slice(0, -3), 10) || 8;
 const REM_TO_PX = 16;
 
 export const calcMazeBlockCount = (widthPx, heightPx) => {
