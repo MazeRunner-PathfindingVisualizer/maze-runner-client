@@ -1,5 +1,5 @@
 @value makerFauxMetallicSeaweedOpacity, makerMercury, makerWhite, makerTomato, makerFauxPrussianBlue, makerJellyBean, makerGhostWhite, makerVeryLightGray, makerOrangePeel from '../common/colors.css';
-@value nodeWidth from '../common/sizes.css';
+@value nodeWidth from '../common/sizes.module.css';
 
 .Node {
   min-width: nodeWidth;

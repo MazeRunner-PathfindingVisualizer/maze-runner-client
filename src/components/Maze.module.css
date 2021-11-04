@@ -1,5 +1,5 @@
 @value makerBlack from '../common/colors.css';
-@value nodeHeight from '../common/sizes.css';
+@value nodeHeight from '../common/sizes.module.css';
 
 .Maze {
   display: flex;

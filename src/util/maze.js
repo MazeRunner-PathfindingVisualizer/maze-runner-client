@@ -15,7 +15,7 @@ import {
   headerHeight,
   nodeInfoHeight,
   selectedOptionInfoHeight,
-} from '../common/sizes.css';
+} from '../common/sizes.module.css';
 
 const HEADER_HEIGHT_REM = parseInt(headerHeight.slice(0, -3), 10);
 const MAZE_DESC_HEIGHT_REM =
@@ -483,7 +483,6 @@ export const mazeInfoToData = (mazeInfo) => {
     dataFormat.maze.block.push(rowArray);
   });
 
-  console.log(dataFormat);
   return dataFormat;
 };
 
