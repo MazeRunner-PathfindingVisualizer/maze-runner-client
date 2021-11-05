@@ -15,6 +15,6 @@
       "process": true
     }
   },
-  "plugins": ["react"],
+  "plugins": ["react", "jest"],
   "rules": {}
 }

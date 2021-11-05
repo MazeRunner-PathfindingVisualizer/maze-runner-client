@@ -8,8 +8,8 @@ import {
 } from '../../constant';
 import { ERROR } from '../../constant/error';
 import { MAZE } from '../../constant/maze';
-import { createBasicRandomWall } from '../../mazePattern/basicRandomWall';
-import { recursiveDivisionWrapper } from '../../mazePattern/recursiveDivision';
+import { createBasicRandomWall } from '../../mazeGenerationAlgorithms/basicRandomWall';
+import { recursiveDivisionWrapper } from '../../mazeGenerationAlgorithms/recursiveDivision';
 import {
   calcMazeBlockCount,
   createNodes,
