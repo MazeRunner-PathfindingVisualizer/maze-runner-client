@@ -1,7 +1,7 @@
 import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import { getNextNodes } from './common';
 
-export const DFS = (byId, startNodeId, targetNodeId) => {
+export const dFS = (byId, startNodeId, targetNodeId) => {
   const stack = [byId[startNodeId]];
   const visitedNodeObject = {};
   const animatedNodeIds = [];
@@ -44,4 +44,4 @@ export const DFS = (byId, startNodeId, targetNodeId) => {
   return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
-export default DFS;
+export default dFS;
