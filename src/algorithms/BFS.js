@@ -1,7 +1,7 @@
 import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import { getNextNodes } from './common';
 
-export const BFS = (byId, startNodeId, targetNodeId) => {
+export const bFS = (byId, startNodeId, targetNodeId) => {
   const stack = [byId[startNodeId]];
   const visitedNodeObject = {};
   const animatedNodeIds = [];
@@ -34,4 +34,4 @@ export const BFS = (byId, startNodeId, targetNodeId) => {
   return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
-export default BFS;
+export default bFS;

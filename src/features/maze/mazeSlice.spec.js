@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { ALGORITHM, NODE_STATUS } from '../../constant';
 import { isFeatNode } from '../../util/maze';
 import mazeReducer, {
@@ -20,44 +19,7 @@ import mazeReducer, {
   deleteMiddleNode,
 } from './mazeSlice';
 
-function getNodeColIndex(nodeId) {
-  if (typeof nodeId !== 'string' && !(nodeId instanceof String)) {
-    throw new Error('Node id should be a string');
-  }
-
-  if (nodeId.split('-').length !== 2) {
-    throw new Error('Invalid node id');
-  }
-
-  return nodeId.split('-')[1];
-}
-
-function getNodeRowIndex(nodeId) {
-  if (typeof nodeId !== 'string' && !(nodeId instanceof String)) {
-    throw new Error('Node id should be a string');
-  }
-
-  if (nodeId.split('-').length !== 2) {
-    throw new Error('Invalid node id');
-  }
-
-  return nodeId.split('-')[0];
-}
-
-function getPrevNodeId(nodeId) {
-  if (typeof nodeId !== 'string' && !(nodeId instanceof String)) {
-    throw new Error('Node id should be a string');
-  }
-
-  if (nodeId.split('-').length < 2) {
-    throw new Error('Invalid node id');
-  }
-
-  const row = getNodeRowIndex(nodeId);
-  const col = getNodeColIndex(nodeId);
-
-  return `${Number(row)}-${Number(col) - 1}`;
-}
+import { getNodeColIndex, getPrevNodeId } from '../../util/test';
 
 describe('maze reducer create maze', () => {
   const initialState = {

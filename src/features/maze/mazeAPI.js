@@ -1,6 +1,5 @@
 import { ERROR } from '../../constant/error';
 
-/* eslint-disable no-undef */
 export async function saveMaze(mazeData) {
   try {
     const myHeaders = new Headers();
