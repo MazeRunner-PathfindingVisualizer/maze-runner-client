@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { NAV } from '../../constant';
 import navReducer, {
   setMenu,

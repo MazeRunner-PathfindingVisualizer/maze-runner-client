@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { ALGORITHM, SPEED } from '../../constant';
 import { getAlgorithmInfo } from '../../util';
 import mazeOptionsReducer, { setAlgorithm, setSpeed } from './mazeOptionsSlice';

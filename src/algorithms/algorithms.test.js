@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { createById } from '../util/test';
 import aStar from './aStar';
 import bFS from './bFS';

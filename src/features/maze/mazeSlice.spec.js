@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { ALGORITHM, NODE_STATUS } from '../../constant';
 import { isFeatNode } from '../../util/maze';
 import mazeReducer, {
