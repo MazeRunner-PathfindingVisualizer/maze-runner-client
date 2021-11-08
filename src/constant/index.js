@@ -1,3 +1,9 @@
+import wall from '../images/wallNode.png';
+import weight from '../images/weightNode.png';
+import start from '../images/startNode.png';
+import end from '../images/endNode.png';
+import middle from '../images/middleNode.png';
+
 export const ALGORITHM = {
   DFS: 'DFS',
   BFS: 'BFS',
@@ -143,11 +149,11 @@ export const NODE_STATUS_LIST = [
 ];
 
 export const NODE_IMAGE_PATH = {
-  WALL: '/image/wallNode.png',
-  WEIGHTED: '/image/weightNode.png',
-  START: '/image/startNode.png',
-  END: '/image/endNode.png',
-  MIDDLE: '/image/itemNode.png',
+  WALL: wall,
+  WEIGHTED: weight,
+  START: start,
+  END: end,
+  MIDDLE: middle,
   // PATH: 'path',
 };
 
@@ -155,27 +161,27 @@ export const NODE_TYPES = [
   {
     id: NODE_STATUS.START,
     title: 'Start',
-    imagePath: '/image/startNode.png',
+    imagePath: start,
   },
   {
     id: NODE_STATUS.END,
     title: 'End',
-    imagePath: '/image/endNode.png',
+    imagePath: end,
   },
   {
     id: NODE_STATUS.MIDDLE,
     title: 'Stopover',
-    imagePath: '/image/itemNode.png',
+    imagePath: middle,
   },
   {
     id: NODE_STATUS.WEIGHTED,
     title: 'Weight Block',
-    imagePath: '/image/weightNode.png',
+    imagePath: weight,
   },
   {
     id: NODE_STATUS.WALL,
     title: 'Wall Block',
-    imagePath: '/image/wallNode.png',
+    imagePath: wall,
   },
 ];
 

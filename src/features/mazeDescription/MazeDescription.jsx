@@ -22,6 +22,8 @@ import {
   selectMiddleNodeId,
 } from '../maze/mazeSlice';
 
+import arrowPigTail from '../../images/arrowPigTail.png';
+
 const MazeDescription = () => {
   const mazeOptions = useSelector(selectMazeOptions);
   const mazeAlgorithm = useSelector(selectAlgorithm);
@@ -77,8 +79,10 @@ const MazeDescription = () => {
           )}
           <div className={style.NodeInfoMemo}>
             <img
+              src={arrowPigTail}
+              width={30}
+              height={30}
               className={style.NodeInfoMemoArrow}
-              src={'/image/arrowPigTail.png'}
               alt="arrow pig tail shape"
             />
             {USER_GUIDE_TEXT.CLICK_ME}

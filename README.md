@@ -207,6 +207,21 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 
 1. Lighthouse 최적화 진행
 
+![Before](https://user-images.githubusercontent.com/26831729/140675765-9f8d0b07-14ab-4918-a2f2-e81820c4df35.png)
+![After](https://user-images.githubusercontent.com/26831729/140675769-ef9886f0-16b9-4184-8025-e1d9453f1b31.png)
+
 2. React를 사용한 이유
 
 3. 여러 Event API를 조합한 미로 에디터 구현
+
+mouseEvent 중 Down / Up / Enter를 이용하여 미로 에디터의 드래그 기능을 구현하였습니다. 하지만 모바일에서는 드래그 기능이 동작하지 않았습니다. 모바일의 경우 mouseEvent가 아닌 touchEvent를 사용하기 때문이었습니다. touchEvent는 mouseEvent와 달리 Down / Up / Enter 이벤트가 존재하지 않는 대신 Start / End / Move 이벤트가 존재하였기에 새로운 로직을 만들어야 했습니다.
+
+반면, pointerEvent는 mouse와 touch 둘 다를 지원하였습니다. 또한 Down / Up / Enter / Move 등의 이벤트를 지원하므로 Mobile과 Desktop 환경 둘 다에서 사용이 가능하였습니다.
+
+따라서 pointerEvent를 사용할 경우 기존 로직을 그대로 사용할 수 있을 것이라는 기대를 하였고 mouseEvent를 pointerEvent로만 변경해주었습니다. Desktop과 Mobile환경 둘 다 동작하는 것을 확인하였으나 문제가 발생하였습니다. Mobile 환경에서 드래그 기능이 온전히 동작하지 않았습니다.
+
+https://user-images.githubusercontent.com/26831729/140678678-eb77a8a7-72e3-4832-b3ed-410d48ab4ce2.mp4
+
+touchEvent에 존재하는 Start / End / Move 이벤트를 이용해야만 원하는 기능을 온전히 동작시킬 수 있다는 판단이 서게 되었기에 이를 이용하여 구현하였습니다.
+
+![touch event 로 구현한 동영상]()

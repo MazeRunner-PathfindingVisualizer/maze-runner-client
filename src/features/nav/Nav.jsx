@@ -37,6 +37,7 @@ import {
 import style from './Nav.module.css';
 import { isNotStartButton, makeCopyLink } from '../../util';
 import Modal from '../../components/Modal';
+import sideButton from '../../images/sideButton.png';
 
 const Nav = () => {
   const menuStatus = useSelector(selectMenu);
@@ -219,14 +220,22 @@ const Nav = () => {
       </ul>
       <ul className={style.NavItems}>
         <li className={style.Logo}>
-          <img className={style.LogoImage} src="/logo.png" alt="logo" />
+          <img
+            src="/logo.png"
+            width={128}
+            height={128}
+            className={style.LogoImage}
+            alt="logo"
+          />
         </li>
         <li className={style.SideButton}>
           <img
+            src={sideButton}
+            width={16}
+            height={16}
             className={`${style.SideButtonImage} ${
               isSideMenuButtonOpen ? style.SideButtonOn : style.SideButtonOff
             }`}
-            src="/image/sideButton.png"
             alt="side menu button"
             onClick={handleSideMenuButtonClick}
           />
