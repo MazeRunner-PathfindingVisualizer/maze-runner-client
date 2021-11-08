@@ -116,8 +116,8 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 
 - 미로 길 찾기
 
-  - Animation Queue에 Visited Node를 저장한 후 차례대로 Animate하여 미로를 찾아가는 과정을 시각화하였습니다.
-  - Animation 정지 기능을 위해 Animation하는 setTimeout의 id를 기억하여 clearTimeout 를 하였습니다. 그리고, Animation 속도에 따라 setTimeout의 delay를 변경하였습니다.
+  - Animation Queue에 방문할 Node를 저장한 후 차례대로 Animate하여 미로를 찾아가는 과정을 시각화하였습니다.
+  - Animation 정지 기능을 위해 setTimeout의 id를 기억하여 clearTimeout 를 하였습니다. 그리고, Animation 속도에 따라 setTimeout의 delay를 변경하였습니다.
   - A star search / Dijkstra / DFS / BFS 알고리즘으로 미로를 탈출할 수 있습니다.
 
 - 경유 기능
@@ -127,11 +127,11 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 - 미로 생성 기능 - recursive division / basic random
 
   - 미로 생성 알고리즘을 구현했습니다. 이 알고리즘을 이용하여 미로를 자동 생성할 수 있습니다.
-  - recursive division 알고리즘은 하나의 평면에 줄을 그어 두 공간으로 나누는 작업을 반복하는 알고리즘입니다.
+  - recursive division 알고리즘은 하나의 평면을 두 공간으로 나누는 작업을 반복하는 알고리즘입니다.
   - basic random은 무작위 블록을 벽 블록 또는 거미줄 블록으로 바꾸게됩니다.
 
 - 저장 및 공유
-  - 링크를 생성하여 저장된 미로를 다시 불러올 수 있습니다.
+  - 링크를 생성하여 저장된 미로를 불러올 수 있습니다.
   - 미로를 구성하는 Node의 상태를 0~5의 숫자로 변환하여 서버에 저장되는 데이터의 양을 줄였습니다.
 
 ## Algorithms
