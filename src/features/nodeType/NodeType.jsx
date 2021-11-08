@@ -9,6 +9,7 @@ import {
 } from '../maze/mazeSlice';
 
 import style from './NodeType.module.css';
+import { MAZE } from '../../constant/maze';
 
 const NodeType = ({ type, onClick }) => {
   const currentJamBlockType = useSelector(selectCurrentJamBlockType);
@@ -29,7 +30,13 @@ const NodeType = ({ type, onClick }) => {
       } ${isSelected && style.SelectedJamNodeType}`}
       onClick={() => onClick(id)}
     >
-      <img className={style.NodeTypeImage} src={imagePath} alt={title} />
+      <img
+        src={imagePath}
+        width={MAZE.BLOCK_SIZE_PX}
+        height={MAZE.BLOCK_SIZE_PX}
+        className={style.NodeTypeImage}
+        alt={title}
+      />
       <span className={style.NodeTypeTitle}>{title}</span>
     </div>
   );

@@ -75,22 +75,22 @@ export function getAlgorithmInfo(algorithm) {
   }
 }
 
-export const getImgSrcPathByNodeStatus = (nodeStatus) => {
+export const getImgInfoByNodeStatus = (nodeStatus) => {
   switch (nodeStatus) {
     case NODE_STATUS.START: {
-      return NODE_IMAGE_PATH.START;
+      return { src: NODE_IMAGE_PATH.START, alt: 'start point' };
     }
     case NODE_STATUS.MIDDLE: {
-      return NODE_IMAGE_PATH.MIDDLE;
+      return { src: NODE_IMAGE_PATH.MIDDLE, alt: 'middle point' };
     }
     case NODE_STATUS.END: {
-      return NODE_IMAGE_PATH.END;
+      return { src: NODE_IMAGE_PATH.END, alt: 'end point' };
     }
     case NODE_STATUS.WALL: {
-      return NODE_IMAGE_PATH.WALL;
+      return { src: NODE_IMAGE_PATH.WALL, alt: 'wall' };
     }
     case NODE_STATUS.WEIGHTED: {
-      return NODE_IMAGE_PATH.WEIGHTED;
+      return { src: NODE_IMAGE_PATH.WEIGHTED, alt: 'web' };
     }
     default: {
       return '';
