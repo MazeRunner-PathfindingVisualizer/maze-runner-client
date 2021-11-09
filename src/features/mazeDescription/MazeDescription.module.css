@@ -1,4 +1,4 @@
-@value nodeInfoHeight, selectedOptionInfoHeight from '../../common/sizes.module.css';
+@value nodeInfoHeight, selectedOptionInfoHeight, mediaQuery from '../../common/sizes.module.css';
 @value makerMercury from '../../common/colors.css';
 
 .MazeDescription {
@@ -58,4 +58,10 @@
   width: 0px;
   height: 50%;
   border-right: 5px solid makerMercury;
+}
+
+@media screen and (max-width: mediaQuery) {
+  .NodeInfoMemo {
+    white-space: normal;
+  }
 }

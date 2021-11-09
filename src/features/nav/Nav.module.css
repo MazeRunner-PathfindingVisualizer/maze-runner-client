@@ -1,4 +1,5 @@
 @value makerMercury, makerSonicSilver, makerFauxBrightGray, makerOrangePeel, makerFauxDarkCerulean, makerBlack, makerWhite, makerPictonBlue, makerGreenYellow from '../../common/colors.css';
+@value mediaQuery from '../../common/sizes.module.css';
 
 .Nav {
   display: flex;
@@ -185,7 +186,7 @@ button {
   background-color: makerGreenYellow;
 }
 
-@media screen and (max-width: 48rem) {
+@media screen and (max-width: mediaQuery) {
   .NavItem {
     display: none;
   }
