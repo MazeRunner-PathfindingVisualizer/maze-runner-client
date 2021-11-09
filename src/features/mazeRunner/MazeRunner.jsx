@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Nav from '../nav/Nav';
 import MazeDescription from '../mazeDescription/MazeDescription';
-import Maze from '../maze/Maze';
+const Maze = lazy(() => import('../maze/Maze'));
 import useWindowSize from '../../hook/useWindowSize';
 import {
   createMaze,
@@ -54,7 +54,9 @@ function MazeRunner() {
       </header>
       <main className={style.Main}>
         <MazeDescription />
-        <Maze />
+        <Suspense fallback={<p>loading...</p>}>
+          <Maze />
+        </Suspense>
       </main>
     </div>
   );

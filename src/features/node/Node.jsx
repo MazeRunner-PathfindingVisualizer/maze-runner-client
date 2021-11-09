@@ -8,13 +8,7 @@ import style from './Node.module.css';
 import { NODE_STATUS } from '../../constant';
 import { MAZE } from '../../constant/maze';
 
-const Node = ({
-  nodeId,
-  handleMouseDown,
-  handleMouseUp,
-  handleMouseEnter,
-  handleMouseLeave,
-}) => {
+const Node = ({ nodeId, handleMouseDown, handleMouseUp, handleMouseEnter }) => {
   const targetNode = useSelector((state) => state.maze.nodes.byId[nodeId]);
   const { src, alt } = getImgInfoByNodeStatus(
     targetNode.weight > 1 &&
@@ -35,10 +29,17 @@ const Node = ({
           height={MAZE.BLOCK_SIZE_PX}
           className={`${style.Node} ${style[targetNode.status]}`}
           onPointerDown={(e) => {
+            // console.log(e);
             handleMouseDown(e, targetNode);
           }}
-          onPointerUp={handleMouseUp}
-          onPointerEnter={(e) => handleMouseEnter(e, targetNode)}
+          onPointerUp={(e) => {
+            // console.log(e);
+            handleMouseUp(e);
+          }}
+          onPointerEnter={(e) => {
+            // console.log(e);
+            handleMouseEnter(e, targetNode);
+          }}
           name={nodeId}
           alt={alt}
         />
@@ -46,11 +47,17 @@ const Node = ({
         <div
           className={`${style.Node} ${style[targetNode.status]}`}
           onPointerDown={(e) => {
+            // console.log(e);
             handleMouseDown(e, targetNode);
           }}
-          onPointerUp={handleMouseUp}
-          onPointerEnter={(e) => handleMouseEnter(e, targetNode)}
-          onMouseLeave={handleMouseLeave}
+          onPointerUp={(e) => {
+            // console.log(e);
+            handleMouseUp(e);
+          }}
+          onPointerEnter={(e) => {
+            // console.log(e);
+            handleMouseEnter(e, targetNode);
+          }}
           name={nodeId}
         />
       )}
@@ -62,7 +69,6 @@ Node.defaultProps = {
   handleMouseDown: () => {},
   handleMouseUp: () => {},
   handleMouseEnter: () => {},
-  handleMouseLeave: () => {},
 };
 
 Node.propTypes = {
@@ -70,7 +76,6 @@ Node.propTypes = {
   handleMouseDown: PropTypes.func,
   handleMouseUp: PropTypes.func,
   handleMouseEnter: PropTypes.func,
-  handleMouseLeave: PropTypes.func,
 };
 
 export default React.memo(Node);
