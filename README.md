@@ -227,11 +227,11 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 1. Lighthouse 최적화 진행
 
 ![Before](https://user-images.githubusercontent.com/26831729/140675765-9f8d0b07-14ab-4918-a2f2-e81820c4df35.png)
-![After](https://user-images.githubusercontent.com/26831729/140787303-c0f61da5-add1-4534-a268-c2b8636c3271.png)
+![After](https://user-images.githubusercontent.com/26831729/140849959-46d50fa6-fd6b-4c4f-8e3d-201045a5a442.png)
 
 img 태그에 alt / width / height 속성 부여, image 해상도 최적화, html description 작성하여 SEO 및 Accessibility 점수를 크게 향상시킬 수 있었습니다.
 
-또한 Minify로 Performance 점수를 향상시킬 수 있었습니다.
+또한 build 시 source map을 삭제하여 용량을 감소시키고 react.lazy와 react.suspense를 사용하여 rendering block을 줄임으로써 Performance 점수를 향상시킬 수 있었습니다.
 
 <br>
 
