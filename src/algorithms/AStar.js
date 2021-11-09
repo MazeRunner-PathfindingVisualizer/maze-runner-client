@@ -5,7 +5,7 @@ import {
   manhattanDistance,
 } from './common';
 
-export const aStar = (byId, startNodeId, targetNodeId) => {
+export const AStar = (byId, startNodeId, targetNodeId) => {
   const unvisitedNodeIdList = Object.keys(byId);
   const animatedNodeIds = [];
   let currentNode = byId[startNodeId];
@@ -71,4 +71,4 @@ export const aStar = (byId, startNodeId, targetNodeId) => {
   return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
-export default aStar;
+export default AStar;

@@ -1,7 +1,7 @@
-import dFS from '../algorithms/dFS';
-import bFS from '../algorithms/bFS';
-import dijkstra from '../algorithms/dijkstra';
-import aStar from '../algorithms/aStar';
+import DFS from '../algorithms/DFS';
+import BFS from '../algorithms/BFS';
+import Dijkstra from '../algorithms/Dijkstra';
+import AStar from '../algorithms/AStar';
 import {
   ALGORITHM,
   CALC_NUMBERS,
@@ -424,16 +424,16 @@ export const resetAllNodeProperties = (nodes) => {
 export const getAlgorithmFunctionByName = (name) => {
   switch (name) {
     case ALGORITHM.DFS: {
-      return dFS;
+      return DFS;
     }
     case ALGORITHM.BFS: {
-      return bFS;
+      return BFS;
     }
     case ALGORITHM.DIJKSTRA: {
-      return dijkstra;
+      return Dijkstra;
     }
     case ALGORITHM.A_STAR_SEARCH: {
-      return aStar;
+      return AStar;
     }
     default: {
       return () => {};

@@ -1,7 +1,7 @@
 import { NODE_STATUS, PROGRESS_RESULT } from '../constant';
 import { getNextNodes, getShortestDistanceNodeId } from './common';
 
-export const dijkstra = (byId, startNodeId, targetNodeId) => {
+export const Dijkstra = (byId, startNodeId, targetNodeId) => {
   const unvisitedNodeIdList = Object.keys(byId);
   const animatedNodeIds = [];
   let currentNode = byId[startNodeId];
@@ -51,4 +51,4 @@ export const dijkstra = (byId, startNodeId, targetNodeId) => {
   return { message: PROGRESS_RESULT.FAILURE, animatedNodeIds };
 };
 
-export default dijkstra;
+export default Dijkstra;

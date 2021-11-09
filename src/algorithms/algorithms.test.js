@@ -1,8 +1,8 @@
 import { createById } from '../util/test';
-import aStar from './aStar';
-import bFS from './bFS';
-import dFS from './dFS';
-import dijkstra from './dijkstra';
+import AStar from './AStar';
+import BFS from './BFS';
+import DFS from './DFS';
+import Dijkstra from './Dijkstra';
 
 describe('algorithms', () => {
   const START_NODE_ID = '9-0';
@@ -14,7 +14,7 @@ describe('algorithms', () => {
   });
 
   it('should be escape by a star search', () => {
-    const result = aStar(byId, START_NODE_ID, END_NODE_ID);
+    const result = AStar(byId, START_NODE_ID, END_NODE_ID);
     const answer = {
       message: 'success',
       animatedNodeIds: [
@@ -73,8 +73,8 @@ describe('algorithms', () => {
     expect(result).toEqual(answer);
   });
 
-  it('should be escape by dijkstra', () => {
-    const result = dijkstra(byId, START_NODE_ID, END_NODE_ID);
+  it('should be escape by Dijkstra', () => {
+    const result = Dijkstra(byId, START_NODE_ID, END_NODE_ID);
     const answer = {
       message: 'success',
       animatedNodeIds: [
@@ -144,7 +144,7 @@ describe('algorithms', () => {
   });
 
   it('should be escape by bfs', () => {
-    const result = bFS(byId, START_NODE_ID, END_NODE_ID);
+    const result = BFS(byId, START_NODE_ID, END_NODE_ID);
     const answer = {
       message: 'success',
       animatedNodeIds: [
@@ -215,7 +215,7 @@ describe('algorithms', () => {
   });
 
   it('should be escape by dfs', () => {
-    const result = dFS(byId, START_NODE_ID, END_NODE_ID);
+    const result = DFS(byId, START_NODE_ID, END_NODE_ID);
     const answer = {
       message: 'success',
       animatedNodeIds: [
