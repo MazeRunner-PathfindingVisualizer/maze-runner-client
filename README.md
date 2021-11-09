@@ -17,8 +17,7 @@
 7. [Algorithms](#algorithms)
 8. [UI example](#ui-example)
 9. [Log](#log)
-10. [Usage](#usage)
-11. [Installation](#installation)
+10. [Installation](#installation)
 
 <br>
 <br>
@@ -35,6 +34,7 @@
 Maze Runner에서 효율적으로 학습 해보세요! A \* search / Dijkstra / DFS / BFS 알고리즘을 눈으로 즐길 수 있습니다.
 
 <br>
+<br>
 
 ## Tech Stack
 
@@ -50,12 +50,14 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
   Jest / Netlify / AWS EB
 
 <br>
+<br>
 
 ## Task Tool
 
 - Mockup: https://www.figma.com/file/WeZ2ZDddDEtHXWKVJIiLDz/Maze-runner?node-id=0%3A1
 - Kanban: https://github.com/orgs/MazeRunner-PathfindingVisualizer/projects/1
 
+<br>
 <br>
 
 ## Schedule
@@ -94,6 +96,7 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 - 테스트코드
 
 <br>
+<br>
 
 ## Convention
 
@@ -102,6 +105,9 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 - CSS 선언 순서: [NHN coding conventions - 63page 5.8.1 속성선언순서](https://nuli.navercorp.com/data/convention/NHN_Coding_Conventions_for_Markup_Languages.pdf)
 - Branch 전략: Git-flow
 - Merge 전략: Merge (create merge commit)
+
+<br>
+<br>
 
 ## Features
 
@@ -112,6 +118,7 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
     Desktop에서는 Mouse Down / Up / Enter 이벤트를 사용하여 드래그 기능을 구현하였고, Mobile 디바이스에서는 Touch 이벤트로 드래그 기능을 구현하였습니다.
 
   - Dijkstra / A star search 알고리즘에 사용 가능한 가중치 블록을 구현하였습니다. 가중치가 있는 블록은 일반 블록에 비해 천천히 탐색할 수 있습니다.
+
   - 일반 블록의 경우 1의 가중치를 가지며 **가중치 블록**의 경우 **10의 가중치**를 갖습니다.
 
 - 미로 길 찾기
@@ -133,6 +140,9 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 - 저장 및 공유
   - 링크를 생성하여 저장된 미로를 불러올 수 있습니다.
   - 미로를 구성하는 Node의 상태를 0~5의 숫자로 변환하여 서버에 저장되는 데이터의 양을 줄였습니다.
+
+<br>
+<br>
 
 ## Algorithms
 
@@ -192,36 +202,66 @@ React / Redux / PostCSS / MongoDB Atlas / Express / Jest
 
   https://user-images.githubusercontent.com/26831729/140465114-1805e763-6d08-4b26-874d-19386be396a2.mp4
 
+<br>
+<br>
+
 ## UI example
 
 - 미로 그리기
+
   https://user-images.githubusercontent.com/26831729/140500195-9599d1f0-a9f9-415b-b99d-56a9a52d6d0c.mp4
 
 - 경유지 설정
+
   https://user-images.githubusercontent.com/26831729/140500901-8b0b18e3-6b9f-4169-b0f0-dd6f7322c000.mp4
 
 - 미로 공유
+
   https://user-images.githubusercontent.com/26831729/140654346-bf74da9f-044b-4062-98aa-8cfcb7156307.mp4
+
+<br>
+<br>
 
 ## Log
 
 1. Lighthouse 최적화 진행
 
 ![Before](https://user-images.githubusercontent.com/26831729/140675765-9f8d0b07-14ab-4918-a2f2-e81820c4df35.png)
-![After](https://user-images.githubusercontent.com/26831729/140675769-ef9886f0-16b9-4184-8025-e1d9453f1b31.png)
+![After](https://user-images.githubusercontent.com/26831729/140787303-c0f61da5-add1-4534-a268-c2b8636c3271.png)
 
-2. React를 사용한 이유
+img 태그에 alt / width / height 속성 부여, image 해상도 최적화, html description 작성하여 SEO 및 Accessibility 점수를 크게 향상시킬 수 있었습니다.
 
-3. 여러 Event API를 조합한 미로 에디터 구현
+또한 Minify로 Performance 점수를 향상시킬 수 있었습니다.
 
-mouseEvent 중 Down / Up / Enter를 이용하여 미로 에디터의 드래그 기능을 구현하였습니다. 하지만 모바일에서는 드래그 기능이 동작하지 않았습니다. 모바일의 경우 mouseEvent가 아닌 touchEvent를 사용하기 때문이었습니다. touchEvent는 mouseEvent와 달리 Down / Up / Enter 이벤트가 존재하지 않는 대신 Start / End / Move 이벤트가 존재하였기에 새로운 로직을 만들어야 했습니다.
+<br>
 
-반면, pointerEvent는 mouse와 touch 둘 다를 지원하였습니다. 또한 Down / Up / Enter / Move 등의 이벤트를 지원하므로 Mobile과 Desktop 환경 둘 다에서 사용이 가능하였습니다.
+2. Event APIs를 조합한 미로 에디터 구현
 
-따라서 pointerEvent를 사용할 경우 기존 로직을 그대로 사용할 수 있을 것이라는 기대를 하였고 mouseEvent를 pointerEvent로만 변경해주었습니다. Desktop과 Mobile환경 둘 다 동작하는 것을 확인하였으나 문제가 발생하였습니다. Mobile 환경에서 드래그 기능이 온전히 동작하지 않았습니다.
+모바일과 데스크탑 환경에 대응하기 위해 pointer event - Down / Up / Enter를 사용하여 미로 에디터를 구현하였습니다. 그러나 pointer event만을 사용할 경우 드래그 기능이 모바일에서 동작하지 않는 문제가 발생하였습니다.
 
 https://user-images.githubusercontent.com/26831729/140678678-eb77a8a7-72e3-4832-b3ed-410d48ab4ce2.mp4
 
-touchEvent에 존재하는 Start / End / Move 이벤트를 이용해야만 원하는 기능을 온전히 동작시킬 수 있다는 판단이 서게 되었기에 이를 이용하여 구현하였습니다.
+Touch event를 사용한 로직을 별도로 구현하여 모바일 환경에서도 동작하도록 할 수 있었습니다.
 
-![touch event 로 구현한 동영상]()
+<br>
+<br>
+
+## Installation
+
+maze runner는 서버가 배포된 사이트입니다.
+
+로컬에서 구동을 원하실 경우 아래의 `.env` 파일 설정이 필요합니다.
+
+### client
+
+```
+REACT_APP_SERVER_URL=http://localhost:8080
+```
+
+### Server
+
+```
+PORT=8080
+DB_URL='Input your mongoDB URL'
+FRONT_URL='http://localhost:3000'
+```
